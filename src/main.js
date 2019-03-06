@@ -16,8 +16,15 @@ import '@/scripts/icon' // icon
 
 import '@/components/Dashboard/Widgets/libs' // chart libs
 
+import * as filters from '@/scripts/filters' // global filters
+
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
+})
+
+// register global utility filters.
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
 })
 
 Vue.config.productionTip = false
