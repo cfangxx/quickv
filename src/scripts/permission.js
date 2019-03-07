@@ -18,6 +18,7 @@ const whiteList = ['/login', '/auth-redirect']// no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
+
   if (getToken()) { // determine if there has token
     /* has token */
     if (to.path === '/login') {
@@ -28,8 +29,13 @@ router.beforeEach((to, from, next) => {
         store.dispatch('GetUserInfo').then(res => { // 拉取user_info
           const roles = res.data.roles // note: roles must be a array! such as: ['editor','develop']
           store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
-            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+            router.addRoutes(store.getters.permissionRouters)
+            next({ ...to, replace: true })
+          })
+        }).then(() => {
+          store.dispatch('GetUserRouters').then(() => {
+            router.addRoutes(store.getters.dashboardsRouters)
+            next({ ...to, replace: true })
           })
         }).catch((err) => {
           store.dispatch('FedLogOut').then(() => {

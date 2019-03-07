@@ -8,7 +8,7 @@
       :active-text-color="variables.menuActiveText"
       mode="vertical"
     >
-      <sidebar-item v-for="route in permission_routers" :key="route.path" :item="route" :base-path="route.path"/>
+      <sidebar-item v-for="route in userRouters" :key="route.path" :item="route" :base-path="route.path"/>
     </el-menu>
   </el-scrollbar>
 </template>
@@ -22,7 +22,7 @@ export default {
   components: { SidebarItem },
   computed: {
     ...mapGetters([
-      'permission_routers',
+      'userRouters',
       'sidebar'
     ]),
     variables () {

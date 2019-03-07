@@ -63,7 +63,7 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/edit-dashboard',
+    path: '/edit/dashboard/:hash',
     component: () => import('@/views/dashboard/Designer'),
     hidden: true
   }
@@ -97,6 +97,10 @@ export const asyncRouterMap = [
       }
     ]
   },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export var userDashboardRouterMap = [
   {
     path: '/dashboard',
     component: Layout,
@@ -106,19 +110,6 @@ export const asyncRouterMap = [
       icon: 'tab'
     },
     children: [
-      {
-        path: 'a',
-        component: () => import('@/views/dashboard/Dashboard'),
-        name: 'Dashboarda',
-        meta: { title: '大屏1' }
-      },
-      {
-        path: 'b',
-        component: () => import('@/views/dashboard/Dashboard'),
-        name: 'Dashboardb',
-        meta: { title: '大屏2' }
-      }
     ]
-  },
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]

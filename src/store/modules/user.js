@@ -1,5 +1,8 @@
 import { loginByUsername, logout, getUserInfo } from '@/api/login'
+import { fetchList } from '@/api/dashboard'
 import { getToken, setToken, removeToken } from '@/scripts/auth'
+import {constantRouterMap, userDashboardRouterMap} from '@/router'
+import store from '@/store/index'
 
 const user = {
   state: {
@@ -13,7 +16,9 @@ const user = {
     roles: [],
     setting: {
       articlePlatform: []
-    }
+    },
+    addRouters: [],
+    routers: []
   },
 
   mutations: {
@@ -40,6 +45,11 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_USER_ROUTER: (state, routers) => {
+      let permissionRouters = store.getters.permissionRouters
+      state.routers = constantRouterMap.concat(permissionRouters).concat(routers)
+      state.addRouters = routers
     }
   },
 
@@ -79,6 +89,33 @@ const user = {
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
           resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 获取用户大屏列表, 添加路由
+    GetUserRouters ({commit, state}) {
+      return new Promise((resolve, reject) => {
+        let routers = userDashboardRouterMap
+
+        fetchList().then(response => {
+          if (response.data) {
+            if (response.data.total > 0) {
+              response.data.items.forEach(item => {
+                routers[0].children.push({
+                  path: item.hash,
+                  component: () => import('@/views/dashboard/Dashboard'),
+                  name: item.hash,
+                  meta: { title: item.name }
+                })
+              })
+
+              commit('SET_USER_ROUTER', routers)
+              resolve()
+            }
+          }
         }).catch(error => {
           reject(error)
         })
