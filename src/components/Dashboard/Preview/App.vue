@@ -39,44 +39,19 @@ export default {
 </script>
 
 <style lang="scss">
-.body {
-  width: 100%;
-  height: calc(100% - 54px);
-  overflow: hidden;
-  flex-direction: row;
-  &.container {
-    padding: 0;
-  }
-}
 .columns {
   height: 100%;
 }
-.toolbar,
 .viewport,
 .control-panel {
   height: 100%;
 }
-.toolbar {
-  background: #fff;
-  user-select: none;
-  box-sizing: content-box;
-  &.column {
-    flex: none;
-    width: 120px;
-  }
-}
+
 .viewport {
   position: relative;
   overflow: hidden;
 }
-.control-panel {
-  background: #fff;
-  user-select: none;
-  &.column {
-    flex: none;
-    width: 400px;
-  }
-}
+
 .viewport:hover .zoom-wrap {
   opacity: 1;
 }

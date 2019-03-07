@@ -3,8 +3,8 @@
     <div class="filter-container">
       <el-input :placeholder="'大屏名称'" v-model="listQuery.title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
-      <el-select v-model="listQuery.type" :placeholder="'状态'" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key"/>
+      <el-select v-model="listQuery.type" :placeholder="'发布状态'" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="(key, value) in publishTypeOptions" :key="key" :label="key" :value="value"/>
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ '搜索' }}</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ '新建' }}</el-button>
@@ -19,70 +19,76 @@
       highlight-current-row
       style="width: 100%;"
       @sort-change="sortChange">
-      <el-table-column :label="'序号'" prop="id" sortable="custom" align="center" width="80">
+      <el-table-column :label="'序号'" prop="id" align="center" width="60">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.sequenceNumber }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="'名称'" min-width="150px">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.title }}</span>
+          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="'时间'" width="150px" align="center">
-        <template slot-scope="scope">
+      <!--<el-table-column :label="'时间'" width="150px" align="center">-->
+        <!--<template slot-scope="scope">-->
           <!--<span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>-->
-          <span>{{ scope.row.timestamp }}</span>
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <el-table-column :label="'链接'" min-width="250px">
+        <template slot-scope="scope">
+          <a class="link-type" :href="scope.row.url" target="_blank">{{ scope.row.url }}</a>
         </template>
       </el-table-column>
       <el-table-column :label="'状态'" class-name="status-col" width="100">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+          <el-tag :type="scope.row.status ">{{ scope.row.status | statusFilter}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="'操作'" align="center" width="330" class-name="small-padding fixed-width">
+      <el-table-column :label="'操作'" align="center" width="400" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ '预览' }}</el-button>
-          <el-button size="mini" type="success" @click="handleEdit()">{{ '编辑' }}
-          </el-button>
-          <el-button size="mini" @click="handleModifyStatus(scope.row,'draft')">{{ '发布' }}
-          </el-button>
-          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ '删除' }}
-          </el-button>
+          <el-button type="primary" size="mini" @click="handlePreviewDashboard(scope.row)">{{ '预览' }}</el-button>
+          <el-button size="mini" type="success" @click="handleEdit(scope.row.hash)">{{ '编辑' }}</el-button>
+          <el-button size="mini" type="warning" @click="handleModifyStatus(scope.row,'draft')">{{ '克隆' }}</el-button>
+          <el-button size="mini" type="info" @click="handleModifyPublish(scope.row)">{{ '发布' }}</el-button>
+          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ '删除' }}</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+    <!--新建大屏-->
+    <el-dialog :title="'新建大屏'" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
 
         <el-form-item :label="'名称'" prop="title">
-          <el-input v-model="temp.title"/>
+          <el-input v-model="temp.name"/>
         </el-form-item>
-        <el-form-item :label="'状态'">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item"/>
-          </el-select>
+        <el-form-item :label="'简介'">
+          <el-input v-model="temp.description"/>
         </el-form-item>
         <el-form-item :label="'模板'">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.remark" type="textarea" placeholder="Please input"/>
+          <el-carousel :interval="4000" type="card" height="200px">
+            <el-carousel-item v-for="item in 6" :key="item">
+              <h3>{{ item }}</h3>
+            </el-carousel-item>
+          </el-carousel>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ '取消' }}</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ '确定' }}</el-button>
+        <el-button type="primary" @click="dialogStatus===createData()">{{ '创建' }}</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel"/>
-        <el-table-column prop="pv" label="Pv"/>
-      </el-table>
+    <!--发布管理-->
+    <el-dialog :visible.sync="dialogPublish" :title="dialogPublishTitle">
+      <el-radio-group v-model="dialogPublishStatus">
+        <el-radio v-for="(value, key) in publishTypeOptions" :key="key" :label="key">{{ value }}</el-radio>
+      </el-radio-group>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ '确定' }}</el-button>
+        <el-button @click="dialogPublish = false">{{ '取消' }}</el-button>
+        <el-button type="primary" @click="dialogPublish = false">{{ '确定' }}</el-button>
       </span>
     </el-dialog>
 
@@ -90,39 +96,23 @@
 </template>
 
 <script>
-import { fetchList, createDashboard, updateDashboard } from '@/api/dashboard'
+import { fetchList, createDashboard } from '@/api/dashboard'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/scripts'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
-const calendarTypeOptions = [
-  { key: 'CN', display_name: 'China' },
-  { key: 'US', display_name: 'USA' },
-  { key: 'JP', display_name: 'Japan' },
-  { key: 'EU', display_name: 'Eurozone' }
-]
-
-// arr to obj ,such as { CN : "China", US : "USA" }
-const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-  acc[cur.key] = cur.display_name
-  return acc
-}, {})
-
+const publishTypeOptions = {
+  published: '已发布',
+  unpublished: '未发布',
+  developing: '开发中'
+}
 export default {
   name: 'ManageDashboard',
   components: { Pagination },
   directives: { waves },
   filters: {
     statusFilter (status) {
-      const statusMap = {
-        published: '已发布',
-        unpublished: '未发布',
-        developing: '开发中'
-      }
-      return statusMap[status]
-    },
-    typeFilter (type) {
-      return calendarTypeKeyValue[type]
+      return publishTypeOptions[status]
     }
   },
   data () {
@@ -139,33 +129,18 @@ export default {
         type: undefined,
         sort: '+id'
       },
-      importanceOptions: [1, 2, 3],
-      calendarTypeOptions,
+      publishTypeOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      statusOptions: ['published', 'draft', 'deleted'],
-      showReviewer: false,
       temp: {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
+        name: '',
+        template: '',
+        description: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
-      textMap: {
-        update: 'Edit',
-        create: 'Create'
-      },
-      dialogPvVisible: false,
-      pvData: [],
-      rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
-      },
+      dialogPublish: false,
+      dialogPublishTitle: '',
+      dialogPublishStatus: '',
       downloadLoading: false
     }
   },
@@ -176,7 +151,7 @@ export default {
     getList () {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
-        console.log(response)
+        this.serialList(response.data.items)
         this.list = response.data.items
         this.total = response.data.total
 
@@ -196,6 +171,11 @@ export default {
         type: 'success'
       })
       row.status = status
+    },
+    handleModifyPublish (row) {
+      this.dialogPublishTitle = '发布管理 - ' + row.name
+      this.dialogPublishStatus = row.status
+      this.dialogPublish = true
     },
     sortChange (data) {
       const { prop, order } = data
@@ -233,17 +213,18 @@ export default {
     createData () {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.temp.author = 'vue-element-admin'
-          createDashboard(this.temp).then(() => {
-            this.list.unshift(this.temp)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
+          createDashboard(this.temp).then(response => {
+            if (response.data.code !== 0) {
+              this.$notify({
+                title: '创建失败',
+                message: response.data.msg,
+                type: 'error',
+                duration: 2000
+              })
+            } else {
+              // 跳转到编辑页面
+              this.$router.push('/edit/dashboard/' + response.data.hash)
+            }
           })
         }
       })
@@ -255,30 +236,6 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData () {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateDashboard(tempData).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
-                break
-              }
-            }
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
       })
     },
     handleDelete (row) {
@@ -304,9 +261,35 @@ export default {
         }
       }))
     },
-    handleEdit () {
-      this.$router.push('/edit-dashboard')
+    handleEdit (hash) {
+      this.$router.push('/edit/dashboard/' + hash)
+    },
+    handlePreviewDashboard (hash) {
+      this.$router.push('/dashboard/a')
+    },
+    serialList (list) {
+      for (let i = 0; i < list.length; i++) {
+        list[i]['sequenceNumber'] = i + 1
+      }
     }
   }
 }
 </script>
+
+<style>
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 100px;
+    margin: 0;
+  }
+
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+  }
+</style>
