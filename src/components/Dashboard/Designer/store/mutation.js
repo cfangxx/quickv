@@ -182,6 +182,11 @@ export default {
     state.activeElement.backPicUrl = payload[0].src
   },
 
+  // 替换背景色
+  replaceBackgroundColor (state, payload) {
+    state.activeElement.bgColor = payload[0].val
+  },
+
   // 添加动画
   addAnimation (state) {
     state.animation.push({

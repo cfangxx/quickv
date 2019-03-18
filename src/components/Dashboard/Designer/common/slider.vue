@@ -41,7 +41,7 @@ export default {
     },
     max: {
       type: [Number, String],
-      default: 100
+      default: 200
     },
     min: {
       type: [Number, String],

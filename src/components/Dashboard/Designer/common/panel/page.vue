@@ -18,6 +18,18 @@
       class="panel-row"
       flex>
       <vpd-icon name="smartphone" />
+      <div class="panel-label">页面宽度</div>
+      <div class="panel-value">
+        <input
+          v-model="activeElement.width"
+          type="text">
+      </div>
+    </div>
+
+    <div
+      class="panel-row"
+      flex>
+      <vpd-icon name="smartphone" />
       <div class="panel-label">页面高度</div>
       <div class="panel-value">
         <input

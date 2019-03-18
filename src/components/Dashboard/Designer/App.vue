@@ -6,7 +6,7 @@
         <toolbar
           :zoom="zoom"
           class="toolbar column"/>
-        <div class="viewport column">
+        <div :style="styleObj1" class="viewport column">
           <viewport :zoom="zoom"/>
           <div class="zoom-wrap">
             <vpd-slider
@@ -58,6 +58,16 @@ export default {
     upload: Function,
     uploadOption: Object
   },
+  data () {
+    var wid = window.innerWidth
+    return {
+      w: wid,
+      h: wid,
+      styleObj1: {
+        width: (wid - 40) + 'px'
+      }
+    }
+  },
 
   computed: {
     zoom () {
@@ -104,14 +114,17 @@ export default {
     padding: 0;
   }
 }
+
 .columns {
   height: 100%;
 }
+
 .toolbar,
 .viewport,
 .control-panel {
   height: 100%;
 }
+
 .toolbar {
   background: #fff;
   user-select: none;
@@ -121,10 +134,12 @@ export default {
     width: 120px;
   }
 }
+
 .viewport {
-  position: relative;
+  /*position: relative;*/
   overflow: hidden;
 }
+
 .control-panel {
   background: #fff;
   user-select: none;
@@ -133,26 +148,49 @@ export default {
     width: 400px;
   }
 }
+
 .zoom-wrap {
   width: 200px;
   height: 30px;
   position: absolute;
   bottom: 20px;
-  right: 20px;
+  left: 100px;
   opacity: 0;
   transition: opacity 0.3s;
 }
+
 .viewport:hover .zoom-wrap {
   opacity: 1;
 }
+
 .zoom-value {
   position: absolute;
   top: 4px;
   left: -36px;
 }
+
 #svgspriteit {
   position: absolute;
   z-index: -1;
   opacity: 0;
 }
+
+.col-gapless .viewport-new {
+  position: absolute;
+  padding-top:60px;
+  padding-left:40px;
+  flex:1;
+  z-index: 1;
+}
+
+.container.grid-xl {
+  max-width: 12200px;
+}
+
+ul li {
+  list-style: none;
+  margin: 0;
+  padding:0;
+}
+
 </style>

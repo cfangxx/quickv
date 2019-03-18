@@ -5,6 +5,7 @@
     <div
       :style="{
         backgroundColor: backgroundColor,
+        width:width + 'px',
         height: height + 'px',
         transform: 'scale(' + zoom / 100 + ')'
       }"
@@ -20,7 +21,7 @@
         :key="val.uuid"
         :val="val"
         :h="height"
-        :w="750"
+        :w="width"
         :data-type="val.type"
         :data-uuid="val.uuid"
         :play-state="playState"
@@ -79,6 +80,11 @@ export default {
     // 画布高度
     height () {
       return this.$vpd.state.page.height
+    },
+
+    // 页面宽度
+    width () {
+      return this.$vpd.state.page.width
     },
 
     // 页面背景色
@@ -188,9 +194,10 @@ export default {
 
 <style scoped>
 .holder {
-  display: flex;
+  /*display: flex;*/
   justify-content: center;
   height: 100%;
+  width: 100%;
   overflow: auto;
   font-size: 0;
   border: 1px solid #f5f5f5;
@@ -211,11 +218,11 @@ export default {
     );
   background-position: 0 0, 13px 13px;
   background-size: 26px 26px;
+  background-color: #f0f3f4;
+  padding-left:20px;
 }
 .screen {
-  width: 750px;
   margin: 25px auto;
-  transform-origin: center top;
-  position: relative;
+  transform-origin: left top;
 }
 </style>

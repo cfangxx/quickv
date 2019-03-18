@@ -3,9 +3,9 @@
     :class="[playState ? 'anm-' + val.animationName : '']"
     :style="{
       position: 'absolute',
-      width: val.width / 7.5 + '%',
+      width: val.width / w * 100 + '%',
       height: val.height / h * 100 + '%',
-      left: val.left / 7.5 + '%',
+      left: val.left / w * 100 + '%',
       top: val.top / h * 100 + '%',
       zIndex: val.z,
       backgroundColor: val.bgColor,
@@ -48,7 +48,7 @@ export default {
     belong: 'page',
     animationName: ''
   },
-  props: ['h', 'val', 'playState'],
+  props: ['w', 'h', 'val', 'playState'],
 
   methods: {
     updateText (e, uuid) {

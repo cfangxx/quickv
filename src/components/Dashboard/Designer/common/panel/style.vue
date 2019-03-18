@@ -16,18 +16,6 @@
     </div>
 
     <div class="panel-row">
-      <vpd-icon name="more-horizontal" />
-      <div class="panel-label">宽度</div>
-      <div class="panel-value">{{ activeElement.width }}</div>
-      <div class="panel-slider-wrap">
-        <vpd-slider
-          v-model="activeElement.width"
-          :step="1"
-          :max="750" />
-      </div>
-    </div>
-
-    <div class="panel-row">
       <vpd-icon name="more-vertical" />
       <div class="panel-label">高度</div>
       <div class="panel-value">{{ activeElement.height }}</div>
@@ -47,7 +35,7 @@
         <vpd-slider
           v-model="activeElement.left"
           :step="1"
-          :max="750" />
+          :max="width" />
       </div>
     </div>
 
@@ -110,7 +98,10 @@ export default {
     height () {
       return this.$vpd.state.page.height
     },
-
+    // 页面宽度
+    width () {
+      return this.$vpd.state.page.width
+    },
     // 容器名称
     containerName () {
       var arr = []
