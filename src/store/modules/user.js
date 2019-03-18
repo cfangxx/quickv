@@ -1,15 +1,16 @@
 import { loginByUsername, logout, getUserInfo } from '@/api/login'
 import { fetchList } from '@/api/dashboard'
-import { getToken, setToken, removeToken } from '@/scripts/auth'
+import { setToken, removeToken } from '@/scripts/auth'
 import {constantRouterMap, userDashboardRouterMap} from '@/router'
 import store from '@/store/index'
+import { Message } from 'element-ui'
 
 const user = {
   state: {
-    user: '',
+    id: '',
     status: '',
     code: '',
-    token: getToken(),
+    token: '',
     name: '',
     avatar: '',
     introduction: '',
@@ -28,9 +29,6 @@ const user = {
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_INTRODUCTION: (state, introduction) => {
-      state.introduction = introduction
-    },
     SET_SETTING: (state, setting) => {
       state.setting = setting
     },
@@ -46,6 +44,9 @@ const user = {
     SET_ROLES: (state, roles) => {
       state.roles = roles
     },
+    SET_USER_ID: (state, id) => {
+      state.id = id
+    },
     SET_USER_ROUTER: (state, routers) => {
       let permissionRouters = store.getters.permissionRouters
       state.routers = constantRouterMap.concat(permissionRouters).concat(routers)
@@ -60,8 +61,16 @@ const user = {
       return new Promise((resolve, reject) => {
         loginByUsername(username, userInfo.password).then(response => {
           const data = response.data
-          commit('SET_TOKEN', data.token)
-          setToken(response.data.token)
+          if (data.code !== 0) {
+            Message({
+              message: data.msg,
+              type: 'error',
+              duration: 5 * 1000
+            })
+          }
+
+          commit('SET_USER_ID', data.id)
+
           resolve()
         }).catch(error => {
           reject(error)
@@ -72,23 +81,20 @@ const user = {
     // 获取用户信息
     GetUserInfo ({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getUserInfo(state.token).then(response => {
-          // 由于mockjs 不支持自定义状态码只能这样hack
+        getUserInfo(state.id).then(response => {
           if (!response.data) {
             reject(new Error('Verification failed, please login again.'))
           }
-          const data = response.data
-
-          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', data.roles)
+          const rsp = response.data
+          if (rsp.data.roles && rsp.data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+            commit('SET_ROLES', rsp.data.roles)
           } else {
             reject(new Error('getInfo: roles must be a non-null array!'))
           }
 
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
-          resolve(response)
+          commit('SET_NAME', rsp.data.name)
+          commit('SET_AVATAR', rsp.data.avatar)
+          resolve(rsp)
         }).catch(error => {
           reject(error)
         })
@@ -101,9 +107,11 @@ const user = {
         let routers = userDashboardRouterMap
 
         fetchList().then(response => {
-          if (response.data) {
-            if (response.data.total > 0) {
-              response.data.items.forEach(item => {
+          const rsp = response.data
+
+          if (rsp.data) {
+            if (rsp.data.total > 0) {
+              rsp.data.items.forEach(item => {
                 routers[0].children.push({
                   path: item.hash,
                   component: () => import('@/views/dashboard/Dashboard'),
@@ -111,10 +119,10 @@ const user = {
                   meta: { title: item.name }
                 })
               })
-
-              commit('SET_USER_ROUTER', routers)
-              resolve()
             }
+
+            commit('SET_USER_ROUTER', routers)
+            resolve()
           }
         }).catch(error => {
           reject(error)

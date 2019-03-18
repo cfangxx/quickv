@@ -1,22 +1,26 @@
 import request from '@/scripts/request'
+import store from '@/store'
 
-export function fetchList () {
+export function fetchList (query) {
+  const id = store.getters.userId
   return request({
-    url: '/user/dashboards',
-    method: 'get'
+    url: '/user/' + id + '/dashboards',
+    method: 'get',
+    params: query
   })
 }
 
-export function fetchDashboard (id) {
+export function fetchDashboard (hash) {
   return request({
-    url: '/dashboards/' + id,
+    url: '/dashboards/' + hash,
     method: 'get'
   })
 }
 
 export function createDashboard (data) {
+  const id = store.getters.userId
   return request({
-    url: '/user/dashboards',
+    url: '/user/' + id + '/dashboards',
     method: 'post',
     data
   })

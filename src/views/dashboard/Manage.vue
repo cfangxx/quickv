@@ -46,11 +46,11 @@
       </el-table-column>
       <el-table-column :label="'操作'" align="center" width="400" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handlePreviewDashboard(scope.row)">{{ '预览' }}</el-button>
+          <el-button type="primary" size="mini" @click="handlePreviewDashboard(scope.row.hash)">{{ '预览' }}</el-button>
           <el-button size="mini" type="success" @click="handleEdit(scope.row.hash)">{{ '编辑' }}</el-button>
-          <el-button size="mini" type="warning" @click="handleModifyStatus(scope.row,'draft')">{{ '克隆' }}</el-button>
-          <el-button size="mini" type="info" @click="handleModifyPublish(scope.row)">{{ '发布' }}</el-button>
-          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ '删除' }}</el-button>
+          <el-button size="mini" type="warning" @click="handleModifyStatus(scope.row.hash,'draft')">{{ '克隆' }}</el-button>
+          <el-button size="mini" type="info" @click="handleModifyPublish(scope.row.hash)">{{ '发布' }}</el-button>
+          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row.hash,'deleted')">{{ '删除' }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -151,9 +151,14 @@ export default {
     getList () {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
-        this.serialList(response.data.items)
-        this.list = response.data.items
-        this.total = response.data.total
+        var rsp = response.data
+
+        if (rsp.data.total > 0) {
+          this.serialList(rsp.data.items)
+        }
+        console.log(rsp.data.items)
+        this.list = rsp.data.items
+        this.total = rsp.data.total || 0
 
         // Just to simulate the time of the request
         setTimeout(() => {
@@ -193,13 +198,11 @@ export default {
     },
     resetTemp () {
       this.temp = {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        status: 'published',
-        type: ''
+        name: '',
+        timestamp: Number(new Date()),
+        status: 'developing',
+        template: '',
+        description: ''
       }
     },
     handleCreate () {
@@ -212,6 +215,7 @@ export default {
     },
     createData () {
       this.$refs['dataForm'].validate((valid) => {
+        console.log(this.temp)
         if (valid) {
           createDashboard(this.temp).then(response => {
             if (response.data.code !== 0) {
@@ -265,7 +269,7 @@ export default {
       this.$router.push('/edit/dashboard/' + hash)
     },
     handlePreviewDashboard (hash) {
-      this.$router.push('/dashboard/a')
+      this.$router.push('/dashboard/' + hash)
     },
     serialList (list) {
       for (let i = 0; i < list.length; i++) {
