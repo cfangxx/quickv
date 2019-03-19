@@ -47,7 +47,6 @@ const user = {
       state.id = id
     },
     SET_USER_ROUTER: (state, routers) => {
-      console.log(routers)
       const permissionRouters = store.getters.permissionRouters
       state.routers = constantRouterMap.concat(permissionRouters).concat(routers)
     }

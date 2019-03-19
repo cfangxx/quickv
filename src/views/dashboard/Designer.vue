@@ -25,28 +25,35 @@ export default {
   },
 
   created () {
-    fetchDashboard(this.$route.params.hash).then(response => {
-      const rsp = response.data
-      this.value = rsp.data
-      this.config = rsp.data.config
+    this.$nextTick(() => {
+      this.getDashboardConfig()
     })
   },
 
   methods: {
     handleSave (data) {
       var payload = this.value
-      payload.config = JSON.stringify
+      // payload.config = JSON.stringify(data)
+      payload.config = data
       updateDashboard(payload).then(response => {
 
       })
     },
     handleUpload (files) {
-      console.log('uploading:', files)
       return new Promise(resolve => {
         resolve({
           files: files,
           status: 200
         })
+      })
+    },
+    getDashboardConfig () {
+      fetchDashboard(this.$route.params.hash).then(response => {
+        const rsp = response.data
+        if (rsp.data && rsp.data.config) {
+          this.value = rsp.data
+          this.config = rsp.data.config
+        }
       })
     }
   }

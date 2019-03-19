@@ -100,6 +100,14 @@ export default {
     dozoom (val) {
       this.$vpd.commit('zoom', val)
     }
+  },
+  watch: {
+    value: {
+      handler (newValue, oldValue) {
+        this.$vpd.replaceState(newValue)
+      },
+      deep: true
+    }
   }
 }
 </script>
