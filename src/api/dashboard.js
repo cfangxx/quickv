@@ -1,8 +1,8 @@
 import request from '@/scripts/request'
-import store from '@/store'
+import { getUserId } from '@/scripts/auth'
 
 export function fetchList (query) {
-  const id = store.getters.userId
+  const id = getUserId()
   return request({
     url: '/user/' + id + '/dashboards',
     method: 'get',
@@ -18,7 +18,7 @@ export function fetchDashboard (hash) {
 }
 
 export function createDashboard (data) {
-  const id = store.getters.userId
+  const id = getUserId()
   return request({
     url: '/user/' + id + '/dashboards',
     method: 'post',

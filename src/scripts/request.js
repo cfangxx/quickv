@@ -1,12 +1,12 @@
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
-// import { getToken } from '@/scripts/auth'
+import { getToken, setToken } from '@/scripts/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 50000 // request timeout
+  baseURL: process.env.BASE_API,
+  timeout: 50000
 })
 
 // request interceptor
@@ -14,15 +14,13 @@ service.interceptors.request.use(
   config => {
     // Do something before request is sent
     if (store.getters.token) {
-      // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
-      // config.headers['Authorization'] = 'Bearer ' + getToken()
-      config.headers['Authorization'] = 'Bearer test'
+      // 让每个请求携带token
+      config.headers['Authorization'] = 'Bearer ' + getToken()
     }
     return config
   },
   error => {
     // Do something with request error
-    console.log(error) // for debug
     Promise.reject(error)
   }
 )
@@ -32,12 +30,12 @@ service.interceptors.response.use(
   // response => response,
 
   response => {
-    // 保存token
     if (response.headers.authorization) {
       const token = response.headers.authorization
       const current = store.getters.token
       if (token !== current) {
         store.commit('SET_TOKEN', token)
+        setToken(token)
       }
     }
 
@@ -55,7 +53,7 @@ service.interceptors.response.use(
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          store.dispatch('FedLogOut').then(() => {
+          store.dispatch('LogOut').then(() => {
             location.reload() // 为了重新实例化vue-router对象 避免bug
           })
         })
@@ -66,7 +64,6 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
     Message({
       message: error.message,
       type: 'error',

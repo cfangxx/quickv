@@ -3,6 +3,7 @@ import store from '@/store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import { getToken } from '@/scripts/auth'
 
 NProgress.configure({ showSpinner: false })
 
@@ -18,8 +19,7 @@ const whiteList = ['/login', '/auth-redirect']
 router.beforeEach((to, from, next) => {
   NProgress.start()
 
-  if (store.getters.token.length > 0) {
-    /* has token */
+  if (getToken()) {
     if (to.path === '/login') {
       next({ path: '/' })
       NProgress.done()
@@ -32,7 +32,7 @@ router.beforeEach((to, from, next) => {
             next({ ...to, replace: true })
           })
         }).catch((err) => {
-          store.dispatch('FedLogOut').then(() => {
+          store.dispatch('LogOut').then(() => {
             Message.error(err)
             next({ path: '/' })
           })
@@ -47,7 +47,6 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    /* has no token */
     if (whiteList.indexOf(to.path) !== -1) {
       next()
     } else {

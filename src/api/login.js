@@ -14,14 +14,7 @@ export function loginByUsername (username, password) {
 
 export function logout () {
   return request({
-    url: '/logout',
+    url: '/user/logout',
     method: 'post'
-  })
-}
-
-export function getUserInfo (id) {
-  return request({
-    url: '/user/' + id + '/info',
-    method: 'get'
   })
 }

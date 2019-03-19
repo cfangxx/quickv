@@ -1,6 +1,7 @@
-import { loginByUsername, logout, getUserInfo } from '@/api/login'
+import { loginByUsername, logout } from '@/api/login'
+import { getUserInfo } from '@/api/user'
 import { fetchList } from '@/api/dashboard'
-import { setToken, removeToken } from '@/scripts/auth'
+import { setToken, removeToken, setUserId, removeUserId } from '@/scripts/auth'
 import { constantRouterMap } from '@/router'
 import store from '@/store/index'
 import { Message } from 'element-ui'
@@ -68,6 +69,7 @@ const user = {
           }
 
           commit('SET_USER_ID', data.id)
+          setUserId(data.id)
 
           resolve()
         }).catch(error => {
@@ -79,7 +81,7 @@ const user = {
     // 获取用户信息
     GetUserInfo ({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getUserInfo(state.id).then(response => {
+        getUserInfo().then(response => {
           if (!response.data) {
             reject(new Error('Verification failed, please login again.'))
           }
@@ -151,25 +153,17 @@ const user = {
     // },
 
     // 登出
-    LogOut ({ commit, state }) {
+    LogOut ({ commit }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
+        logout().then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           removeToken()
+          removeUserId()
           resolve()
         }).catch(error => {
           reject(error)
         })
-      })
-    },
-
-    // 前端 登出
-    FedLogOut ({ commit }) {
-      return new Promise(resolve => {
-        commit('SET_TOKEN', '')
-        removeToken()
-        resolve()
       })
     },
 
