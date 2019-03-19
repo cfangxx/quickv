@@ -100,7 +100,7 @@ export const asyncRouterMap = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-export var userDashboardRouterMap = [
+export var DashboardRouterMap = [
   {
     path: '/dashboard',
     component: Layout,
@@ -109,7 +109,10 @@ export var userDashboardRouterMap = [
       title: '我的大屏',
       icon: 'tab'
     },
-    children: [
+    children: [{
+      path: ':id',
+      component: () => import('@/views/dashboard/Dashboard')
+    }
     ]
   }
 ]

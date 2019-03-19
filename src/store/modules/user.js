@@ -1,7 +1,7 @@
 import { loginByUsername, logout, getUserInfo } from '@/api/login'
 import { fetchList } from '@/api/dashboard'
 import { setToken, removeToken } from '@/scripts/auth'
-import {constantRouterMap, userDashboardRouterMap} from '@/router'
+import { constantRouterMap } from '@/router'
 import store from '@/store/index'
 import { Message } from 'element-ui'
 
@@ -18,7 +18,6 @@ const user = {
     setting: {
       articlePlatform: []
     },
-    addRouters: [],
     routers: []
   },
 
@@ -48,9 +47,9 @@ const user = {
       state.id = id
     },
     SET_USER_ROUTER: (state, routers) => {
-      let permissionRouters = store.getters.permissionRouters
+      console.log(routers)
+      const permissionRouters = store.getters.permissionRouters
       state.routers = constantRouterMap.concat(permissionRouters).concat(routers)
-      state.addRouters = routers
     }
   },
 
@@ -102,28 +101,36 @@ const user = {
     },
 
     // 获取用户大屏列表, 添加路由
-    GetUserRouters ({commit, state}) {
+    GetUserDashboardList ({commit, state}) {
       return new Promise((resolve, reject) => {
-        let routers = userDashboardRouterMap
-
+        let routers = [
+          {
+            path: '/dashboard',
+            name: 'Dashboard',
+            meta: {
+              title: '我的大屏',
+              icon: 'tab'
+            },
+            children: [
+            ]
+          }
+        ]
         fetchList().then(response => {
           const rsp = response.data
 
-          if (rsp.data) {
-            if (rsp.data.total > 0) {
-              rsp.data.items.forEach(item => {
-                routers[0].children.push({
-                  path: item.hash,
-                  component: () => import('@/views/dashboard/Dashboard'),
-                  name: item.hash,
-                  meta: { title: item.name }
-                })
+          if (rsp.data && rsp.data.total > 0) {
+            rsp.data.items.forEach(item => {
+              routers[0].children.push({
+                path: item.hash,
+                component: () => import('@/views/dashboard/Dashboard'),
+                name: item.hash,
+                meta: { title: item.name }
               })
-            }
-
-            commit('SET_USER_ROUTER', routers)
-            resolve()
+            })
           }
+
+          commit('SET_USER_ROUTER', routers)
+          resolve(response)
         }).catch(error => {
           reject(error)
         })

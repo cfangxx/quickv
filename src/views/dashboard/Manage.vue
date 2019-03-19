@@ -96,10 +96,11 @@
 </template>
 
 <script>
-import { fetchList, createDashboard } from '@/api/dashboard'
+import { createDashboard } from '@/api/dashboard'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/scripts'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import { mapGetters } from 'vuex'
 
 const publishTypeOptions = {
   published: '已发布',
@@ -114,6 +115,11 @@ export default {
     statusFilter (status) {
       return publishTypeOptions[status]
     }
+  },
+  computed: {
+    ...mapGetters([
+      'userRouters'
+    ])
   },
   data () {
     return {
@@ -150,13 +156,12 @@ export default {
   methods: {
     getList () {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      this.$store.dispatch('GetUserDashboardList', this.listQuery).then(response => {
         var rsp = response.data
 
         if (rsp.data.total > 0) {
           this.serialList(rsp.data.items)
         }
-        console.log(rsp.data.items)
         this.list = rsp.data.items
         this.total = rsp.data.total || 0
 

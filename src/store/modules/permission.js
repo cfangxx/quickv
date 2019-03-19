@@ -1,4 +1,4 @@
-import { asyncRouterMap } from '@/router'
+import { DashboardRouterMap, asyncRouterMap } from '@/router'
 
 /**
  * 通过meta.role判断是否与当前用户权限匹配
@@ -36,11 +36,13 @@ function filterAsyncRouter (routes, roles) {
 
 const permission = {
   state: {
-    addRouters: []
+    asyncRouters: [],
+    routers: []
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
-      state.addRouters = routers
+      state.asyncRouters = DashboardRouterMap.concat(routers)
+      state.routers = routers
     }
   },
   actions: {

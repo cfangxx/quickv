@@ -12,10 +12,10 @@ const getters = {
   status: state => state.user.status,
   roles: state => state.user.roles,
   setting: state => state.user.setting,
-  permission_routers: state => state.permission.routers,
-  permissionRouters: state => state.permission.addRouters,
-  dashboardsRouters: state => state.user.addRouters,
-  userRouters: state => state.user.routers,
+  asyncRouters: state => state.permission.asyncRouters,
+  permissionRouters: state => state.permission.routers,
+  // dashboardsRouters: state => state.user.addRouters,
+  sidebarRouters: state => state.user.routers,
   errorLogs: state => state.errorLog.logs
 }
 export default getters
