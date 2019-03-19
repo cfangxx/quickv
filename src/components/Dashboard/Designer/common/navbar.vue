@@ -33,7 +33,13 @@
         <a
           class="btn btn-link tooltip tooltip-bottom"
           data-tooltip="保存 Ctrl + S"
-          @click="save"><vpd-icon name="save" /> 保存</a>
+          @click="save"><vpd-icon name="save" /> 保存
+        </a>
+        <a
+          class="btn btn-link tooltip tooltip-bottom"
+          data-tooltip="退出 Ctrl + ESC"
+          @click="quit"><vpd-icon name="quit" /> 退出
+        </a>
       </section>
     </div>
   </header>
@@ -96,6 +102,18 @@ export default {
       },
       true
     )
+
+    // Ctrl + ESC 退出
+    document.addEventListener(
+      'keyup',
+      e => {
+        e.stopPropagation()
+        if ((e.ctrlKey || e.metaKey) && e.keyCode === 27) {
+          this.quit()
+        }
+      },
+      true
+    )
   },
   created () {
   },
@@ -113,6 +131,11 @@ export default {
     // 删除元件
     dele () {
       this.$vpd.commit('delete')
+    },
+
+    // 退出
+    quit () {
+      this.$vpd.dispatch('quit')
     }
   }
 }

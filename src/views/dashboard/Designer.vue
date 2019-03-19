@@ -3,7 +3,8 @@
       :value="config"
       :upload="handleUpload"
       :upload-option="uploadOption"
-      @save="handleSave" />
+      @save="handleSave"
+      @quit="handleQuit"/>
 </template>
 
 <script>
@@ -38,6 +39,9 @@ export default {
       updateDashboard(payload).then(response => {
 
       })
+    },
+    handleQuit () {
+      this.$router.push('/')
     },
     handleUpload (files) {
       return new Promise(resolve => {

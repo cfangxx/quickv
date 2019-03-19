@@ -14,5 +14,8 @@ export default {
   },
   save ({ state, store }) {
     store.$emit('save', state)
+  },
+  quit ({ state, store }) {
+    store.$emit('quit', state)
   }
 }

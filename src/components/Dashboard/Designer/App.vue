@@ -90,6 +90,9 @@ export default {
     this.$vpd.$on('save', () => {
       this.$emit('save', this.$vpd.state)
     })
+    this.$vpd.$on('quit', () => {
+      this.$emit('quit', this.$vpd.state)
+    })
   },
   mounted () {
     // 初始化选中元件（将页面作为初始选中元件）
