@@ -110,7 +110,7 @@ export var DashboardRouterMap = [
       icon: 'tab'
     },
     children: [{
-      path: ':id',
+      path: ':hash',
       component: () => import('@/views/dashboard/Dashboard')
     }
     ]

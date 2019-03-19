@@ -28,7 +28,7 @@ export function createDashboard (data) {
 
 export function updateDashboard (data) {
   return request({
-    url: '/user/dashboards',
+    url: '/dashboards/' + data.hash,
     method: 'put',
     data
   })
