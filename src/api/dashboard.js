@@ -33,3 +33,10 @@ export function updateDashboard (data) {
     data
   })
 }
+
+export function deleteDashboard (hash) {
+  return request({
+    url: '/dashboards/' + hash,
+    method: 'delete'
+  })
+}

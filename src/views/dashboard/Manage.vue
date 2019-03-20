@@ -50,7 +50,7 @@
           <el-button size="mini" type="success" @click="handleEdit(scope.row.hash)">{{ '编辑' }}</el-button>
           <el-button size="mini" type="warning" @click="handleModifyStatus(scope.row.hash,'draft')">{{ '克隆' }}</el-button>
           <el-button size="mini" type="info" @click="handleModifyPublish(scope.row.hash)">{{ '发布' }}</el-button>
-          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row.hash,'deleted')">{{ '删除' }}</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row,'deleted')">{{ '删除' }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { createDashboard } from '@/api/dashboard'
+import { createDashboard, deleteDashboard } from '@/api/dashboard'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/scripts'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -157,13 +157,11 @@ export default {
     getList () {
       this.listLoading = true
       this.$store.dispatch('GetUserDashboardList', this.listQuery).then(response => {
-        var rsp = response.data
-
-        if (rsp.data.total > 0) {
-          this.serialList(rsp.data.items)
+        if (response.data.total > 0) {
+          this.serialList(response.data.items)
         }
-        this.list = rsp.data.items
-        this.total = rsp.data.total || 0
+        this.list = response.data.items
+        this.total = response.data.total || 0
 
         // Just to simulate the time of the request
         setTimeout(() => {
@@ -223,17 +221,8 @@ export default {
         console.log(this.temp)
         if (valid) {
           createDashboard(this.temp).then(response => {
-            if (response.data.code !== 0) {
-              this.$notify({
-                title: '创建失败',
-                message: response.data.msg,
-                type: 'error',
-                duration: 2000
-              })
-            } else {
-              // 跳转到编辑页面
-              this.$router.push('/edit/dashboard/' + response.data.hash)
-            }
+            // 跳转到编辑页面
+            this.$router.push('/edit/dashboard/' + response.hash)
           })
         }
       })
@@ -247,15 +236,18 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    handleDelete (row) {
-      this.$notify({
-        title: '成功',
-        message: '删除成功',
-        type: 'success',
-        duration: 2000
+    handleDelete: function (row) {
+      deleteDashboard(row.hash).then(response => {
+        this.$notify({
+          title: '成功',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        const index = this.list.indexOf(row)
+        this.list.splice(index, 1)
+        this.getList()
       })
-      const index = this.list.indexOf(row)
-      this.list.splice(index, 1)
     },
     handleDownload () {
       this.downloadLoading = true

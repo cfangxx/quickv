@@ -34,8 +34,8 @@ export default {
   methods: {
     handleSave (data) {
       var payload = this.value
-      // payload.config = JSON.stringify(data)
       payload.config = data
+
       updateDashboard(payload).then(response => {
 
       })
@@ -53,10 +53,12 @@ export default {
     },
     getDashboardConfig () {
       fetchDashboard(this.$route.params.hash).then(response => {
-        const rsp = response.data
-        if (rsp.data && rsp.data.config) {
-          this.value = rsp.data
-          this.config = rsp.data.config
+        if (response.data) {
+          this.value = response.data
+        }
+
+        if (response.data.config) {
+          this.config = response.data.config
         }
       })
     }

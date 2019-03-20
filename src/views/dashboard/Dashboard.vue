@@ -24,9 +24,11 @@ export default {
   methods: {
     getDashboardConfig () {
       fetchDashboard(this.$route.params.hash).then(response => {
-        const rsp = response.data
-        if (rsp.data && rsp.data.config) {
-          this.config = rsp.data.config
+        if (response && response.data) {
+          const dashboard = response.data
+          if (dashboard.config) {
+            this.config = dashboard.config
+          }
         }
       })
     }

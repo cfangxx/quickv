@@ -25,12 +25,14 @@ router.beforeEach((to, from, next) => {
       NProgress.done()
     } else {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
-        store.dispatch('GetUserInfo').then(res => {
-          const roles = res.data.roles
+        store.dispatch('GetUserInfo').then(response => {
+          const roles = response.data.roles
           store.dispatch('GenerateRoutes', { roles }).then(() => {
             router.addRoutes(store.getters.asyncRouters)
             next({ ...to, replace: true })
           })
+        }).then(() => {
+          store.dispatch('GetUserDashboardList') // 整理左侧菜单栏内容
         }).catch((err) => {
           store.dispatch('LogOut').then(() => {
             Message.error(err)

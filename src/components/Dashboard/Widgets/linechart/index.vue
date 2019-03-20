@@ -3,10 +3,10 @@
     :class="[playState ? 'anm-' + val.animationName : '']"
     :style="{
       position: 'absolute',
-      width: val.width / 7.5 + '%',
+      width: val.width / w * 100 + '%',
       height: val.height / h * 100 + '%',
-      left: val.left / 7.5 + '%',
-      top: val.top / h * 100 + '%',
+      left: val.belong === 'page' ? val.left / w * 100 + '%' : '0',
+      top: val.belong === 'page' ? val.top / h * 100 + '%' : '0',
       zIndex: val.z,
     }"
     :options="axisData"
@@ -47,7 +47,7 @@ let newVar = {
     belong: 'page',
     animationName: ''
   },
-  props: ['h', 'val', 'playState'],
+  props: ['h', 'w', 'val', 'playState'],
   data () {
     return {}
   },

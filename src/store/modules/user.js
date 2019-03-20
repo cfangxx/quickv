@@ -4,7 +4,6 @@ import { fetchList } from '@/api/dashboard'
 import { setToken, removeToken, setUserId, removeUserId } from '@/scripts/auth'
 import { constantRouterMap } from '@/router'
 import store from '@/store/index'
-import { Message } from 'element-ui'
 
 const user = {
   state: {
@@ -59,17 +58,8 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         loginByUsername(username, userInfo.password).then(response => {
-          const data = response.data
-          if (data.code !== 0) {
-            Message({
-              message: data.msg,
-              type: 'error',
-              duration: 5 * 1000
-            })
-          }
-
-          commit('SET_USER_ID', data.id)
-          setUserId(data.id)
+          commit('SET_USER_ID', response.id)
+          setUserId(response.id)
 
           resolve()
         }).catch(error => {
@@ -82,19 +72,20 @@ const user = {
     GetUserInfo ({ commit, state }) {
       return new Promise((resolve, reject) => {
         getUserInfo().then(response => {
-          if (!response.data) {
+          if (!response) {
             reject(new Error('Verification failed, please login again.'))
           }
-          const rsp = response.data
-          if (rsp.data.roles && rsp.data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', rsp.data.roles)
+
+          const user = response.data
+          if (user.roles && user.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+            commit('SET_ROLES', user.roles)
           } else {
             reject(new Error('getInfo: roles must be a non-null array!'))
           }
 
-          commit('SET_NAME', rsp.data.name)
-          commit('SET_AVATAR', rsp.data.avatar)
-          resolve(rsp)
+          commit('SET_NAME', user.name)
+          commit('SET_AVATAR', user.avatar)
+          resolve(response)
         }).catch(error => {
           reject(error)
         })
@@ -104,7 +95,7 @@ const user = {
     // 获取用户大屏列表, 添加路由
     GetUserDashboardList ({commit, state}) {
       return new Promise((resolve, reject) => {
-        let routers = [
+        const routers = [
           {
             path: '/dashboard',
             name: 'Dashboard',
@@ -117,10 +108,9 @@ const user = {
           }
         ]
         fetchList().then(response => {
-          const rsp = response.data
-
-          if (rsp.data && rsp.data.total > 0) {
-            rsp.data.items.forEach(item => {
+          const list = response.data
+          if (list && list.total > 0) {
+            list.items.forEach(item => {
               routers[0].children.push({
                 path: item.hash,
                 component: () => import('@/views/dashboard/Dashboard'),
@@ -173,12 +163,11 @@ const user = {
         commit('SET_TOKEN', role)
         setToken(role)
         getUserInfo(role).then(response => {
-          const data = response.data
-          commit('SET_ROLES', data.roles)
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
-          dispatch('GenerateRoutes', data) // 动态修改权限后 重绘侧边菜单
+          commit('SET_ROLES', response.roles)
+          commit('SET_NAME', response.name)
+          commit('SET_AVATAR', response.avatar)
+          commit('SET_INTRODUCTION', response.introduction)
+          dispatch('GenerateRoutes', response) // 动态修改权限后 重绘侧边菜单
           resolve()
         })
       })

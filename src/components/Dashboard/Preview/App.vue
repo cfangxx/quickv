@@ -32,8 +32,6 @@ export default {
     })
     // 初始化已有数据
     if (this.value) {
-      console.log('components preview')
-      console.log(this.value)
       this.$vpd.replaceState(this.value)
     }
   },
