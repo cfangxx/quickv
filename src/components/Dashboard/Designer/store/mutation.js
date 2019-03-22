@@ -4,6 +4,11 @@ export default {
   // 选中元件与取消选中
   select (state, payload) {
     state.uuid = payload.uuid
+    for (let n in state.widgets) {
+      if (state.widgets[n].uuid === payload.uuid) {
+        state.index = n
+      }
+    }
     if (payload.uuid === -1) {
       state.activeElement = state.page
       state.type = 'page'
@@ -134,7 +139,6 @@ export default {
         }
       }
     }
-
     // 删除元件
     state.widgets.splice(state.index, 1)
 

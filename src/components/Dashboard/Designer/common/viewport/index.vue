@@ -7,6 +7,7 @@
         backgroundColor: backgroundColor,
         width:width + 'px',
         height: height + 'px',
+        position: 'relative',
         transform: 'scale(' + zoom / 100 + ')'
       }"
       class="screen"
@@ -150,10 +151,15 @@ export default {
   methods: {
     handleSelection (e) {
       var target = e.target
-      var type = target.getAttribute('data-type')
-
+      var type, uuid
+      if (target.tagName === 'CANVAS') {
+        var curDiv = target.parentNode.parentNode.parentNode
+        type = curDiv.getAttribute('data-type')
+      } else {
+        type = target.getAttribute('data-type')
+      }
       if (type) {
-        var uuid = target.getAttribute('data-uuid')
+        uuid = target.getAttribute('data-uuid') || curDiv.getAttribute('data-uuid')
 
         // 设置选中元素
         this.$vpd.commit('select', {

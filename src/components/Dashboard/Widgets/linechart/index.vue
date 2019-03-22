@@ -54,7 +54,7 @@ export default {
     chartTitle: '销量', // 图表标题
     textStyleColor: '#666666', // 文本颜色
     itemStyleColor: '#42b983', // 柱状图颜色
-    xyturn: true, // xy轴翻转
+    xyturn: false, // xy轴翻转
     titleColor: '#666666', // 标题颜色
     xTextColor: '#666666', // X 轴文字颜色
     yTextColor: '#666666', // Y 轴文字颜色
@@ -120,28 +120,9 @@ export default {
     }
   },
   computed: {
-    options () {
-      return {
-        title: {
-          text: this.val.chartTitle, // 图表标题
-          textStyle: {
-            color: this.val.titleColor
-          }
-        },
-        tooltip: {
-          trigger: 'item'
-        },
-        legend: {
-          data: '销量'
-        },
-        grid: {
-          top: this.val.gridTop, // 上边距
-          left: this.val.gridLeft, // 图表位置 左边距
-          right: this.val.gridRight, // 右边距
-          bottom: this.val.gridBottom, // 下边距
-          containLabel: true
-        },
-        xAxis: {
+    barChartData () {
+      return [
+        {
           nameLocation: 'start',
           show: this.val.showX, // 是否显示 X 轴
           nameGap: '50',
@@ -165,13 +146,12 @@ export default {
             }
           },
           data: this.val.dataJSON.data.categories // 数据
-        },
-        yAxis: { // 纵轴标尺固定
+        }, { // 纵轴标尺固定
           show: this.val.showY, // 是否显示 Y 轴
           type: 'value',
           scale: true,
           inverse: false,
-          max: Math.max.apply(null, this.val.dataJSON.data.series),
+          // max: Math.max.apply(null, this.val.dataJSON.data.series),
           min: 0,
           axisLine: {
             show: this.val.showYLine, // 是否显示 Y 轴轴线
@@ -196,7 +176,32 @@ export default {
             }
           },
           boundaryGap: [0.2, 0.2]
+        }
+      ]
+    },
+    options () {
+      return {
+        title: {
+          text: this.val.chartTitle, // 图表标题
+          textStyle: {
+            color: this.val.titleColor
+          }
         },
+        tooltip: {
+          trigger: 'item'
+        },
+        legend: {
+          data: '销量'
+        },
+        grid: {
+          top: this.val.gridTop, // 上边距
+          left: this.val.gridLeft, // 图表位置 左边距
+          right: this.val.gridRight, // 右边距
+          bottom: this.val.gridBottom, // 下边距
+          containLabel: true
+        },
+        xAxis: this.val.xyturn ? this.barChartData[1] : this.barChartData[0],
+        yAxis: this.val.xyturn ? this.barChartData[0] : this.barChartData[1],
         series: [{
           name: '销量',
           type: 'bar',

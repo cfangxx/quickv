@@ -1,16 +1,15 @@
 <template>
   <div
-    class="lz-container"
     :class="[playState ? 'anm-' + val.animationName : '']"
     :style="{
       display: val.display,
       position: 'absolute',
-      width: val.width / 7.5 + '%',
+      width: val.width / w * 100 + '%',
       height: val.height / h * 100 + '%',
-      left: val.left / 7.5 + '%',
+      left: val.left / w * 100 + '%',
       top: val.top / h * 100 + '%',
       zIndex: val.z,
-      backgroundColor: val.bgColor,
+      background: val.bgType == 'bgColor' ? val.bgColor : (val.bgType == 'bgGradientcolor' ? '-webkit-linear-gradient(' + val.bgGradientdir1 + ',' + val.bgGradientcolor1 + ',' + val.bgGradientcolor2 + ')' : '') ,
       backgroundImage: 'url(' + val.backPic + ')',
       borderStyle: 'solid',
       borderRadius: val.radius + 'px',
@@ -19,10 +18,10 @@
       flexDirection: val.dir,
       justifyContent: val.justify,
       alignItems: val.align
-    }">
-
+    }"
+    class="lz-container">
     <!-- 子组件 -->
-    <slot></slot>
+    <slot/>
   </div>
 </template>
 
@@ -51,18 +50,25 @@ export default {
     z: 0,
     display: 'flex',
     bgColor: '',
+    bgType: 'bgColor',
+    bgGradientcolor: 'linear-gradient(#f00,#ff0)',
     backPic: '',
     backPicUrl: '',
     radius: 0,
     borderColor: '',
     borderWidth: 0,
+    text: '容器test',
     dir: 'row',
     justify: 'flex-start',
     align: 'flex-start',
     belong: 'page',
-    animationName: ''
+    animationName: '',
+    bgGradientcolor1: '#ffffff',
+    bgGradientcolor2: '#333333',
+    bgGradientdir1: 'left'
+
   },
-  props: ['h', 'val', 'playState']
+  props: ['w', 'h', 'val', 'playState']
 }
 </script>
 

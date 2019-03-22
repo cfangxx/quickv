@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="panel-item-new">
-      <div class="panel-item-title">X 轴</div>
+      <div class="panel-item-title">{{activeElement.xyturn ? 'Y 轴' : 'X 轴'}}</div>
       <div class="panel-row">
         <vpd-icon name="edit-3" />
         <div class="panel-label">文本颜色</div>
@@ -106,6 +106,7 @@
       </div>
       <div
         class="panel-row"
+        v-show="activeElement.showXaxisTick"
         flex>
         <vpd-icon name="bold" />
         <div class="panel-label">刻度偏移</div>
@@ -121,7 +122,7 @@
 
     </div>
     <div class="panel-item-new">
-      <div class="panel-item-title">Y 轴</div>
+      <div class="panel-item-title">{{activeElement.xyturn ? 'X 轴' : 'Y 轴'}}</div>
       <div class="panel-row">
         <vpd-icon name="edit-3" />
         <div class="panel-label">文本颜色</div>
@@ -264,7 +265,6 @@
       </div>
       <div
         class="panel-row"
-        style="display:none;"
         flex>
         <vpd-icon name="bold" />
         <div class="panel-label">X/Y轴翻转</div>
@@ -433,6 +433,7 @@
 <script>
 import vpd from '@/components/Dashboard/Designer/mixins/vpd'
 import MyEditor from '@/components/Dashboard/Designer/common/monacoEditor'
+import axios from 'axios'
 export default {
   name: 'BraidLineChartStyle',
   components: {
@@ -479,7 +480,7 @@ export default {
     },
     refreshAPIurl () { // API 拉取数据
       let url = this.activeElement.dataAPI
-      this.$axios({
+      axios({
         type: 'get',
         headers: {'Content-Type': 'application/json'},
         url: url
