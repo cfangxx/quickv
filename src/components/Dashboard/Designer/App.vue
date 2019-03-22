@@ -6,7 +6,7 @@
         <toolbar
           :zoom="zoom"
           class="toolbar column"/>
-        <div :style="styleObj1" class="viewport column">
+        <div :style="styleObj1" class="viewport viewport-new">
           <viewport :zoom="zoom"/>
           <div class="zoom-wrap">
             <vpd-slider

@@ -227,5 +227,22 @@ export default {
   updateData (state, {uuid, key, value}) {
     let widget = state.widgets.find(w => w.uuid === uuid)
     widget[key] = value
+  },
+
+  // 图表添加颜色
+  addColor (state, payload) {
+    state.activeElement.lgArr.push(payload)
+  },
+  // 更新编辑器 JSON 数据
+  updataJSON (state, payload) {
+    state.activeElement.dataJSON = payload
+  },
+  updataData (state, payload) {
+    state.activeElement[payload.name] = payload.value
+  },
+
+  // 图表删除颜色
+  delColor (state, payload) {
+    state.activeElement.lgArr.splice(payload, 1)
   }
 }
