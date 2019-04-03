@@ -12,7 +12,6 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // Do something before request is sent
     if (store.getters.token) {
       // 让每个请求携带token
       config.headers['Authorization'] = 'Bearer ' + getToken()
@@ -20,7 +19,6 @@ service.interceptors.request.use(
     return config
   },
   error => {
-    // Do something with request error
     Promise.reject(error)
   }
 )

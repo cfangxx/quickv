@@ -88,11 +88,14 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'index',
+        force: true,
         component: () => import('@/views/dashboard/Template.vue'),
         name: 'TemplateManage',
         meta: {
           title: '模板管理',
-          roles: ['admin'] // or you can only set roles in sub nav
+          roles: ['admin'], // or you can only set roles in sub nav
+          noCache: true,
+          affix: true
         }
       }
     ]
@@ -107,7 +110,7 @@ export var DashboardRouterMap = [
     name: 'Dashboard',
     meta: {
       title: '我的大屏',
-      icon: 'tab'
+      icon: 'chart'
     },
     children: [{
       path: ':hash',

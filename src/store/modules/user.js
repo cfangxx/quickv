@@ -101,7 +101,7 @@ const user = {
             name: 'Dashboard',
             meta: {
               title: '我的大屏',
-              icon: 'tab'
+              icon: 'chart'
             },
             children: [
             ]
