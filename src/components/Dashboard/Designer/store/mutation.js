@@ -235,7 +235,7 @@ export default {
 
   // 图表添加颜色
   addColor (state, payload) {
-    state.activeElement.lgArr.push(payload)
+    state.activeElement[payload.property].push(payload.data)
   },
   // 更新编辑器 JSON 数据
   updataJSON (state, payload) {
@@ -247,6 +247,6 @@ export default {
 
   // 图表删除颜色
   delColor (state, payload) {
-    state.activeElement.lgArr.splice(payload, 1)
+    state.activeElement[payload.property].splice(payload.data.index, 1)
   }
 }

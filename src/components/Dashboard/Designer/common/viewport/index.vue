@@ -151,9 +151,13 @@ export default {
   methods: {
     handleSelection (e) {
       var target = e.target
-      var type, uuid
+      // console.log(e)
+      var type, uuid, curDiv
       if (target.tagName === 'CANVAS') {
-        var curDiv = target.parentNode.parentNode.parentNode
+        curDiv = target.parentNode.parentNode.parentNode
+        type = curDiv.getAttribute('data-type')
+      } else if (target.className === 'lay-cont') {
+        curDiv = target.parentNode
         type = curDiv.getAttribute('data-type')
       } else {
         type = target.getAttribute('data-type')

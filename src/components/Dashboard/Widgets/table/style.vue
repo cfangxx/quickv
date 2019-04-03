@@ -41,93 +41,229 @@
       </div>
     </div>
     <div class="panel-item-new">
-      <div class="panel-item-title">容器</div>
-      <div class="panel-row">
-        <vpd-icon name="maximize" />
-        <div class="panel-label">容器名称</div>
-        <div class="panel-value">
-          <input
-            v-model.trim="activeElement.name"
-            type="text"
-            class="panel-item-input-line"
-            placeholder="容器名称必填">
-        </div>
-      </div>
-      <div class="panel-row">
-        <vpd-icon name="grid" />
-        <div class="panel-label">display</div>
-        <div class="panel-value">
-          <select
-            v-model="activeElement.display">
-            <option>flex</option>
-            <option>block</option>
-          </select>
-        </div>
-      </div>
-      <div
-        v-show="activeElement.display === 'flex'"
-        class="panel-row">
-        <vpd-icon name="shuffle" />
-        <div class="panel-label">主轴方向</div>
-        <div class="panel-value">
-          <select
-            v-model="activeElement.dir">
-            <option>row</option>
-            <option>row-reverse</option>
-            <option>column</option>
-            <option>column-reverse</option>
-          </select>
-        </div>
-      </div>
-      <div
-        v-show="activeElement.display === 'flex'"
-        class="panel-row">
-        <vpd-icon name="align-justify" />
-        <div class="panel-label">主轴分布</div>
-        <div class="panel-value">
-          <select v-model="activeElement.justify">
-            <option>flex-start</option>
-            <option>space-between</option>
-            <option>center</option>
-            <option>space-around</option>
-            <option>flex-end</option>
-          </select>
-        </div>
-      </div>
-      <div
-        v-show="activeElement.display === 'flex'"
-        class="panel-row">
-        <vpd-icon name="align-center" />
-        <div class="panel-label">侧轴分布</div>
-        <div class="panel-value">
-          <select
-            v-model="activeElement.align">
-            <option>flex-start</option>
-            <option>center</option>
-            <option>flex-end</option>
-          </select>
-        </div>
-      </div>
-      <hr>
+      <div class="panel-item-title">表头</div>
       <div
         class="panel-row"
-        style="display: none">
-        <vpd-icon name="target" />
-        <div class="panel-label">背景色</div>
-        <div class="panel-value">{{ activeElement.bgColor }}</div>
+        flex>
+        <vpd-icon name="bold" />
+        <div class="panel-label">显示表头</div>
+        <div class="panel-value">
+          <label class="form-switch">
+            <input
+              v-model="activeElement.showTh"
+              type="checkbox" >
+            <i class="form-icon"/>
+          </label>
+        </div>
+      </div>
+      <div
+        v-show="activeElement.showTh"
+        class="panel-row">
+        <vpd-icon name="square" />
+        <div class="panel-label">列数比例</div>
         <div class="panel-value">
           <input
-            v-model="activeElement.bgColor"
+            v-model="activeElement.tbPercent"
+            type="text" >
+        </div>
+      </div>
+      <div
+        v-show="activeElement.showTh"
+        class="panel-row">
+        <vpd-icon name="target" />
+        <div class="panel-label">文本颜色</div>
+        <div class="panel-value">{{ activeElement.thColor }}</div>
+        <div class="panel-value">
+          <input
+            v-model="activeElement.thColor"
             type="color" >
+        </div>
+      </div>
+      <div
+        v-show="activeElement.showTh"
+        class="panel-row">
+        <vpd-icon name="target" />
+        <div class="panel-label">背景颜色</div>
+        <div class="panel-value">{{ activeElement.thBgColor }}</div>
+        <div class="panel-value">
+          <input
+            v-model="activeElement.thBgColor"
+            type="color" >
+        </div>
+      </div>
+      <div
+        v-show="activeElement.showTh"
+        class="panel-row">
+        <vpd-icon name="square" />
+        <div class="panel-label">表头高度</div>
+        <div class="panel-value">
+          <input
+            v-model="activeElement.thHeight"
+            type="number" >
+        </div>
+      </div>
+      <div
+        v-show="activeElement.showTh"
+        class="panel-row">
+        <vpd-icon name="square" />
+        <div class="panel-label">表头文本</div>
+        <div class="panel-value">
+          <input
+            v-model="activeElement.thFontSize"
+            type="number" >
+        </div>
+      </div>
+    </div>
+    <div class="panel-item-new">
+      <div class="panel-item-title">序号</div>
+      <div
+        class="panel-row"
+        flex>
+        <vpd-icon name="bold" />
+        <div class="panel-label">显示序号</div>
+        <div class="panel-value">
+          <label class="form-switch">
+            <input
+              v-model="activeElement.showNum"
+              type="checkbox" >
+            <i class="form-icon"/>
+          </label>
         </div>
       </div>
       <div class="panel-row">
         <vpd-icon name="square" />
-        <div class="panel-label">圆角</div>
+        <div class="panel-label">序号大小</div>
         <div class="panel-value">
           <input
-            v-model="activeElement.radius"
-            type="text" >
+            v-model="activeElement.thNumWidth"
+            type="number" >
+        </div>
+      </div>
+      <div class="panel-row">
+        <vpd-icon name="square" />
+        <div class="panel-label">文本大小</div>
+        <div class="panel-value">
+          <input
+            v-model="activeElement.thNumFontSize"
+            type="number" >
+        </div>
+      </div>
+      <div class="panel-row">
+        <vpd-icon name="target" />
+        <div class="panel-label">文本颜色</div>
+        <div class="panel-value">{{ activeElement.thNumColor }}</div>
+        <div class="panel-value">
+          <input
+            v-model="activeElement.thNumColor"
+            type="color" >
+        </div>
+      </div>
+      <div class="panel-row">
+        <vpd-icon name="target" />
+        <div class="panel-label">样式</div>
+        <div
+          class="radioscont">
+          <label class="radiolabel">
+            <input
+              v-model="activeElement.thNumType"
+              type="radio"
+              class="inpRadio"
+              name="task"
+              value="none">无样式
+          </label>
+          <label class="radiolabel">
+            <input
+              v-model="activeElement.thNumType"
+              type="radio"
+              class="inpRadio"
+              name="task"
+              value="circle">圆形背景
+          </label>
+        </div>
+      </div>
+      <div v-show="activeElement.thNumType === 'circle'" class="panel-row">
+        <vpd-icon name="edit-3" />
+        <div class="panel-label">配置颜色</div>
+        <div class="panel-setcolor">
+          <div
+            v-for="(item,index) in activeElement.thNumBg"
+            :key="index"
+            class="panel-setcolor-item">
+            <div class="panel-value-new">{{ item }}</div>
+            <div>
+              <input
+                v-model="activeElement.thNumBg[index]"
+                type="color">
+            </div>
+            <button
+              v-if="index == 0"
+              class="pannel-setcolor-item-btn"
+              @click="addthNumBgColor">添加</button>
+            <button
+              v-else
+              class="pannel-setcolor-item-btn"
+              @click="delthNumBgColor(index)">删除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-item-new">
+      <div class="panel-item-title">表格</div>
+      <div class="panel-row">
+        <vpd-icon name="square" />
+        <div class="panel-label">文本大小</div>
+        <div class="panel-value">
+          <input
+            v-model="activeElement.tbFontSize"
+            type="number" >
+        </div>
+      </div>
+      <div class="panel-row">
+        <vpd-icon name="target" />
+        <div class="panel-label">文本颜色</div>
+        <div class="panel-value">{{ activeElement.tbColor }}</div>
+        <div class="panel-value">
+          <input
+            v-model="activeElement.tbColor"
+            type="color" >
+        </div>
+      </div>
+      <div class="panel-row">
+        <vpd-icon name="edit-3" />
+        <div class="panel-label">对齐方式</div>
+        <div class="panel-setcolor">
+          <div class="panel-setcolor-item radioscont">
+            <div>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.tbAlign"
+                  type="radio"
+                  class="inpRadio"
+                  name="task"
+                  value="left">居左
+              </label>
+            </div>
+            <div>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.tbAlign"
+                  type="radio"
+                  class="inpRadio"
+                  name="task"
+                  value="center">居中
+              </label>
+            </div>
+            <div>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.tbAlign"
+                  type="radio"
+                  class="inpRadio"
+                  name="task"
+                  value="right">居右
+              </label>
+            </div>
+          </div>
         </div>
       </div>
       <div class="panel-row">
@@ -280,6 +416,22 @@ export default {
         value: role
       }
       this.$vpd.commit('updataData', param)
+    },
+    addthNumBgColor () {
+      let params = {
+        property: 'thNumBg',
+        data: '#0000ff'
+      }
+      this.$vpd.commit('addColor', params)
+    },
+    delthNumBgColor (index) {
+      let params = {
+        property: 'thNumBg',
+        data: {
+          index: index
+        }
+      }
+      this.$vpd.commit('delColor', params)
     }
   }
 }

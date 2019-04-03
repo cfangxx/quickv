@@ -466,14 +466,23 @@ export default {
 
     },
     addLGColor () {
-      let item = {
-        color: '#0000ff',
-        offset: 1
+      let params = {
+        property: 'lgArr',
+        data: {
+          color: '#0000ff',
+          offset: 1
+        }
       }
-      this.$vpd.commit('addColor', item)
+      this.$vpd.commit('addColor', params)
     },
     delLGColor (index) {
-      this.$vpd.commit('delColor', index)
+      let params = {
+        property: 'lgArr',
+        data: {
+          index: index
+        }
+      }
+      this.$vpd.commit('delColor', params)
     },
     handleBind () {
       // console.log("取到的值是"+this.selectStatus);
@@ -520,36 +529,7 @@ export default {
   .monaco-cont{
     width:200px;
   }
-  .radiusInp{
-    width:38px;
-  }
-  .panel-setcolor{
-    width:200px;
-  }
-  .panel-setcolor-item{
-    display: flex;
-  }
-  .pannel-setcolor-item-btn{
-    width: 46px;
-    height: 24px;
-    margin: 6px 8px;
-    border: none;
-    background: #42b983;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 2px;
-  }
-  .pannel-setcolor-item-btn:hover{
-    background: #42b955;
-  }
-  .panel-value-new {
-    width: 60px;
-    display: flex;
-    align-items: center;
-  }
-  .radioscont{
-    margin:20px 0 20px;
-  }
+
   .btn-small {
     width:120px;
     height:36px;
