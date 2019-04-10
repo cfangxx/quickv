@@ -39,6 +39,15 @@
             type="number">
         </div>
       </div>
+      <div class="panel-row">
+        <vpd-icon name="edit-3" />
+        <div class="panel-label">层级</div>
+        <div>
+          <input
+            v-model="activeElement.z"
+            type="number">
+        </div>
+      </div>
     </div>
     <div class="panel-item-new">
       <div class="panel-item-title">容器</div>

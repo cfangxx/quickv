@@ -119,3 +119,27 @@ select {
 .radioscont label{
   font-weight: normal;
 }
+
+.btn-small {
+  width:120px;
+  height:36px;
+  margin:20px 0;
+  background-color: #42b966;
+  color:#fff;
+  font-size:16px;
+  border:none;
+  cursor: pointer;
+}
+.btn-small:hover {
+  background-color: #42b983;
+}
+.data-group{
+  padding:0 15px;
+}
+.radiowrap{
+
+}
+.radiolabel{
+  font-weight: normal;
+  margin-right:10px;
+}

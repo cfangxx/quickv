@@ -1,5 +1,55 @@
 <template>
   <div>
+    <div v-show="tab === 1">
+      <div class="panel-item-new">
+        <!--<div class="panel-item-title">基础参数</div>-->
+        <div class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">宽度</div>
+          <div>
+            <input
+              v-model="activeElement.width"
+              type="number">
+          </div>
+        </div>
+        <div class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">高度</div>
+          <div>
+            <input
+              v-model="activeElement.height"
+              type="number">
+          </div>
+        </div>
+        <div class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">横坐标</div>
+          <div>
+            <input
+              v-model="activeElement.left"
+              type="number">
+          </div>
+        </div>
+        <div class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">纵坐标</div>
+          <div>
+            <input
+              v-model="activeElement.top"
+              type="number">
+          </div>
+        </div>
+        <div class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">层级</div>
+          <div>
+            <input
+              v-model="activeElement.z"
+              type="number">
+          </div>
+        </div>
+      </div>
+    </div>
     <hr>
     <div class="panel-row" flex>
       <vpd-icon name="sliders" />
@@ -63,6 +113,6 @@
 <script>
 export default {
   name: 'braid-txt-style',
-  props: ['activeElement']
+  props: ['activeElement', 'tab']
 }
 </script>

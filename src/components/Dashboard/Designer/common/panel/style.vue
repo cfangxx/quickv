@@ -3,7 +3,7 @@
     v-if="!activeElement.page && tab === 1"
     class="panel-wrap">
     <!-- 公共属性 -->
-    <div class="panel-row">
+    <div style="display: none" class="panel-row">
       <vpd-icon name="layers" />
       <div class="panel-label">层级</div>
       <div class="panel-value">{{ activeElement.z }}</div>
@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div class="panel-row">
+    <div style="display: none" class="panel-row">
       <vpd-icon name="more-vertical" />
       <div class="panel-label">高度</div>
       <div class="panel-value">{{ activeElement.height }}</div>
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="panel-row">
+    <div style="display: none" class="panel-row">
       <vpd-icon name="arrow-right" />
       <div class="panel-label">横坐标</div>
       <div class="panel-value">{{ activeElement.left }}</div>
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div class="panel-row">
+    <div style="display: none" class="panel-row">
       <vpd-icon name="arrow-down" />
       <div class="panel-label">纵坐标</div>
       <div class="panel-value">{{ activeElement.top }}</div>
@@ -51,16 +51,31 @@
       </div>
     </div>
 
+    <ul class="tab tab-block panel-tab">
+      <li
+        :class="{active: activeTab === 1}"
+        class="tab-item"
+        @click="activeTab = 1"><a>参数</a></li>
+      <li
+        :class="{active: activeTab === 2}"
+        class="tab-item"
+        @click="activeTab = 2"><a>数据</a></li>
+      <li
+        :class="{active: activeTab === 3}"
+        class="tab-item"
+        @click="activeTab = 3"><a>高级</a></li>
+    </ul>
     <!-- 组件样式 -->
     <component
       v-for="(item, i) in widgetStyle"
       v-if="item.type === activeElement.type"
       :is="widgetStyle[i]"
       :key="i"
+      :tab="activeTab"
       :active-element="activeElement" />
-
     <!-- 添加到容器 -->
-    <div v-if="activeElement.isChild">
+    <!--<div v-if="activeElement.isChild">-->
+    <div style="display: none">
       <hr>
       <div class="panel-row">
         <vpd-icon name="layout" />
@@ -87,7 +102,9 @@ export default {
   mixins: [vpd],
   props: ['activeElement', 'tab'],
   data () {
-    return {}
+    return {
+      activeTab: 1
+    }
   },
 
   computed: {

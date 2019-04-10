@@ -72,8 +72,8 @@ export default {
     showY: true, // 是否显示 Y 轴
 
     seriseBarWidth: '40%', // 柱形图宽度
-    seriseRadius1: 0, // 柱形图圆角
-    seriseRadius2: 0, // 柱形图圆角
+    seriseRadius1: 20, // 柱形图圆角
+    seriseRadius2: 20, // 柱形图圆角
     seriseRadius3: 0, // 柱形图圆角
     seriseRadius4: 0, // 柱形图圆角
     lgArr: [{ // 设置渐变颜色数组
@@ -208,7 +208,7 @@ export default {
           barWidth: this.val.seriseBarWidth, // 柱形图宽度
           itemStyle: {
             normal: {
-              barBorderRadius: [this.val.seriseRadius1, this.val.seriseRadius2, this.val.seriseRadius3, this.val.seriseRadius4], // 柱形图圆角
+              barBorderRadius: [parseInt(this.val.seriseRadius1), parseInt(this.val.seriseRadius2), parseInt(this.val.seriseRadius3), parseInt(this.val.seriseRadius4)], // 柱形图圆角
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, this.val.lgArr) // 柱体颜色/渐变色
             }
           },

@@ -8,7 +8,7 @@
     <div
       :class="[isCollapse?'':'noShow']"
       class="panel-detail">
-      <ul class="tab tab-block panel-tab">
+      <ul class="tab tab-block panel-tab" style="display: none">
         <li
           :class="{active: activeTab === 1}"
           class="tab-item"
@@ -16,7 +16,7 @@
         <li
           :class="{active: activeTab === 2}"
           class="tab-item"
-          @click="activeTab = 2"><a>交互</a></li>
+          @click="activeTab = 2"><a>数据</a></li>
         <li
           :class="{active: activeTab === 3}"
           class="tab-item"
