@@ -1,6 +1,6 @@
 import request from '@/scripts/request'
 
-export function fetchlList () {
+export function fetchList () {
   return request({
     url: '/templates',
     method: 'get'
@@ -29,9 +29,9 @@ export function createTemplate (data) {
   })
 }
 
-export function deleteTemplate () {
+export function deleteTemplate (hash) {
   return request({
-    url: '/templates',
+    url: '/templates/' + hash,
     method: 'delete'
   })
 }

@@ -62,7 +62,14 @@ export default {
           // 提交修改
           const updateConfig = (this.isTemplate) ? updateTemplate : updateDashboard
           updateConfig(dashboard).then(response => {
-
+            if (response.code === 0) {
+              this.$notify({
+                title: '成功',
+                message: '保存成功',
+                type: 'success',
+                duration: 2000
+              })
+            }
           })
         }).catch(function (error) {
           console.error('oops, something went wrong!', error)

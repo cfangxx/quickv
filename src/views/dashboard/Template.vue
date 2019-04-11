@@ -22,10 +22,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column :label="'缩略图'" min-width="100px">
+      <el-table-column :label="'缩略图'" width="170px">
         <template slot-scope="scope">
-          <!--<a class="link-type" :href="scope.row.url" target="_blank">{{ scope.row.url }}</a>-->
-          <img :src="'data:image/png;base64,' + scope.row.hash"  alt="上海鲜花港 - 郁金香" />
+          <div class="thumb"><img :src="scope.row.imgUrl | fullImgUrl"  alt="" /></div>
         </template>
       </el-table-column>
 
@@ -35,15 +34,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column :label="'分辨率'" width="150px" align="center">
+      <el-table-column :label="'分辨率'" width="110px" align="center">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.resolution }}</span>
+          <span class="link-type" >{{ scope.row.resolution }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="'作者'" width="150px" align="center">
+      <el-table-column :label="'作者'" width="100px" align="center">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.author }}</span>
+          <span class="link-type">{{ scope.row.author }}</span>
         </template>
       </el-table-column>
 
@@ -53,13 +52,13 @@
       </template>
       </el-table-column>
 
-      <el-table-column :label="'级别'" class-name="status-col" width="150">
+      <el-table-column :label="'级别'" class-name="status-col" width="100">
         <template slot-scope="scope">
           <el-tag>{{ scope.row.level | levelFilter}}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column :label="'操作'" align="center" width="200" class-name="small-padding fixed-width">
+      <el-table-column :label="'操作'" align="center" width="180" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="success" @click="handleEdit(scope.row.hash)">{{ '编辑' }}</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row,'deleted')">{{ '删除' }}</el-button>
@@ -71,7 +70,7 @@
 
     <!--新建大屏-->
     <el-dialog :title="'新建模板'" :visible.sync="dialogFormVisible">
-      <el-form ref="TplForm" :model="temp" :rules="createTplRules" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+      <el-form ref="TplForm" :model="temp" :rules="createTplRules" label-position="top" label-width="70px" style="width: 500px; margin-left:50px;">
 
         <el-form-item :label="'模板名称'" prop="title">
           <el-input v-model="temp.name"/>
@@ -92,7 +91,7 @@
 </template>
 
 <script>
-import { fetchlList, createTemplate, deleteTemplate } from '@/api/template'
+import { fetchList, createTemplate, deleteTemplate } from '@/api/template'
 import waves from '@/directive/waves' // Waves directive
 // import { parseTime } from '@/scripts'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -104,6 +103,7 @@ const levelOptions = [
   { value: 3, text: '中级' },
   { value: 4, text: '高级' }
 ]
+
 const levelTypeKeyValue = levelOptions.reduce((acc, cur) => {
   acc[cur.value] = cur.text
   return acc
@@ -116,6 +116,9 @@ export default {
   filters: {
     levelFilter (v) {
       return levelTypeKeyValue[v]
+    },
+    fullImgUrl (url) {
+      return process.env.BASE_API + url
     }
   },
   computed: {
@@ -161,7 +164,7 @@ export default {
   methods: {
     getTemplates () {
       this.tplListLoading = true
-      fetchlList().then(response => {
+      fetchList().then(response => {
         if (response.data.total > 0) {
           this.serialList(response.data.items)
         }
@@ -284,5 +287,21 @@ export default {
 
   .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
+  }
+
+  .thumb {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  .thumb img {
+    width: 100%;
+    height: 100%;
   }
 </style>

@@ -59,22 +59,22 @@
 
     <!--新建大屏-->
     <el-dialog :title="'新建大屏'" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-
-        <el-form-item :label="'名称'" prop="title">
+      <el-form ref="dataForm" :model="temp" label-position="top" label-width="70px">
+        <el-form-item :label="'大屏名称'" placeholder="请输入大屏名称" prop="title">
           <el-input v-model="temp.name"/>
         </el-form-item>
-        <el-form-item :label="'简介'">
-          <el-input v-model="temp.description"/>
+
+        <el-form-item :label="'选择模板'">
+          <template-list :dataImages="templateList"
+                         @onselectimage="onSelectImage">
+          </template-list>
         </el-form-item>
-        <el-form-item :label="'模板'">
-          <el-carousel :interval="4000" type="card" height="200px">
-            <el-carousel-item v-for="item in 6" :key="item">
-              <h3>{{ item }}</h3>
-            </el-carousel-item>
-          </el-carousel>
+
+        <el-form-item :label="'大屏简介'">
+          <el-input type="textarea" :rows="3" placeholder="请填写关于大屏的描述信息" v-model="temp.description"/>
         </el-form-item>
       </el-form>
+
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ '取消' }}</el-button>
         <el-button type="primary" @click="dialogStatus===createData()">{{ '创建' }}</el-button>
@@ -101,6 +101,8 @@ import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/scripts'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import { mapGetters } from 'vuex'
+import TemplateList from '@/components/Dashboard/Manage/TemplateList'
+import { fetchList } from '@/api/template'
 
 const publishTypeOptions = {
   published: '已发布',
@@ -109,7 +111,7 @@ const publishTypeOptions = {
 }
 export default {
   name: 'ManageDashboard',
-  components: { Pagination },
+  components: { Pagination, TemplateList },
   directives: { waves },
   filters: {
     statusFilter (status) {
@@ -142,6 +144,7 @@ export default {
         template: '',
         description: ''
       },
+      templateList: null,
       dialogFormVisible: false,
       dialogStatus: '',
       dialogPublish: false,
@@ -209,6 +212,10 @@ export default {
       }
     },
     handleCreate () {
+      fetchList().then(response => {
+        this.templateList = response.data.items
+      })
+
       this.resetTemp()
       this.dialogStatus = '新建大屏'
       this.dialogFormVisible = true
@@ -272,6 +279,9 @@ export default {
       for (let i = 0; i < list.length; i++) {
         list[i]['sequenceNumber'] = i + 1
       }
+    },
+    onSelectImage: function (data) {
+      this.temp.template = data.hash
     }
   }
 }
