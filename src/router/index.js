@@ -50,19 +50,6 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/create-dashboard',
-    component: Layout,
-    redirect: '/create-dashboard/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/dashboard/Create'),
-        name: 'CreateDashboard',
-        meta: { title: '新建大屏', icon: 'edit', affix: true }
-      }
-    ]
-  },
-  {
     path: '/edit/dashboard/:hash',
     component: () => import('@/views/dashboard/Designer'),
     hidden: true

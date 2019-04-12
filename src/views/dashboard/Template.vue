@@ -1,72 +1,39 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-input :placeholder="'模板名称'" v-model="listQuery.title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ '搜索' }}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ '新建模板' }}</el-button>
-    </div>
+    <el-row>
+      <el-col :span="5">
+        <el-card class="box-card-component" shadow="hover">
+          <div slot="header" class="box-card-header"  @click="handleCreate">
+            <i class="el-icon-plus" style="font-size:30px; margin:30% auto"/>
+          </div>
+          <div style="position:relative;">
+            <span>新建模板</span>
+            <div class="box-card-bottom">
+              <span>添加一个新的模板</span>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
 
-    <el-table
-      v-loading="tplListLoading"
-      :key="tableKey"
-      :data="tplList"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange">
-
-      <el-table-column :label="'序号'" prop="id" align="center" width="60">
-        <template slot-scope="scope">
-          <span>{{ scope.row.sequenceNumber }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column :label="'缩略图'" width="170px">
-        <template slot-scope="scope">
-          <div class="thumb"><img :src="scope.row.imgUrl | fullImgUrl"  alt="" /></div>
-        </template>
-      </el-table-column>
-
-      <el-table-column :label="'模板名称'" min-width="250px">
-        <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.name }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column :label="'分辨率'" width="110px" align="center">
-        <template slot-scope="scope">
-          <span class="link-type" >{{ scope.row.resolution }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column :label="'作者'" width="100px" align="center">
-        <template slot-scope="scope">
-          <span class="link-type">{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column :label="'创建时间'" width="150px" align="center">
-      <template slot-scope="scope">
-      <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-      </template>
-      </el-table-column>
-
-      <el-table-column :label="'级别'" class-name="status-col" width="100">
-        <template slot-scope="scope">
-          <el-tag>{{ scope.row.level | levelFilter}}</el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column :label="'操作'" align="center" width="180" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button size="mini" type="success" @click="handleEdit(scope.row.hash)">{{ '编辑' }}</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row,'deleted')">{{ '删除' }}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getTemplates" />
+      <el-col :span="5" v-for="item in tplList" :key="item.hash" >
+        <el-card class="box-card-component" shadow="hover">
+          <div slot="header" class="box-card-header">
+            <img :src="item.imgUrl | fullImgUrl">
+            <div class="box-card-operation">
+              <i class="el-icon-edit" @click="handleEdit(item.hash)"></i>
+              <i class="el-icon-delete" @click="handleDelete(item.hash)"></i>
+            </div>
+          </div>
+          <div style="position:relative;">
+            <span>{{ item.name }}</span>
+            <div class="box-card-bottom">
+              <time class="time">{{ item.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</time>
+              <span class="link-type" >{{ item.resolution }}</span>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
 
     <!--新建大屏-->
     <el-dialog :title="'新建模板'" :visible.sync="dialogFormVisible">
@@ -94,7 +61,6 @@
 import { fetchList, createTemplate, deleteTemplate } from '@/api/template'
 import waves from '@/directive/waves' // Waves directive
 // import { parseTime } from '@/scripts'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 const levelOptions = [
   { value: 0, text: '隐藏' },
@@ -111,7 +77,6 @@ const levelTypeKeyValue = levelOptions.reduce((acc, cur) => {
 
 export default {
   name: 'TemplateManage',
-  components: { Pagination },
   directives: { waves },
   filters: {
     levelFilter (v) {
@@ -239,16 +204,16 @@ export default {
         this.$refs['TplForm'].clearValidate()
       })
     },
-    handleDelete: function (row) {
-      deleteTemplate(row.hash).then(response => {
+    handleDelete: function (hash) {
+      deleteTemplate(hash).then(response => {
         this.$notify({
           title: '成功',
           message: '删除成功',
           type: 'success',
           duration: 2000
         })
-        const index = this.list.indexOf(row)
-        this.list.splice(index, 1)
+        // <!-- const index = this.list.indexOf(row) -->
+        // <!-- this.list.splice(index, 1) -->
         this.getTemplates()
       })
     },
@@ -272,36 +237,49 @@ export default {
 }
 </script>
 
-<style>
-  .el-carousel__item h3 {
-    color: #475669;
-    font-size: 14px;
-    opacity: 0.75;
-    line-height: 100px;
-    margin: 0;
-  }
+<style rel="stylesheet/scss" lang="scss" scoped>
+.box-card-component {
+  width:250px;
+  margin-left:8px;
 
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-  }
-
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
-  }
-
-  .thumb {
-    width: 150px;
+  .box-card-header {
+    position: relative;
     height: 150px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px;
-    display: table-cell;
-    vertical-align: middle;
+    width: 150px;
     text-align: center;
+    img {
+      width: 100%;
+      height: 100%;
+      transition: all 0.2s linear;
+      &:hover {
+        transform: scale(1.1, 1.1);
+        filter: contrast(130%);
+      }
+    }
   }
-
-  .thumb img {
+  .box-card-operation {
+    position:absolute;
+    bottom: 0;
+    height: 30px;
     width: 100%;
-    height: 100%;
+    // background-color: #999;
+    display:none;
+    z-index: 1000;
   }
+  .box-card-operation i{
+    color: #606266;
+    margin: 0 7px;
+    font-size: 1.5em;
+    cursor:pointer;
+  }
+  .box-card-header:hover .box-card-operation {
+    display: block;
+  }
+  .box-card-bottom {
+    margin-top: 13px;
+    line-height: 12px;
+    font-size: 13px;
+    color: #999;
+  }
+}
 </style>
