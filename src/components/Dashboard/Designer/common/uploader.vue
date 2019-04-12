@@ -3,6 +3,7 @@
     id="uploader"
     :multiple="multiple ? 'multiple' : false"
     type="file"
+    name="image"
     accept="image/png, image/jpeg, image/gif"
     style="display: none"
     @change="handleUpload">
@@ -62,15 +63,22 @@ export default {
 
       files = Array.prototype.slice.call(this.uploader.files)
 
-      let uploadFn = this.upload || this.defaultUpload
+      let uploadFn = this.defaultUpload
 
       uploadFn(files).then(res => {
-        console.log('status: ', res.status)
-        // 图片下载队列完成后执行回调
-        new Promise(resolve => {
-          this.handleLoadQueue(resolve, res.files)()
-        }).then(payload => {
-          this.cb(payload)
+        if (!res.ok) {
+          return
+        }
+        res.text().then((data) => {
+          var pData = JSON.parse(data)
+
+          // 图片下载队列完成后执行回调
+          new Promise(resolve => {
+            const imgUrl = process.env.BASE_API + pData.imgUrl
+            this.handleLoadQueue(resolve, imgUrl)()
+          }).then(payload => {
+            this.cb(payload)
+          })
         })
       })
     },
@@ -78,7 +86,7 @@ export default {
     defaultUpload (files) {
       if (this.uploadOption.url) {
         var data = new FormData()
-        files.forEach(file => data.append('file[]', file))
+        files.forEach(file => data.append('file', file))
 
         return fetch(this.uploadOption.url, {
           method: 'POST',
@@ -93,16 +101,10 @@ export default {
      * 处理下载队列
      * 图片按顺序下载完一张再下载下一张，以确保图片数组按上传的顺序排列
      */
-    handleLoadQueue (resolve, files) {
-      var i = 0
-      var len = files.length
+    handleLoadQueue (resolve, url) {
       var payload = []
 
       var download = () => {
-        // 接入后端后，files 应改为回调参数
-        // url = files[i]
-        var url = window.URL.createObjectURL(files[i])
-
         new Promise(resolve => {
           this.getImageWidth(url, resolve)
         }).then(size => {
@@ -111,15 +113,11 @@ export default {
             height: size.h,
             top: this.top,
             url: url, // 图片预览地址
-            src: 'images/' + files[i].name // 图片实际地址
+            src: url // 图片实际地址
           })
 
           // 所有图片下载完毕，跳到下一步，否则继续下载
-          if (++i === len) {
-            resolve(payload)
-          } else {
-            download()
-          }
+          resolve(payload)
         })
       }
 

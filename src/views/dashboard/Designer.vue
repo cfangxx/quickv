@@ -24,7 +24,8 @@ export default {
       details: null,
       config: null,
       uploadOption: {
-        url: 'https://jsonplaceholder.typicode.com/photos'
+        url: process.env.BASE_API + '/upload/image/' + this.$route.params.hash
+        // url: 'https://jsonplaceholder.typicode.com/photos'
       },
       isTemplate: false
     }
@@ -62,7 +63,6 @@ export default {
           // 提交修改
           const updateConfig = (this.isTemplate) ? updateTemplate : updateDashboard
           updateConfig(dashboard).then(response => {
-            console.log(response)
             if (response.code === 0) {
               this.$notify({
                 title: '成功',
