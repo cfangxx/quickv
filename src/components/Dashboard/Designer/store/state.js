@@ -1,6 +1,6 @@
 export default {
   top: 0, // 添加元件的初始纵坐标
-  zoom: 64, // 画布缩放百分比
+  zoom: 100, // 画布缩放百分比
   type: 'page', // 选中元素类型
   index: -1, // 选中元素索引
   uuid: null, // 选中元素uuid
@@ -18,11 +18,11 @@ export default {
   activeElement: {}, // 选中对象，要么是元件，要么是页面
   page: {
     page: true,
-    title: '测试页面', // 页面 title
+    title: '数据可视化大屏', // 页面 title
     width: 1920,
     height: 1080, // 画布高度
     endTime: new Date(), // 截止日期
-    backgroundColor: '#fff'
+    backgroundColor: '#ffffff'
   },
   widgets: [] // 元件
 }

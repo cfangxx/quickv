@@ -59,12 +59,9 @@ export default {
     uploadOption: Object
   },
   data () {
-    var wid = window.innerWidth
     return {
-      w: wid,
-      h: wid,
       styleObj1: {
-        width: (wid - 40) + 'px'
+        width: (1920 - 40) + 'px'
       }
     }
   },
@@ -97,11 +94,21 @@ export default {
   mounted () {
     // 初始化选中元件（将页面作为初始选中元件）
     this.$vpd.commit('initActive')
+    window.onresize = () => {
+      return (() => {
+        this.handleLableWidth()
+      })()
+    }
+    this.handleLableWidth()
   },
 
   methods: {
     dozoom (val) {
       this.$vpd.commit('zoom', val)
+    },
+    handleLableWidth () {
+      const wid = window.innerWidth
+      this.styleObj1.width = (wid - 40) + 'px'
     }
   },
   watch: {
