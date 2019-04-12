@@ -230,9 +230,10 @@ export default {
   background-size: 26px 26px;
   background-color: #f0f3f4;
   padding-left:20px;
+  padding-top:20px;
 }
 .screen {
-  margin: 25px auto;
+  /*margin: 25px auto;*/
   transform-origin: left top;
 }
 </style>

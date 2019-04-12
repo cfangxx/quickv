@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <div class="navbar container grid-xl">
+    <div class="navbar1 container grid-xl">
       <section class="logo navbar-cont">
         <a>logo</a>
       </section>
@@ -147,7 +147,7 @@ export default {
     background-color: #24292e;
     padding: 12px 0;
   }
-  .navbar {
+  .navbar1 {
     .svg-icon {
       svg {
         vertical-align: middle;

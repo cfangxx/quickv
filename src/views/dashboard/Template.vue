@@ -1,10 +1,40 @@
 <template>
   <div class="app-container">
-    <el-row>
+
+    <div class="template-list-cont">
+      <div class="item-box"  @click="handleCreate">
+        <div class="item-box-top">
+          <div class="item-box-top-img">
+            <i class="el-icon-plus plus-icon"/>
+          </div>
+        </div>
+        <div class="item-box-bottom">
+          <h4>新建模板</h4>
+          <p>添加一个新的模板</p>
+        </div>
+      </div>
+      <div class="item-box" v-for="item in tplList" :key="item.hash">
+        <div class="item-box-top">
+          <div class="item-box-top-img">
+            <img :src="item.imgUrl | fullImgUrl">
+          </div>
+          <div class="item-box-top-icon">
+            <i class="el-icon-edit" @click="handleEdit(item.hash)"></i>
+            <i class="el-icon-delete" @click="handleDelete(item.hash)"></i>
+          </div>
+        </div>
+        <div class="item-box-bottom">
+          <h4>{{item.name}}</h4>
+          <p>{{ item.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }} <span class="link-type" >{{ item.resolution }}</span></p>
+        </div>
+      </div>
+    </div>
+
+    <el-row style="display: none">
       <el-col :span="5">
         <el-card class="box-card-component" shadow="hover">
           <div slot="header" class="box-card-header"  @click="handleCreate">
-            <i class="el-icon-plus" style="font-size:30px; margin:30% auto"/>
+            <i class="el-icon-plus" style="font-size:60px; margin:30% auto"/>
           </div>
           <div style="position:relative;">
             <span>新建模板</span>
@@ -236,7 +266,84 @@ export default {
   }
 }
 </script>
-
+<style>
+  .template-list-cont{
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .item-box{
+    width: 250px;
+    height:260px;
+    margin: 0 20px 20px 0;
+    box-sizing: border-box;
+    border:1px solid #eee;
+    /*background:#eee;*/
+  }
+  .item-box:hover{
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  }
+  .item-box-top{
+    width:100%;
+    height:180px;
+    position: relative;
+    border-bottom:1px solid #eee;
+  }
+  .item-box-top-img{
+    width:100%;
+    height: 100%;
+    position: absolute;
+    text-align: center;
+    z-index: 0;
+  }
+  .item-box-top-img img{
+    width:100%;
+    height:100%;
+    display: block;
+  }
+  .item-box-top-icon{
+    position: absolute;
+    display: none;
+    z-index: 1;
+    width:100%;
+    height:100%;
+    padding-top:30%;
+    color:#fff;
+    font-size: 26px;
+    text-align: center;
+    background: rgba(0,0,0,0.4);
+  }
+  .item-box-top-icon i{
+    cursor: pointer;
+  }
+  .item-box-top:hover .item-box-top-img img{
+    overflow: hidden;
+    /*transform: scale(1.1, 1.1);*/
+  }
+  .item-box-top:hover .item-box-top-icon{
+    display: block;
+  }
+  .plus-icon{
+    font-size: 60px;
+    font-weight: bold;
+    margin-top:20%;
+    color:#666;
+  }
+  .item-box-bottom{
+    padding: 0 10px;
+  }
+  .item-box-bottom h4{
+    font-size: 16px;
+    margin:16px 0 0 0;
+    font-weight: normal;
+  }
+  .item-box-bottom p{
+    font-size:14px;
+    margin:6px 0 0 0;
+    color:#999;
+  }
+</style>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .box-card-component {
   width:250px;

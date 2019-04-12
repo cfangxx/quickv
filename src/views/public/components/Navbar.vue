@@ -2,7 +2,7 @@
   <div class="navbar">
     <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
 
-    <breadcrumb class="breadcrumb-container"/>
+    <breadcrumb class="breadcrumb-container "/>
 
     <div class="right-menu">
 
@@ -76,6 +76,7 @@ export default {
 
   .breadcrumb-container {
     float: left;
+    flex:1;
   }
 
   .errLog-container {

@@ -62,6 +62,7 @@ export default {
           // 提交修改
           const updateConfig = (this.isTemplate) ? updateTemplate : updateDashboard
           updateConfig(dashboard).then(response => {
+            console.log(response)
             if (response.code === 0) {
               this.$notify({
                 title: '成功',
