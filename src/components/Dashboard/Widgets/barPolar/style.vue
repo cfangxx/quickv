@@ -64,27 +64,7 @@
         </div>
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">{{activeElement.xyturn ? 'Y 轴' : 'X 轴'}}</div>
-        <div class="panel-row">
-          <vpd-icon name="edit-3" />
-          <div class="panel-label">文本颜色</div>
-          <div class="panel-value">{{ activeElement.xTextColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.xTextColor"
-              type="color">
-          </div>
-        </div>
-        <div class="panel-row">
-          <vpd-icon name="edit-3" />
-          <div class="panel-label">轴线颜色</div>
-          <div class="panel-value">{{ activeElement.xLineColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.xLineColor"
-              type="color">
-          </div>
-        </div>
+        <div class="panel-item-title">X 轴</div>
         <div
           class="panel-row"
           flex>
@@ -100,22 +80,30 @@
           </div>
         </div>
         <div
-          class="panel-row"
-          flex>
-          <vpd-icon name="bold" />
-          <div class="panel-label">显示网格</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.showXSplitLine"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
+          v-show="activeElement.showX"
+          class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">轴线颜色</div>
+          <div class="panel-value">{{ activeElement.xLineColor }}</div>
+          <div>
+            <input
+              v-model="activeElement.xLineColor"
+              type="color">
           </div>
         </div>
         <div
-          class="panel-row"
-          flex>
+          v-show="activeElement.showX"
+          class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">轴线宽度</div>
+          <div>
+            <input
+              v-model="activeElement.xLineWidth"
+              type="number">
+          </div>
+        </div>
+        <div class="panel-row"
+             flex>
           <vpd-icon name="bold" />
           <div class="panel-label">显示刻度</div>
           <div class="panel-value">
@@ -128,63 +116,47 @@
           </div>
         </div>
         <div
-          class="panel-row"
           v-show="activeElement.showXaxisTick"
-          flex>
-          <vpd-icon name="bold" />
-          <div class="panel-label">刻度偏移</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.xAxisLabel"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
+          class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">文字颜色</div>
+          <div class="panel-value">{{ activeElement.xTextColor }}</div>
+          <div>
+            <input
+              v-model="activeElement.xTextColor"
+              type="color">
           </div>
         </div>
-
+        <div
+          v-show="activeElement.showXaxisTick"
+          class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">文字大小</div>
+          <div>
+            <input
+              v-model="activeElement.xTextFontSize"
+              type="number">
+          </div>
+        </div>
+        <div
+          v-show="activeElement.showXaxisTick"
+          class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">文字旋转</div>
+          <div>
+            <input
+              v-model="activeElement.xLabelRotate"
+              type="number">
+          </div>
+        </div>
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">{{activeElement.xyturn ? 'X 轴' : 'Y 轴'}}</div>
-        <div class="panel-row">
-          <vpd-icon name="edit-3" />
-          <div class="panel-label">文本颜色</div>
-          <div class="panel-value">{{ activeElement.yTextColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.yTextColor"
-              type="color">
-          </div>
-        </div>
-        <div class="panel-row">
-          <vpd-icon name="edit-3" />
-          <div class="panel-label">轴线颜色</div>
-          <div class="panel-value">{{ activeElement.yLineColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.yLineColor"
-              type="color">
-          </div>
-        </div>
+        <div class="panel-item-title">Y 轴</div>
         <div
           class="panel-row"
           flex>
           <vpd-icon name="bold" />
-          <div class="panel-label">显示轴</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.showY"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
-          </div>
-        </div>
-        <div
-          class="panel-row"
-          flex>
-          <vpd-icon name="bold" />
-          <div class="panel-label">显示网格</div>
+          <div class="panel-label">显示标线</div>
           <div class="panel-value">
             <label class="form-switch">
               <input
@@ -195,34 +167,8 @@
           </div>
         </div>
         <div
-          class="panel-row"
-          flex>
-          <vpd-icon name="bold" />
-          <div class="panel-label">显示刻度</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.showYTick"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
-          </div>
-        </div>
-        <div
-          class="panel-row"
-          flex>
-          <vpd-icon name="bold" />
-          <div class="panel-label">显示轴线</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.showYLine"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
-          </div>
-        </div>
-        <div class="panel-row">
+          v-show="activeElement.showYSplitLine"
+          class="panel-row">
           <vpd-icon name="edit-3" />
           <div class="panel-label">标线颜色</div>
           <div class="panel-value">{{ activeElement.splitLineColor }}</div>
@@ -232,108 +178,25 @@
               type="color">
           </div>
         </div>
-
       </div>
       <div class="panel-item-new">
         <div class="panel-item-title">图表设置</div>
         <div class="panel-row">
           <vpd-icon name="edit-3" />
-          <div class="panel-label">上边距</div>
+          <div class="panel-label">大小调整</div>
           <div>
             <input
-              v-model="activeElement.gridTop">
+              v-model="activeElement.polarSize">
           </div>
         </div>
         <div class="panel-row">
           <vpd-icon name="edit-3" />
-          <div class="panel-label">下边距</div>
+          <div class="panel-label">分割段数</div>
           <div>
             <input
-              v-model="activeElement.gridBottom">
-          </div>
-        </div>
-        <div class="panel-row">
-          <vpd-icon name="edit-3" />
-          <div class="panel-label">左边距</div>
-          <div>
-            <input
-              v-model="activeElement.gridLeft">
-          </div>
-        </div>
-        <div class="panel-row">
-          <vpd-icon name="edit-3" />
-          <div class="panel-label">右边距</div>
-          <div>
-            <input
-              v-model="activeElement.gridRight">
-          </div>
-        </div>
-        <div class="panel-row">
-          <vpd-icon name="edit-3" />
-          <div class="panel-label">标题</div>
-          <div>
-            <input
-              v-model="activeElement.chartTitle">
-          </div>
-        </div>
-        <div class="panel-row">
-          <vpd-icon name="edit-3" />
-          <div class="panel-label">标题颜色</div>
-          <div class="panel-value">{{ activeElement.titleColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.titleColor"
-              type="color">
-          </div>
-        </div>
-        <div
-          class="panel-row"
-          flex>
-          <vpd-icon name="bold" />
-          <div class="panel-label">X/Y轴翻转</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.xyturn"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="panel-item-new">
-        <div class="panel-item-title">柱体设置</div>
-        <div class="panel-row">
-          <vpd-icon name="edit-3" />
-          <div class="panel-label">宽度</div>
-          <div>
-            <input v-model="activeElement.seriseBarWidth">
-          </div>
-        </div>
-        <div class="panel-row">
-          <vpd-icon name="edit-3" />
-          <div class="panel-label">圆角</div>
-          <div>
-            <input
-              v-model="activeElement.seriseRadius1"
+              v-model="activeElement.splitNumber"
               type="number"
-              min="0"
-              class="radiusInp">
-            <input
-              v-model="activeElement.seriseRadius2"
-              type="number"
-              min="0"
-              class="radiusInp">
-            <input
-              v-model="activeElement.seriseRadius3"
-              type="number"
-              min="0"
-              class="radiusInp">
-            <input
-              v-model="activeElement.seriseRadius4"
-              type="number"
-              min="0"
-              class="radiusInp">
+              min="1">
           </div>
         </div>
         <div class="panel-row">
@@ -341,22 +204,16 @@
           <div class="panel-label">配置颜色</div>
           <div class="panel-setcolor">
             <div
-              v-for="(item,index) in activeElement.lgArr"
+              v-for="(value, index) in activeElement.colorArr"
               :key="index"
+              :data-val="value"
+              :data-ind="index"
               class="panel-setcolor-item">
-              <div class="panel-value-new">{{ item.color }}</div>
+              <div class="panel-value-new">{{ value }}</div>
               <div>
                 <input
-                  v-model="item.color"
+                  v-model="activeElement.colorArr[index]"
                   type="color">
-                <input
-                  v-if="activeElement.lgArr.length > 1"
-                  v-model="item.offset"
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="1"
-                  class="radiusInp">
               </div>
               <button
                 v-if="index == 0"
@@ -451,7 +308,85 @@
         </div>
       </div>
     </div>
-
+    <div v-show="tab === 3">
+      <div class="panel-item-new">
+        <div class="panel-item-title">图例设置</div>
+        <div
+          class="panel-row"
+          flex>
+          <vpd-icon name="bold" />
+          <div class="panel-label">显示图例</div>
+          <div class="panel-value">
+            <label class="form-switch">
+              <input
+                v-model="activeElement.showLengend"
+                type="checkbox" >
+              <i class="form-icon"/>
+            </label>
+          </div>
+        </div>
+        <div
+          v-show="activeElement.showLengend"
+          class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">宽度</div>
+          <div>
+            <input v-model="activeElement.lengendWidth">
+          </div>
+        </div>
+        <div class="panel-row" style="display: none">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">高度</div>
+          <div>
+            <input v-model="activeElement.lengendHeight">
+          </div>
+        </div>
+        <div class="panel-row" style="display: none" flex>
+          <vpd-icon name="align-justify" />
+          <div class="panel-label">对齐</div>
+          <div class="panel-value">
+            <label class="radiolabel">
+              <input
+                v-model="activeElement.lengendPositionX"
+                type="radio"
+                class="inpRadio"
+                name="task"
+                value="left">居左
+            </label>
+            <label class="radiolabel">
+              <input
+                v-model="activeElement.lengendPositionX"
+                type="radio"
+                class="inpRadio"
+                name="task"
+                value="right">居右
+            </label>
+          </div>
+        </div>
+        <div class="panel-row" style="display: none" flex>
+          <vpd-icon name="align-justify" />
+          <div class="panel-label"></div>
+          <div class="panel-value">
+            <label class="radiolabel">
+              <input
+                v-model="activeElement.lengendPositionY"
+                type="radio"
+                class="inpRadio"
+                name="task"
+                value="top">居上
+            </label>
+            <label class="radiolabel">
+              <input
+                v-model="activeElement.lengendPositionY"
+                type="radio"
+                class="inpRadio"
+                name="task"
+                value="bottom">居下
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -460,7 +395,7 @@ import vpd from '@/components/Dashboard/Designer/mixins/vpd'
 import MyEditor from '@/components/Dashboard/Designer/common/monacoEditor'
 import axios from 'axios'
 export default {
-  name: 'BraidLineChartStyle',
+  name: 'BraidBarPolarStyle',
   components: {
     MyEditor
   },
@@ -503,17 +438,14 @@ export default {
     },
     addLGColor () {
       let params = {
-        property: 'lgArr',
-        data: {
-          color: '#0000ff',
-          offset: 1
-        }
+        property: 'colorArr',
+        data: '#0000ff'
       }
       this.$vpd.commit('addColor', params)
     },
     delLGColor (index) {
       let params = {
-        property: 'lgArr',
+        property: 'colorArr',
         data: {
           index: index
         }

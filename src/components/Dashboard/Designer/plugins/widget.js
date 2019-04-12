@@ -9,7 +9,7 @@ const install = (Vue, config = {}) => {
   if (install.installed) return
 
   widgets = Object.assign({}, Widgets, config.widgets)
-
+  // console.log(JSON.parse(JSON.stringify(widgets)))
   Object.keys(widgets).forEach(key => {
     Vue.component(key, widgets[key])
     Vue.component(key, Vue.extend(widgets[key]).extend(vpd))

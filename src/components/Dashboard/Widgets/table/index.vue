@@ -38,7 +38,7 @@
         flex: 1
         }">序号</div>
       <div
-        v-for="(item, index) in val.tableData.data.columns"
+        v-for="(item, index) in val.dataJSON.data.columns"
         :key="item.id"
         class="table-th"
         :style="{
@@ -47,7 +47,7 @@
           background: val.thBgColor,
           display: val.showTh ? 'flex' : 'none',
           flex: val.tbPercent.split(',')[index],
-          borderRight: index === val.tableData.data.columns.length-1 ? '' : val.tbBorderRgiht
+          borderRight: index === val.dataJSON.data.columns.length-1 ? '' : val.tbBorderRgiht
         }"><span>{{item.name}}</span></div>
     </div>
     <!-- 表身 -->
@@ -58,7 +58,7 @@
       class="table-body">
       <!-- 表内容块 -->
       <div
-        v-for="(item, index) in val.tableData.data.rows"
+        v-for="(item, index) in val.dataJSON.data.rows.slice(0, val.dataLength)"
         :key="item.id"
         class="table-tr" >
         <div
@@ -83,7 +83,7 @@
           fontSize: val.tbFontSize + 'px',
           flex: val.tbPercent.split(',')[index],
           textAlign: val.tbAlign,
-          borderRight: value === val.tableData.data.columns.length-1 ? '' : val.tbBorderRgiht
+          borderRight: value === val.dataJSON.data.columns.length-1 ? '' : val.tbBorderRgiht
           }"
           class="table-td"><span>{{item[key]}}</span></div>
       </div>
@@ -146,8 +146,9 @@ export default {
     tbFontSize: 14, // 表格文本字体大小
     tbAlign: 'center', // 表格对齐方式
     tbBorderRgiht: '',
-    tbPercent: '1, 3, 1, 1', // 个列比例
-    tableData: {
+    tbPercent: '2, 1, 1, 1', // 个列比例
+    dataLength: 4, // 表格行数
+    dataJSON: {
       'status': 0,
       'msg': '',
       'data': {
@@ -181,7 +182,7 @@ export default {
             'diff': 5074808
           },
           {
-            'area': '内蒙古内蒙古内蒙内蒙古内蒙古内蒙古',
+            'area': '内蒙古',
             'lastMonth': 1222913,
             'thisMonth': 9567721,
             'diff': 3474808
@@ -203,6 +204,18 @@ export default {
             'lastMonth': 3452913,
             'thisMonth': 6787721,
             'diff': 3904808
+          },
+          {
+            'area': '湖南',
+            'lastMonth': 3222913,
+            'thisMonth': 6597721,
+            'diff': 5674808
+          },
+          {
+            'area': '乌鲁木齐',
+            'lastMonth': 3222913,
+            'thisMonth': 6597721,
+            'diff': 5674808
           }
         ]
       }
