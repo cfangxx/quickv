@@ -286,20 +286,7 @@
               type="color">
           </div>
         </div>
-        <div
-          class="panel-row"
-          flex>
-          <vpd-icon name="bold" />
-          <div class="panel-label">X/Y轴翻转</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.xyturn"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
-          </div>
-        </div>
+
       </div>
       <div class="panel-item-new">
         <div class="panel-item-title">柱体设置</div>
@@ -403,7 +390,7 @@
               rows="3"
               placeholder="$CUR_HOST/openapi/demo/chart?type=sellGoods"/>
               <p>可使用示例API：XXXXXXXXXXXXXXXXXXXXXXXXX</p>
-              <button class="btn-small">调试</button>
+              <button class="btn-small" style="display: none">调试</button>
               <button
                 class="btn-small"
                 @click="refreshAPIurl">刷新图表</button>
@@ -451,7 +438,22 @@
         </div>
       </div>
     </div>
-
+    <div v-show="tab === 3">
+      <div
+        class="panel-row"
+        flex>
+        <vpd-icon name="bold" />
+        <div class="panel-label">X/Y轴翻转</div>
+        <div class="panel-value">
+          <label class="form-switch">
+            <input
+              v-model="activeElement.xyturn"
+              type="checkbox" >
+            <i class="form-icon"/>
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

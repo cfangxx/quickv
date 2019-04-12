@@ -28,15 +28,15 @@
         textAlign: val.tbAlign
       }">
       <div
-        v-show="val.showNum"
+        v-show="val.showTh && val.showNum"
         class="table-th"
         :style="{
         color: val.thColor,
         fontSize: val.thFontSize + 'px',
         background: val.thBgColor,
         display: val.showTh ? 'flex' : 'none',
-        flex: 1
-        }">序号</div>
+        flex: val.showNum ? 1 : 0
+        }">{{val.thNumText}}</div>
       <div
         v-for="(item, index) in val.dataJSON.data.columns"
         :key="item.id"
@@ -136,6 +136,7 @@ export default {
     thColor: '#333333', // 表头文本颜色
 
     showNum: false, // 是否添加序号
+    thNumText: '序号', // 序号显示文字
     thNumColor: '#ffffff', // 序号文本颜色
     thNumFontSize: 14, // 序号文本字体大小
     thNumWidth: 36, // 序号圆大小

@@ -15,10 +15,7 @@
     contenteditable="true">
     <v-echart
       :options="options"
-      :style="{
-        width: '800',
-        height: val.height / h * h
-      }"
+      autoresize
       class="ffff"/>
   </div>
 </template>
@@ -116,7 +113,12 @@ export default {
   props: ['w', 'h', 'val', 'playState'],
   data () {
     return {
-
+      // barCharts: echarts.init(document.getElementsByClassName('fff'))
+    }
+  },
+  watch: {
+    echartWidth () {
+      // console.log(this.val.width)
     }
   },
   computed: {

@@ -13,17 +13,13 @@
     contenteditable="true">
     <v-echart
       :options="options"
-      :style="{
-        width: '800',
-        height: val.height / h * h
-      }"
+      autoresize
       class="ffff"/>
   </div>
 </template>
 
 <script>
 import stylec from './style.vue'
-// import echarts from 'echarts/lib/echarts'
 const WIDGET_NAME = 'braid-barpolar'
 export default {
   name: WIDGET_NAME,
@@ -49,22 +45,6 @@ export default {
     belong: 'page',
     animationName: '',
 
-    chartTitle: '销量', // 图表标题
-    textStyleColor: '#666666', // 文本颜色
-    itemStyleColor: '#42b983', // 柱状图颜色
-    xyturn: false, // xy轴翻转
-    titleColor: '#666666', // 标题颜色
-    yTextColor: '#666666', // Y 轴文字颜色
-    xLineColor: '#666666', // X 轴轴线颜色
-    yLineColor: '#666666', // Y 轴轴线颜色
-    showXaxisTick: false, // 是否显示 X 轴刻度线
-    showYTick: false, // 是否显示 Y 轴刻度线
-    xAxisLabel: false, // X 轴是否偏移
-    showXLine: true, // 是否显示 X 轴轴线
-    showYLine: false, // 是否显示Y 轴轴线
-    showXSplitLine: false, // 是否显示X 轴网格线
-    showY: true, // 是否显示 Y 轴
-
     showX: false, // 是否显示 X 轴
     xLineWidth: 1, // X 轴轴线宽度
     xTextColor: '#666666', // X 轴文字颜色
@@ -72,15 +52,22 @@ export default {
     xLabelRotate: 0, // X轴文字旋转角度
     showYSplitLine: true, // 是否显示Y 轴网格线
     splitLineColor: '#ddd', // y轴标线颜色
-    colorArr: ['#fc8700', '#ff00c0', '#f33a00', '#2cbdff'], // 颜色数组
+    colorArr: ['#fc8700', '#ff00c0', '#f33a00', '#2cbdff', '#0000ff', '#25da29', '#f1f10e', '#07ecf8', '#af28d7', '#20f807'], // 颜色数组
     polarSize: '70%', // 图表大小调整 如 70% / 300
     splitNumber: 10, // 分割段数
+    polarType: 'bar', // 图表标线样式 如 line, bar
 
-    showLengend: true, // 显示图例
-    lengendWidth: '60%', // 图例宽度
-    lengendHeight: '100', // 图例高度
-    lengendPositionX: 'right', // 图例位置（X 轴）
-    lengendPositionY: 'bottom', // 图例位置（Y 轴）
+    showLegend: true, // 显示图例
+    legendWidth: '60%', // 图例宽度
+    legendHeight: '100', // 图例高度
+    legendPositionX: 'center', // 图例位置（X 轴）
+    legendPositionY: 'bottom', // 图例位置（Y 轴）
+    legendFontSize: 12, // 图例文字大小
+    legendTextColor: '#555', // 图例文字颜色
+    legendIcon: 'roundRect', // 图例 Icon 如 circle, rect, line, roundRect, triangle, diamond, pin, none
+    legendIconWidth: 20, // 图例 Icon 宽度
+    legendIconHeight: 10, // 图例 Icon 高度
+    legendIconGap: 10, // 图例 Icon 间距
 
     dataAPI: 'http://192.168.159.2:7300/mock/5c88c1401cbd339a508e7ef4/czjx', // API拉取地址
     dataAPIAuto: false, // 是否自动刷新
@@ -126,7 +113,6 @@ export default {
       let data = this.val.dataJSON.data.map(item => {
         return item.unit
       })
-      // console.log(data)
       return data
     },
     dataSeries () {
@@ -135,7 +121,7 @@ export default {
       let arrData = this.val.dataJSON.data
       for (let i in arrData) {
         let serItem = {}
-        serItem.type = 'bar'
+        serItem.type = this.val.polarType
         serItem.data = []
         for (let j in arrData) {
           if (j === i) {
@@ -150,7 +136,6 @@ export default {
         serItem.stack = 'a'
         seriesData[i] = serItem
       }
-      console.log(seriesData)
       return seriesData
     },
     options () {
@@ -162,7 +147,6 @@ export default {
             show: false
           }
         },
-        // color: ['#fc8700', '#ff00c0', '#f8c73c', '#c7ef7c', '#f33a00', '#acbdff', '#60ced3', '#2cbdff'],
         color: this.val.colorArr,
         radiusAxis: {
           axisLine: { // 坐标 轴线
@@ -210,60 +194,19 @@ export default {
           radius: this.val.polarSize // 图表大小调整，如 70% / 200
         },
         series: this.dataSeries,
-        // series: [
-        //   {
-        //     type: 'bar',
-        //     data: [1, 0, 0, 0, 0, 0, 0],
-        //     coordinateSystem: 'polar',
-        //     name: 'A',
-        //     stack: 'a'
-        //   }, {
-        //     type: 'bar',
-        //     data: [0, 4, 0, 0, 0, 0, 0],
-        //     coordinateSystem: 'polar',
-        //     name: 'B',
-        //     stack: 'a'
-        //   }, {
-        //     type: 'bar',
-        //     data: [0, 0, 3, 0, 0, 0, 0],
-        //     coordinateSystem: 'polar',
-        //     name: 'C',
-        //     stack: 'a'
-        //   }, {
-        //     type: 'bar',
-        //     data: [0, 0, 0, 8, 0, 0, 0],
-        //     coordinateSystem: 'polar',
-        //     name: 'D',
-        //     stack: 'a'
-        //   }, {
-        //     type: 'bar',
-        //     data: [0, 0, 0, 0, 4, 0, 0],
-        //     coordinateSystem: 'polar',
-        //     name: 'E',
-        //     stack: 'a'
-        //   }, {
-        //     type: 'bar',
-        //     data: [0, 0, 0, 0, 0, 9, 0],
-        //     coordinateSystem: 'polar',
-        //     name: 'F',
-        //     stack: 'a'
-        //   }, {
-        //     type: 'bar',
-        //     data: [0, 0, 0, 0, 0, 0, 1],
-        //     coordinateSystem: 'polar',
-        //     name: 'G',
-        //     stack: 'a'
-        //   }
-        // ],
         legend: {
-          show: this.val.showLengend, // 显示图例
-          // left: '0',
-          // top: '0%',
-          bottom: 0,
-          width: this.val.lengendWidth,
+          show: this.val.showLegend, // 显示图例
+          x: this.val.legendPositionX,
+          y: this.val.legendPositionY,
+          width: this.val.legendWidth,
           // height: this.val.lengendHeight,
+          icon: this.val.legendIcon, // 图例图标
+          itemWidth: parseInt(this.val.legendIconWidth), // 图里图标宽度
+          itemHeight: parseInt(this.val.legendIconHeight), // 图里图标高度
+          itemGap: parseInt(this.val.legendIconGap), // 图里图标间距
           textStyle: {
-            color: '#333'
+            color: this.val.legendTextColor,
+            fontSize: this.val.legendFontSize
           },
           // data: ['财政', '民政', '财政', '水利', '人设', '住建', '工信']
           data: this.dataLength

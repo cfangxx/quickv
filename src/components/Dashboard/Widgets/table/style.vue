@@ -146,6 +146,17 @@
           v-show="activeElement.showNum"
           class="panel-row">
           <vpd-icon name="square" />
+          <div class="panel-label">序号文字</div>
+          <div class="panel-value">
+            <input
+              v-model="activeElement.thNumText"
+              type="text" >
+          </div>
+        </div>
+        <div
+          v-show="activeElement.showNum"
+          class="panel-row">
+          <vpd-icon name="square" />
           <div class="panel-label">序号大小</div>
           <div class="panel-value">
             <input
@@ -233,7 +244,7 @@
         <div class="panel-item-title">表格</div>
         <div class="panel-row">
           <vpd-icon name="square" />
-          <div class="panel-label">列数比例</div>
+          <div class="panel-label">每列占比</div>
           <div class="panel-value">
             <input
               v-model="activeElement.tbPercent"

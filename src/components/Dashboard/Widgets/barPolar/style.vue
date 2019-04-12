@@ -64,7 +64,7 @@
         </div>
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">X 轴</div>
+        <div class="panel-item-title">角度轴</div>
         <div
           class="panel-row"
           flex>
@@ -151,7 +151,7 @@
         </div>
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">Y 轴</div>
+        <div class="panel-item-title">径向轴</div>
         <div
           class="panel-row"
           flex>
@@ -260,7 +260,7 @@
               rows="3"
               placeholder="$CUR_HOST/openapi/demo/chart?type=sellGoods"/>
               <p>可使用示例API：XXXXXXXXXXXXXXXXXXXXXXXXX</p>
-              <button class="btn-small">调试</button>
+              <button class="btn-small" style="display: none">调试</button>
               <button
                 class="btn-small"
                 @click="refreshAPIurl">刷新图表</button>
@@ -319,70 +319,172 @@
           <div class="panel-value">
             <label class="form-switch">
               <input
-                v-model="activeElement.showLengend"
+                v-model="activeElement.showLegend"
                 type="checkbox" >
               <i class="form-icon"/>
             </label>
           </div>
         </div>
         <div
-          v-show="activeElement.showLengend"
+          v-show="activeElement.showLegend"
           class="panel-row">
           <vpd-icon name="edit-3" />
           <div class="panel-label">宽度</div>
           <div>
-            <input v-model="activeElement.lengendWidth">
+            <input v-model="activeElement.legendWidth">
           </div>
         </div>
-        <div class="panel-row" style="display: none">
+        <div
+          v-show="activeElement.showLegend"
+          class="panel-row">
           <vpd-icon name="edit-3" />
-          <div class="panel-label">高度</div>
+          <div class="panel-label">文字大小</div>
           <div>
-            <input v-model="activeElement.lengendHeight">
+            <input
+              v-model="activeElement.legendFontSize"
+              type="number" min="8">
           </div>
         </div>
-        <div class="panel-row" style="display: none" flex>
+        <div
+          v-show="activeElement.showLegend"
+          class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">文字颜色</div>
+          <div class="panel-value">{{ activeElement.legendTextColor }}</div>
+          <div>
+            <input
+              v-model="activeElement.legendTextColor"
+              type="color">
+          </div>
+        </div>
+        <div
+          v-show="activeElement.showLegend"
+          class="panel-row"
+          flex>
           <vpd-icon name="align-justify" />
           <div class="panel-label">对齐</div>
           <div class="panel-value">
             <label class="radiolabel">
               <input
-                v-model="activeElement.lengendPositionX"
+                v-model="activeElement.legendPositionX"
                 type="radio"
                 class="inpRadio"
-                name="task"
+                name="x"
                 value="left">居左
             </label>
             <label class="radiolabel">
               <input
-                v-model="activeElement.lengendPositionX"
+                v-model="activeElement.legendPositionX"
                 type="radio"
                 class="inpRadio"
-                name="task"
+                name="x"
+                value="center">居中
+            </label>
+            <label class="radiolabel">
+              <input
+                v-model="activeElement.legendPositionX"
+                type="radio"
+                class="inpRadio"
+                name="x"
                 value="right">居右
             </label>
           </div>
         </div>
-        <div class="panel-row" style="display: none" flex>
+        <div
+          v-show="activeElement.showLegend"
+          class="panel-row"
+          flex>
           <vpd-icon name="align-justify" />
           <div class="panel-label"></div>
           <div class="panel-value">
             <label class="radiolabel">
               <input
-                v-model="activeElement.lengendPositionY"
+                v-model="activeElement.legendPositionY"
                 type="radio"
                 class="inpRadio"
-                name="task"
+                name="y"
                 value="top">居上
             </label>
             <label class="radiolabel">
               <input
-                v-model="activeElement.lengendPositionY"
+                v-model="activeElement.legendPositionY"
                 type="radio"
                 class="inpRadio"
-                name="task"
+                name="y"
+                value="center">居中
+            </label>
+            <label class="radiolabel">
+              <input
+                v-model="activeElement.legendPositionY"
+                type="radio"
+                class="inpRadio"
+                name="y"
                 value="bottom">居下
             </label>
+          </div>
+        </div>
+        <div>
+          <div
+            v-show="activeElement.showLegend"
+            class="panel-row">
+            <vpd-icon name="layout" />
+            <div class="panel-label">图例图标</div>
+            <div class="panel-value">
+              <select v-model="activeElement.legendIcon">
+                <!--<option>{{activeElement.legendIcon}}</option>-->
+                <option
+                  v-for="(val, index) in icon"
+                  :key="index" :value="val.value">{{ val.name }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div
+          v-show="activeElement.showLegend"
+          class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">图标宽度</div>
+          <div>
+            <input
+              v-model="activeElement.legendIconWidth"
+              type="number" min="1">
+          </div>
+        </div>
+        <div
+          v-show="activeElement.showLegend"
+          class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">图标高度</div>
+          <div>
+            <input
+              v-model="activeElement.legendIconHeight"
+              type="number" min="1">
+          </div>
+        </div>
+        <div
+          v-show="activeElement.showLegend"
+          class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">图标间距</div>
+          <div>
+            <input
+              v-model="activeElement.legendIconGap"
+              type="number" min="0">
+          </div>
+        </div>
+      </div>
+      <div class="panel-item-new">
+        <div class="panel-item-title">图表样式</div>
+        <div>
+          <div class="panel-row">
+            <vpd-icon name="layout" />
+            <div class="panel-label">样式</div>
+            <div class="panel-value">
+              <select v-model="activeElement.polarType">
+                <option value="bar">扇形</option>
+                <option value="line">折线</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -403,6 +505,36 @@ export default {
   props: ['activeElement', 'tab'],
   data () {
     return {
+      icon: [
+        {
+          name: '无',
+          value: 'none'
+        }, {
+          name: '圆形',
+          value: 'circle'
+        }, {
+          name: '矩形',
+          value: 'rect'
+        }, {
+          name: '线形',
+          value: 'line'
+        }, {
+          name: '圆角矩形',
+          value: 'roundRect'
+        }, {
+          name: '三角形',
+          value: 'triangle'
+        }, {
+          name: '菱形',
+          value: 'diamond'
+        }, {
+          name: '圆形',
+          value: 'pin'
+        }, {
+          name: '箭头',
+          value: 'arrow'
+        }
+      ],
       dataJSON: JSON.stringify(this.activeElement.dataJSON, null, 2),
       selectStatus: '1'
     }
@@ -466,14 +598,7 @@ export default {
         let JSONData = {
           status: 0,
           msg: '',
-          data: {
-            categories: [],
-            series: []
-          }
-        }
-        for (let i in data) {
-          JSONData.data.categories.push(data[i].unit)
-          JSONData.data.series.push(data[i].schedule)
+          data: data
         }
         this.$vpd.commit('updataJSON', JSONData)
       })
