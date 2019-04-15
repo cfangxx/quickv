@@ -83,6 +83,10 @@ export default class Store {
     return this.vm.$on(event, callback)
   }
 
+  $off (event, callback) {
+    return this.vm.$off(event, callback)
+  }
+
   subscribe (sub) {
     this.subscribers.push(sub)
     return () => this.subscribers.splice(this.subscribers.indexOf(sub), 1)

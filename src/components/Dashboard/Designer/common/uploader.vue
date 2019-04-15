@@ -53,7 +53,9 @@ export default {
       }, 0)
     })
   },
-
+  beforeDestroy () {
+    this.$vpd.$off('upload')
+  },
   methods: {
     // 处理添加图片操作，触发事件：change
     handleUpload () {

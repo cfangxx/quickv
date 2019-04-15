@@ -554,11 +554,6 @@ export default {
     }
   },
   methods: {
-    addPic () {
-      this.$vpd.$emit('upload', (payload) => {
-        this.$vpd.commit('addBackPic', payload)
-      })
-    },
     jsonOnMounted (edit) {
       // console.log(edit);
     },
