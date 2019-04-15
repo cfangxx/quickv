@@ -2,7 +2,9 @@
   <div class="body container grid-xl">
     <div class="columns col-gapless">
       <div class="viewport column">
-        <viewport/>
+        <viewport
+        preview
+        />
 
       </div>
     </div>
@@ -62,10 +64,5 @@ export default {
 
 .viewport:hover .zoom-wrap {
   opacity: 1;
-}
-#svgspriteit {
-  position: absolute;
-  z-index: -1;
-  opacity: 0;
 }
 </style>

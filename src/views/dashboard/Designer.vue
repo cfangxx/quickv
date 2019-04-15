@@ -56,7 +56,7 @@ export default {
 
       var Painter = document.getElementById('viewport').children[0]
 
-      domtoimage.toPng(Painter)
+      domtoimage.toPng(Painter, {style: {'transform': 'scale(1)'}})
         .then(function (imgData) {
           dashboard['imgData'] = imgData
         }).then(() => {

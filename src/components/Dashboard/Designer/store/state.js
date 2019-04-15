@@ -21,7 +21,7 @@ export default {
     title: '数据可视化大屏', // 页面 title
     width: 1920,
     height: 1080, // 画布高度
-    endTime: new Date(), // 截止日期
+    endTime: new Date().getTime(), // 截止日期
     backgroundColor: '#ffffff'
   },
   widgets: [] // 元件

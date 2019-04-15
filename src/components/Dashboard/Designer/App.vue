@@ -34,7 +34,7 @@ import navbar from './common/navbar.vue'
 import toolbar from './common/toolbar.vue'
 import panel from './common/panel/index.vue'
 import viewport from './common/viewport/index.vue'
-import loadSprite from './utils/load-sprite'
+// import loadSprite from './utils/load-sprite'
 import vpd from './mixins/vpd'
 import toast from './common/toast.vue'
 import uploader from './common/uploader.vue'
@@ -73,7 +73,7 @@ export default {
   },
   beforeCreate () {
     // TODO: custom svg path by config
-    loadSprite('//unpkg.com/vue-page-designer/dist/icons.svg', 'svgspriteit')
+    // loadSprite('//unpkg.com/vue-page-designer/dist/icons.svg', 'svgspriteit')
   },
   created () {
     // 注册 widgets
@@ -85,6 +85,7 @@ export default {
       this.$vpd.replaceState(this.value)
     }
     this.$vpd.$on('save', () => {
+      this.$vpd.commit('initActive')
       this.$emit('save', this.$vpd.state)
     })
     this.$vpd.$on('quit', () => {

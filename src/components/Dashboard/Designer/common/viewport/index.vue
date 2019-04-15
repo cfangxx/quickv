@@ -43,10 +43,10 @@
       </component>
 
       <!-- 参考线 -->
-      <ref/>
+      <component v-bind:is="preview ? '' : 'ref'"/>
 
       <!-- 尺寸控制器 -->
-      <control/>
+      <component v-bind:is="preview ? '' : 'control'"/>
     </div>
   </div>
 </template>
@@ -66,8 +66,10 @@ export default {
 
   mixins: [move, vpd],
 
-  props: ['zoom'],
-
+  props: {
+    'zoom': Number,
+    'preview': Boolean
+  },
   data () {
     return {}
   },
@@ -109,6 +111,10 @@ export default {
   },
 
   mounted () {
+    // 预览窗口禁止改变组件位置
+    if (this._props.preview) {
+      return
+    }
     // 采用事件代理的方式监听元件的选中操作
     document
       .getElementById('viewport')

@@ -122,6 +122,9 @@ export default {
   // 初始化选中对象
   initActive (state) {
     state.activeElement = state.page
+    state.type = state.page.type
+    state.index = state.page.index
+    state.uuid = state.page.uuid
   },
 
   // 删除选中元件
