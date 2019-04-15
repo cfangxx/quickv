@@ -171,7 +171,7 @@ export default {
 
   // 替换图片
   replaceImage (state, payload) {
-    state.activeElement.width = payload[0].width
+    // state.activeElement.width = payload[0].width
     state.activeElement.url = payload[0].url
   },
 
@@ -188,7 +188,10 @@ export default {
     state.activeElement.backPic = payload[0].url
     state.activeElement.backPicUrl = payload[0].src
   },
-
+  addBgPic (state, payload) {
+    state.page.backPic = payload[0].url
+    state.page.backPicUrl = payload[0].src
+  },
   // 替换背景色
   replaceBackgroundColor (state, payload) {
     state.activeElement.bgColor = payload[0].val

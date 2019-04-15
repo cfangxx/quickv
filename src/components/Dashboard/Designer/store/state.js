@@ -22,7 +22,8 @@ export default {
     width: 1920,
     height: 1080, // 画布高度
     endTime: new Date().getTime(), // 截止日期
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
+    backPic: ''
   },
   widgets: [] // 元件
 }

@@ -49,7 +49,21 @@
           type="color">
       </div>
     </div>
-
+    <div class="panel-row">
+      <vpd-icon name="image" />
+      <div class="panel-label">背景图</div>
+      <div class="panel-value">
+        <div
+          :style="{ backgroundImage: 'url(' + activeElement.backPic + ')' }"
+          class="panel-preview pic-updata-btn"
+          @click="addPic">
+          点击上传
+          <vpd-icon
+            v-show="!activeElement.backPic"
+            name="plus"/>
+        </div>
+      </div>
+    </div>
     <div
       class="panel-row"
       flex>
@@ -65,7 +79,21 @@
 </template>
 
 <script>
+import vpd from '@/components/Dashboard/Designer/mixins/vpd'
 export default {
-  props: ['activeElement', 'tab']
+  mixins: [vpd],
+  props: ['activeElement', 'tab'],
+  methods: {
+    addPic () {
+      this.$vpd.$emit('upload', (payload) => {
+        this.$vpd.commit('addBgPic', payload)
+      })
+    }
+  }
 }
 </script>
+<style>
+  .pic-updata-btn{
+    width:60px;
+  }
+</style>

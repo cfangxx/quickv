@@ -5,6 +5,8 @@
     <div
       :style="{
         backgroundColor: backgroundColor,
+        backgroundImage: backPic,
+        backgroundRepeat: 'no-repeat',
         width:width + 'px',
         height: height + 'px',
         position: 'relative',
@@ -71,7 +73,9 @@ export default {
     'preview': Boolean
   },
   data () {
-    return {}
+    return {
+
+    }
   },
 
   computed: {
@@ -94,7 +98,11 @@ export default {
     backgroundColor () {
       return this.$vpd.state.page.backgroundColor
     },
-
+    // 页面背景图片
+    backPic () {
+      let str = 'url(' + this.$vpd.state.page.backPic + ')'
+      return str
+    },
     // 选中项id
     id () {
       // var type = this.$vpd.state.type
@@ -171,6 +179,10 @@ export default {
       if (type) {
         uuid = target.getAttribute('data-uuid') || curDiv.getAttribute('data-uuid')
 
+        // console.log(e, type, uuid)
+        if (type === 'braid-bg') {
+          uuid = -1
+        }
         // 设置选中元素
         this.$vpd.commit('select', {
           uuid: uuid || -1
