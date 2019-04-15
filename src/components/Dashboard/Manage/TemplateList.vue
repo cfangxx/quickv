@@ -1,18 +1,17 @@
 <template>
   <div :class="rootClass">
     <ul :class="rootClass + '__wrapper'">
-
       <li v-for="(dataImage, index) in dataImagesLocal" :key="index"
         :class="rootClass + '__item'">
-
         <div
           :class="classThumbnail(imgSelected.hash, dataImage.hash)"
           @click="onSelectImage(dataImage)">
-          <img :src="dataImage.imgUrl | fullImgUrl"
-               :height="h"
-               :width="w"
-               :class="rootClass + '__img'">
-
+          <div :class="rootClass + '__imgcont'">
+            <img :src="dataImage.imgUrl | fullImgUrl"
+                 :height="h"
+                 :width="w"
+                 :class="rootClass + '__img'">
+          </div>
           <label :class="rootClass + '__lbl'">
                 {{dataImage.name}}
           </label>
@@ -107,22 +106,29 @@ export default {
   list-style-type: none;
   padding: 0px;
   margin: 0px;
+  width:auto;
+  display: flex;
 }
 
 .template-list__item {
   margin: 0px 12px 12px 0px;
   float: left;
 }
-
+.template-list__imgcont{
+  width: 100%;
+  height: 90px;
+}
+.template-list__imgcont img,.template-list__imgcont span{
+  display: inline-block;
+  width:100%;
+  height:100%;
+}
 .template-list__thumbnail{
-  padding: 6px;
-  border: 1px solid #dddddd;
-
   display: block;
   padding: 4px;
   line-height: 20px;
   border: 1px solid #ddd;
-  width: 150px;
+  width: 160px;
 
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
