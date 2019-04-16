@@ -20,18 +20,6 @@
       <section class="navbar-cont navbar-right">
         <a
           class="btn btn-link tooltip tooltip-bottom"
-          data-tooltip="复制元件 Ctrl + C"
-          @click="copyWidget">
-          <vpd-icon name="copy" /> 复制
-        </a>
-        <a
-          class="btn btn-link tooltip tooltip-bottom"
-          data-tooltip="删除元件 Delete"
-          @click="dele">
-          <vpd-icon name="trash-2" /> 删除
-        </a>
-        <a
-          class="btn btn-link tooltip tooltip-bottom"
           data-tooltip="保存 Ctrl + S"
           @click="save"><vpd-icon name="save" /> 保存
         </a>
@@ -55,7 +43,6 @@ export default {
   mixins: [vpd],
   data () {
     return {
-
     }
   },
   computed: {
@@ -67,55 +54,10 @@ export default {
     }
   },
   mounted () {
-    // Ctrl + C 复制元件
-    document.addEventListener(
-      'keyup',
-      e => {
-        e.stopPropagation()
-        if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
-          this.copyWidget()
-        }
-      },
-      true
-    )
-
-    // Delete 删除选中元件
-    document.addEventListener(
-      'keyup',
-      e => {
-        e.stopPropagation()
-        if (e.keyCode === 46) {
-          this.dele()
-        }
-      },
-      true
-    )
-
-    // Ctrl + S 保存
-    document.addEventListener(
-      'keyup',
-      e => {
-        e.stopPropagation()
-        if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
-          this.save()
-        }
-      },
-      true
-    )
-
-    // Ctrl + ESC 退出
-    document.addEventListener(
-      'keyup',
-      e => {
-        e.stopPropagation()
-        if ((e.ctrlKey || e.metaKey) && e.keyCode === 27) {
-          this.quit()
-        }
-      },
-      true
-    )
+    document.addEventListener('keyup', this.triggerKeyupFn)
   },
-  created () {
+  beforeDestroy () {
+    document.removeEventListener('keyup', this.triggerKeyupFn)
   },
   methods: {
     // 保存
@@ -136,6 +78,22 @@ export default {
     // 退出
     quit () {
       this.$vpd.dispatch('quit')
+    },
+
+    triggerKeyupFn (e) {
+      e.stopPropagation()
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
+        this.save()
+      }
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
+        this.copyWidget()
+      }
+      if (e.keyCode === 46) {
+        this.dele()
+      }
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 27) {
+        this.quit()
+      }
     }
   }
 }

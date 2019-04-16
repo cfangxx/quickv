@@ -50,12 +50,17 @@
       <!-- 尺寸控制器 -->
       <component v-bind:is="preview ? '' : 'control'"/>
     </div>
+
+      <!-- 右键菜单 -->
+      <component v-bind:is="preview ? '' : 'context-menu'"/>
   </div>
 </template>
 
 <script>
 import ref from './ref-lines.vue'
 import control from './size-control.vue'
+import menu from './context-menu.vue'
+
 import { move } from '../../mixins'
 import vpd from '../../mixins/vpd'
 
@@ -63,7 +68,8 @@ export default {
   name: 'Viewport',
   components: {
     ref: ref, // 参考线
-    control: control // 尺寸控制
+    control: control, // 尺寸控制
+    contextMenu: menu // 右键菜单
   },
 
   mixins: [move, vpd],
