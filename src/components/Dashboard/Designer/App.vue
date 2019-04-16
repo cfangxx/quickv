@@ -71,10 +71,12 @@ export default {
       return this.$vpd.state.zoom
     }
   },
+
   beforeCreate () {
     // TODO: custom svg path by config
     // loadSprite('//unpkg.com/vue-page-designer/dist/icons.svg', 'svgspriteit')
   },
+
   created () {
     // 注册 widgets
     Vue.use(widget, {
@@ -92,15 +94,19 @@ export default {
       this.$emit('quit', this.$vpd.state)
     })
   },
+
   mounted () {
-    // 初始化选中元件（将页面作为初始选中元件）
-    this.$vpd.commit('initActive')
     window.onresize = () => {
       return (() => {
         this.handleLableWidth()
       })()
     }
     this.handleLableWidth()
+  },
+
+  updated () {
+    // 初始化选中元件（将页面作为初始选中元件）
+    this.$vpd.commit('initActive')
   },
 
   methods: {
@@ -112,6 +118,7 @@ export default {
       this.styleObj1.width = (wid - 40) + 'px'
     }
   },
+
   watch: {
     value: {
       handler (newValue, oldValue) {
