@@ -1,4 +1,4 @@
-import VuePageDesigner from './App.vue'
+import VuePageDesigner from './index.vue'
 
 import slider from './common/slider.vue'
 import icon from './common/icon.vue'

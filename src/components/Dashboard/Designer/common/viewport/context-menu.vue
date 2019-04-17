@@ -21,11 +21,16 @@ export default {
       y: null,
       style: {},
       show: false,
-      target: document.body
+      target: null
     }
   },
   mounted () {
     this.bindEvents()
+    this.bindHideEvents()
+  },
+  beforeDestroy () {
+    this.unbindEvents()
+    this.unbindHideEvents()
   },
   watch: {
     show (show) {
@@ -34,11 +39,8 @@ export default {
       } else {
         this.unbindHideEvents()
       }
-
-      this.target = document.getElementById('viewport')
     },
     target (target) {
-      document.body.removeEventListener('contextmenu', this.triggerShowFn)
       this.bindEvents()
     }
   },
@@ -53,10 +55,8 @@ export default {
     },
     // 初始化事件
     bindEvents () {
+      if (!this.target) return
       this.triggerShowFn = this.contextMenuHandler.bind(this)
-      if (!this.target) {
-        document.body.addEventListener('contextmenu', this.triggerShowFn)
-      }
       this.target.addEventListener('contextmenu', this.triggerShowFn)
     },
     // 取消绑定事件
@@ -77,6 +77,10 @@ export default {
     },
     // 鼠标点击事件处理器
     clickDocumentHandler (e) {
+      if (!this.target) {
+        this.target = document.getElementById('viewport')
+      }
+
       this.show = false
     },
     // 右键事件事件处理

@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import vuePagePreview from '@/components/Dashboard/Preview/App'
+import vuePagePreview from '@/components/Dashboard/Preview/index'
 import {fetchDashboard} from '@/api/dashboard'
 
 export default {

@@ -131,7 +131,6 @@ export default {
   delete (state) {
     var type = state.type
     if (type === 'page') return
-
     // 如果删除的是容器，须将内部元件一并删除
     if (state.activeElement.isContainer) {
       var name = state.activeElement.name
@@ -144,11 +143,11 @@ export default {
     }
     // 删除元件
     state.widgets.splice(state.index, 1)
-
     // 重置 activeElement
     state.activeElement = state.page
-    // state.type = 'page'
-    state.uuid = -1
+    state.type = 'page'
+    state.uuid = null
+    state.index = -1
   },
 
   // 添加组件
