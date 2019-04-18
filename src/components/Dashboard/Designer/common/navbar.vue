@@ -5,17 +5,24 @@
         <a>logo</a>
       </section>
       <section class="navbar-cont nav-middle">
-        <a
-          class="icon addWidget">添加组件</a>
-        <div class="index-show ">
+        <widget :zoom="zoom"/>
+        <!-- <div class="icon-item">
+          <svg-icon icon-class="chart" class="classify-icon"/>
+          <span>图表</span>
+          <svg-icon icon-class="dashboard" class="classify-icon"/>
+          <span>指标</span>
+        </div>
+
+        <a class="icon addWidget">添加组件</a>
+        <div class="index-show">
           <div
             id="box"
             class="tip_Wrapinner navbar-widget-cont">
-            <toolbar
+            <widget
               :zoom="zoom"
               class="toolbar column"/>
           </div>
-        </div>
+        </div> -->
       </section>
       <section class="navbar-cont navbar-right">
         <a
@@ -35,10 +42,10 @@
 
 <script>
 import vpd from '../mixins/vpd'
-import toolbar from './toolbartest.vue'
+import widget from './widget-box.vue'
 export default {
   components: {
-    toolbar
+    widget
   },
   mixins: [vpd],
   data () {
@@ -129,7 +136,7 @@ export default {
     }
   }
 </style>
-<style>
+<style scoped>
   .navbar-section{
     flex:0 1 0;
   }
@@ -186,5 +193,14 @@ export default {
   }
   .logo a{
     color:#bcc3ce;
+  }
+  .icon-item {
+    font-size: 25px;
+    color: #FFFFFF;
+    cursor: pointer;
+  }
+  .icon-item span {
+    display: block;
+    font-size: 12px;
   }
 </style>
