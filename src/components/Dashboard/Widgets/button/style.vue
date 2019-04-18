@@ -5,7 +5,6 @@
       <div class="panel-item-new">
         <!--<div class="panel-item-title">基础参数</div>-->
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">宽度</div>
           <div>
             <input
@@ -14,7 +13,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">高度</div>
           <div>
             <input
@@ -23,7 +21,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">横坐标</div>
           <div>
             <input
@@ -32,7 +29,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">纵坐标</div>
           <div>
             <input
@@ -41,7 +37,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">层级</div>
           <div>
             <input
@@ -53,7 +48,6 @@
       <div class="panel-item-new">
         <div class="panel-item-title">基础设置</div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">按钮文本</div>
           <div>
             <input
@@ -61,7 +55,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">文本大小</div>
           <div>
             <input
@@ -71,7 +64,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">文本颜色</div>
           <div class="panel-value">{{ activeElement.color }}</div>
           <div>
@@ -81,7 +73,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="target" />
           <div class="panel-label">背景颜色</div>
           <div class="panel-value">{{ activeElement.bgColor }}</div>
           <div class="panel-value">
@@ -91,7 +82,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">圆角大小</div>
           <div>
             <input
@@ -104,7 +94,6 @@
       <div style="display: none" class="panel-item-new">
       <div class="panel-item-title">悬停设置</div>
       <div class="panel-row">
-        <vpd-icon name="edit-3" />
         <div class="panel-label">文本颜色</div>
         <div class="panel-value">{{ activeElement.colorHover }}</div>
         <div>
@@ -114,7 +103,6 @@
         </div>
       </div>
       <div class="panel-row">
-        <vpd-icon name="target" />
         <div class="panel-label">背景颜色</div>
         <div class="panel-value">{{ activeElement.bgColorHover }}</div>
         <div class="panel-value">

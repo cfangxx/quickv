@@ -193,6 +193,10 @@ export default {
                   border-radius: 2px;
                 }
               }
+              &:hover {
+                background-color:rgb(240, 240, 240);
+                border-radius:2px;
+              }
             }
           }
         }

@@ -4,7 +4,6 @@
       <div class="panel-item-new">
         <!--<div class="panel-item-title">基础参数</div>-->
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">宽度</div>
           <div>
             <input
@@ -13,7 +12,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">高度</div>
           <div>
             <input
@@ -22,7 +20,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">横坐标</div>
           <div>
             <input
@@ -31,7 +28,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">纵坐标</div>
           <div>
             <input
@@ -40,7 +36,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">层级</div>
           <div>
             <input
@@ -50,7 +45,6 @@
         </div>
         <div v-if="activeElement.isChild">
           <div class="panel-row">
-            <vpd-icon name="layout" />
             <div class="panel-label">所属容器</div>
             <div class="panel-value">
               <select v-model="activeElement.belong">
@@ -66,7 +60,6 @@
       <div class="panel-item-new">
         <div class="panel-item-title">{{activeElement.xyturn ? 'Y 轴' : 'X 轴'}}</div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">文本颜色</div>
           <div class="panel-value">{{ activeElement.xTextColor }}</div>
           <div>
@@ -76,7 +69,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">轴线颜色</div>
           <div class="panel-value">{{ activeElement.xLineColor }}</div>
           <div>
@@ -88,7 +80,6 @@
         <div
           class="panel-row"
           flex>
-          <vpd-icon name="bold" />
           <div class="panel-label">显示轴</div>
           <div class="panel-value">
             <label class="form-switch">
@@ -102,7 +93,6 @@
         <div
           class="panel-row"
           flex>
-          <vpd-icon name="bold" />
           <div class="panel-label">显示网格</div>
           <div class="panel-value">
             <label class="form-switch">
@@ -116,7 +106,6 @@
         <div
           class="panel-row"
           flex>
-          <vpd-icon name="bold" />
           <div class="panel-label">显示刻度</div>
           <div class="panel-value">
             <label class="form-switch">
@@ -131,7 +120,6 @@
           class="panel-row"
           v-show="activeElement.showXaxisTick"
           flex>
-          <vpd-icon name="bold" />
           <div class="panel-label">刻度偏移</div>
           <div class="panel-value">
             <label class="form-switch">
@@ -147,7 +135,6 @@
       <div class="panel-item-new">
         <div class="panel-item-title">{{activeElement.xyturn ? 'X 轴' : 'Y 轴'}}</div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">文本颜色</div>
           <div class="panel-value">{{ activeElement.yTextColor }}</div>
           <div>
@@ -159,7 +146,6 @@
         <div
           class="panel-row"
           flex>
-          <vpd-icon name="bold" />
           <div class="panel-label">显示轴</div>
           <div class="panel-value">
             <label class="form-switch">
@@ -173,7 +159,6 @@
         <div
           class="panel-row"
           flex>
-          <vpd-icon name="bold" />
           <div class="panel-label">显示网格</div>
           <div class="panel-value">
             <label class="form-switch">
@@ -187,7 +172,6 @@
         <div
           class="panel-row"
           flex>
-          <vpd-icon name="bold" />
           <div class="panel-label">显示刻度</div>
           <div class="panel-value">
             <label class="form-switch">
@@ -201,7 +185,6 @@
         <div
           class="panel-row"
           flex>
-          <vpd-icon name="bold" />
           <div class="panel-label">显示轴线</div>
           <div class="panel-value">
             <label class="form-switch">
@@ -215,7 +198,6 @@
         <div
           v-show="activeElement.showYLine"
           class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">轴线颜色</div>
           <div class="panel-value">{{ activeElement.yLineColor }}</div>
           <div>
@@ -225,7 +207,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">标线颜色</div>
           <div class="panel-value">{{ activeElement.splitLineColor }}</div>
           <div>
@@ -239,7 +220,6 @@
       <div class="panel-item-new">
         <div class="panel-item-title">图表设置</div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">上边距</div>
           <div>
             <input
@@ -247,7 +227,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">下边距</div>
           <div>
             <input
@@ -255,7 +234,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">左边距</div>
           <div>
             <input
@@ -263,7 +241,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">右边距</div>
           <div>
             <input
@@ -271,7 +248,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">标题</div>
           <div>
             <input
@@ -279,7 +255,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">标题颜色</div>
           <div class="panel-value">{{ activeElement.titleColor }}</div>
           <div>
@@ -293,14 +268,12 @@
       <div class="panel-item-new">
         <div class="panel-item-title">柱体设置</div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">宽度</div>
           <div>
             <input v-model="activeElement.seriseBarWidth">
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">圆角</div>
           <div>
             <input
@@ -326,7 +299,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">配置颜色</div>
           <div class="panel-setcolor">
             <div
@@ -399,7 +371,6 @@
               <div
                 class="panel-row"
                 flex>
-                <vpd-icon name="bold" />
                 <div class="panel-label">自动刷新</div>
                 <div class="panel-value">
                   <label class="form-switch">
@@ -413,7 +384,6 @@
               <div
                 v-if="activeElement.dataAPIAuto"
                 class="panel-row">
-                <vpd-icon name="edit-3" />
                 <div class="panel-label">时间间隔</div>
                 <div>
                   <input
@@ -444,7 +414,6 @@
       <div
         class="panel-row"
         flex>
-        <vpd-icon name="bold" />
         <div class="panel-label">X/Y轴翻转</div>
         <div class="panel-value">
           <label class="form-switch">

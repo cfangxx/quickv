@@ -4,7 +4,6 @@
     <div class="panel-item-new">
       <div class="panel-item-title">基础参数</div>
       <div class="panel-row">
-        <vpd-icon name="edit-3" />
         <div class="panel-label">宽度</div>
         <div>
           <input
@@ -13,7 +12,6 @@
         </div>
       </div>
       <div class="panel-row">
-        <vpd-icon name="edit-3" />
         <div class="panel-label">高度</div>
         <div>
           <input
@@ -22,7 +20,6 @@
         </div>
       </div>
       <div class="panel-row">
-        <vpd-icon name="edit-3" />
         <div class="panel-label">横坐标</div>
         <div>
           <input
@@ -31,7 +28,6 @@
         </div>
       </div>
       <div class="panel-row">
-        <vpd-icon name="edit-3" />
         <div class="panel-label">纵坐标</div>
         <div>
           <input
@@ -40,7 +36,6 @@
         </div>
       </div>
       <div class="panel-row">
-        <vpd-icon name="edit-3" />
         <div class="panel-label">层级</div>
         <div>
           <input
@@ -52,7 +47,6 @@
     <div class="panel-item-new">
       <div class="panel-item-title">容器</div>
       <div class="panel-row">
-        <vpd-icon name="maximize" />
         <div class="panel-label">容器名称</div>
         <div class="panel-value">
           <input
@@ -63,7 +57,6 @@
         </div>
       </div>
       <div class="panel-row">
-        <vpd-icon name="grid" />
         <div class="panel-label">display</div>
         <div class="panel-value">
           <select
@@ -76,7 +69,6 @@
       <div
         v-show="activeElement.display === 'flex'"
         class="panel-row">
-        <vpd-icon name="shuffle" />
         <div class="panel-label">主轴方向</div>
         <div class="panel-value">
           <select
@@ -91,7 +83,6 @@
       <div
         v-show="activeElement.display === 'flex'"
         class="panel-row">
-        <vpd-icon name="align-justify" />
         <div class="panel-label">主轴分布</div>
         <div class="panel-value">
           <select v-model="activeElement.justify">
@@ -106,7 +97,6 @@
       <div
         v-show="activeElement.display === 'flex'"
         class="panel-row">
-        <vpd-icon name="align-center" />
         <div class="panel-label">侧轴分布</div>
         <div class="panel-value">
           <select
@@ -121,7 +111,6 @@
       <div
         class="panel-row"
         style="display: none">
-        <vpd-icon name="target" />
         <div class="panel-label">背景色</div>
         <div class="panel-value">{{ activeElement.bgColor }}</div>
         <div class="panel-value">
@@ -131,7 +120,6 @@
         </div>
       </div>
       <div class="panel-row">
-        <vpd-icon name="square" />
         <div class="panel-label">圆角</div>
         <div class="panel-value">
           <input
@@ -140,7 +128,6 @@
         </div>
       </div>
       <div class="panel-row">
-        <vpd-icon name="maximize" />
         <div class="panel-label">边的宽度</div>
         <div class="panel-value">
           <input
@@ -149,7 +136,6 @@
         </div>
       </div>
       <div class="panel-row">
-        <vpd-icon name="edit-3" />
         <div class="panel-label">边的颜色</div>
         <div class="panel-value">{{ activeElement.borderColor }}</div>
         <div>
@@ -224,7 +210,6 @@
               class=""
               role="tabpanel">
               <div class="panel-row">
-                <vpd-icon name="image" />
                 <div class="panel-label">背景图</div>
                 <div class="panel-value">
                   <div
@@ -232,7 +217,6 @@
                     class="panel-preview"
                     @click="addPic">
                     点击上传
-                    <vpd-icon
                       v-show="!activeElement.backPic"
                       name="plus"/>
                   </div>

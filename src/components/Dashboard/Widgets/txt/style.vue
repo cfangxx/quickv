@@ -4,7 +4,6 @@
       <div class="panel-item-new">
         <!--<div class="panel-item-title">基础参数</div>-->
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">宽度</div>
           <div>
             <input
@@ -13,7 +12,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">高度</div>
           <div>
             <input
@@ -22,7 +20,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">横坐标</div>
           <div>
             <input
@@ -31,7 +28,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">纵坐标</div>
           <div>
             <input
@@ -40,7 +36,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">层级</div>
           <div>
             <input
@@ -52,7 +47,6 @@
     </div>
     <hr>
     <div class="panel-row" flex>
-      <vpd-icon name="sliders" />
       <div class="panel-label">行高</div>
       <div class="panel-value">{{ activeElement.lineHeight }}</div>
       <div class="panel-slider-wrap">
@@ -61,7 +55,6 @@
     </div>
 
     <div class="panel-row" flex>
-      <vpd-icon name="type" />
       <div class="panel-label">字号</div>
       <div class="panel-value">{{ activeElement.fontSize }}px</div>
       <div class="panel-slider-wrap">
@@ -70,7 +63,6 @@
     </div>
 
     <div class="panel-row" flex>
-      <vpd-icon name="edit-3" />
       <div class="panel-label">颜色</div>
       <div class="panel-value">{{ activeElement.color }}</div>
       <div>
@@ -79,7 +71,6 @@
     </div>
 
     <div class="panel-row" flex>
-      <vpd-icon name="bold" />
       <div class="panel-label">加粗</div>
       <div class="panel-value">
         <label class="form-switch">
@@ -90,20 +81,16 @@
     </div>
 
     <div class="panel-row" flex>
-      <vpd-icon name="align-justify" />
       <div class="panel-label">对齐</div>
       <div class="panel-value">
         <label class="form-radio tooltip" data-tooltip="左对齐">
           <input type="radio" name="align" value="left" v-model="activeElement.textAlign">
-          <i class="form-icon"></i> <vpd-icon name="align-left" />
         </label>
         <label class="form-radio tooltip" data-tooltip="居中">
           <input type="radio" name="align" value="center" v-model="activeElement.textAlign">
-          <i class="form-icon"></i> <vpd-icon name="align-center" />
         </label>
         <label class="form-radio tooltip" data-tooltip="右对齐">
           <input type="radio" name="align" value="right" v-model="activeElement.textAlign">
-          <i class="form-icon"></i> <vpd-icon name="align-center" />
         </label>
       </div>
     </div>

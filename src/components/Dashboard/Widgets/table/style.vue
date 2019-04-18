@@ -4,7 +4,6 @@
       <div class="panel-item-new">
         <!--<div class="panel-item-title">基础参数</div>-->
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">宽度</div>
           <div>
             <input
@@ -13,7 +12,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">高度</div>
           <div>
             <input
@@ -22,7 +20,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">横坐标</div>
           <div>
             <input
@@ -31,7 +28,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">纵坐标</div>
           <div>
             <input
@@ -40,7 +36,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">层级</div>
           <div>
             <input
@@ -50,7 +45,6 @@
         </div>
         <div v-if="activeElement.isChild">
           <div class="panel-row">
-            <vpd-icon name="layout" />
             <div class="panel-label">所属容器</div>
             <div class="panel-value">
               <select v-model="activeElement.belong">
@@ -68,7 +62,6 @@
         <div
           class="panel-row"
           flex>
-          <vpd-icon name="bold" />
           <div class="panel-label">显示表头</div>
           <div class="panel-value">
             <label class="form-switch">
@@ -82,7 +75,6 @@
         <div
           v-show="activeElement.showTh"
           class="panel-row">
-          <vpd-icon name="target" />
           <div class="panel-label">文本颜色</div>
           <div class="panel-value">{{ activeElement.thColor }}</div>
           <div class="panel-value">
@@ -94,7 +86,6 @@
         <div
           v-show="activeElement.showTh"
           class="panel-row">
-          <vpd-icon name="target" />
           <div class="panel-label">背景颜色</div>
           <div class="panel-value">{{ activeElement.thBgColor }}</div>
           <div class="panel-value">
@@ -106,7 +97,6 @@
         <div
           v-show="activeElement.showTh"
           class="panel-row">
-          <vpd-icon name="square" />
           <div class="panel-label">表头高度</div>
           <div class="panel-value">
             <input
@@ -117,7 +107,6 @@
         <div
           v-show="activeElement.showTh"
           class="panel-row">
-          <vpd-icon name="square" />
           <div class="panel-label">表头文本</div>
           <div class="panel-value">
             <input
@@ -131,7 +120,6 @@
         <div
           class="panel-row"
           flex>
-          <vpd-icon name="bold" />
           <div class="panel-label">显示序号</div>
           <div class="panel-value">
             <label class="form-switch">
@@ -145,7 +133,6 @@
         <div
           v-show="activeElement.showNum"
           class="panel-row">
-          <vpd-icon name="square" />
           <div class="panel-label">序号文字</div>
           <div class="panel-value">
             <input
@@ -156,7 +143,6 @@
         <div
           v-show="activeElement.showNum"
           class="panel-row">
-          <vpd-icon name="square" />
           <div class="panel-label">序号大小</div>
           <div class="panel-value">
             <input
@@ -167,7 +153,6 @@
         <div
           v-show="activeElement.showNum"
           class="panel-row">
-          <vpd-icon name="square" />
           <div class="panel-label">文本大小</div>
           <div class="panel-value">
             <input
@@ -178,7 +163,6 @@
         <div
           v-show="activeElement.showNum"
           class="panel-row">
-          <vpd-icon name="target" />
           <div class="panel-label">文本颜色</div>
           <div class="panel-value">{{ activeElement.thNumColor }}</div>
           <div class="panel-value">
@@ -190,7 +174,6 @@
         <div
           v-show="activeElement.showNum"
           class="panel-row">
-          <vpd-icon name="target" />
           <div class="panel-label">样式</div>
           <div
             class="radioscont">
@@ -215,7 +198,6 @@
         <div
           v-show="activeElement.showNum && activeElement.thNumType === 'circle'"
           class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">配置颜色</div>
           <div class="panel-setcolor">
             <div
@@ -243,7 +225,6 @@
       <div class="panel-item-new">
         <div class="panel-item-title">表格</div>
         <div class="panel-row">
-          <vpd-icon name="square" />
           <div class="panel-label">每列占比</div>
           <div class="panel-value">
             <input
@@ -252,7 +233,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="square" />
           <div class="panel-label">文本大小</div>
           <div class="panel-value">
             <input
@@ -261,7 +241,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="target" />
           <div class="panel-label">文本颜色</div>
           <div class="panel-value">{{ activeElement.tbColor }}</div>
           <div class="panel-value">
@@ -271,7 +250,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">对齐方式</div>
           <div class="panel-setcolor">
             <div class="panel-setcolor-item radioscont">
@@ -309,7 +287,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="maximize" />
           <div class="panel-label">边的宽度</div>
           <div class="panel-value">
             <input
@@ -319,7 +296,6 @@
           </div>
         </div>
         <div class="panel-row">
-          <vpd-icon name="edit-3" />
           <div class="panel-label">边的颜色</div>
           <div class="panel-value">{{ activeElement.borderColor }}</div>
           <div>
@@ -369,7 +345,6 @@
               <div
                 class="panel-row"
                 flex>
-                <vpd-icon name="bold" />
                 <div class="panel-label">自动刷新</div>
                 <div class="panel-value">
                   <label class="form-switch">
@@ -383,7 +358,6 @@
               <div
                 v-if="activeElement.dataAPIAuto"
                 class="panel-row">
-                <vpd-icon name="edit-3" />
                 <div class="panel-label">时间间隔</div>
                 <div>
                   <input
@@ -412,7 +386,6 @@
     </div>
     <div v-show="tab === 3">
       <div class="panel-row">
-        <vpd-icon name="edit-3" />
         <div class="panel-label">行数</div>
         <div>
           <input

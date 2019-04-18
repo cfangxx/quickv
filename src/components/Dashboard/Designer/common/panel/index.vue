@@ -173,6 +173,7 @@ export default {
     width: 80px;
     height: 36px;
     padding-left: 6px;
+    margin-left:15px;
     color: #999;
   }
   .panel-value {
