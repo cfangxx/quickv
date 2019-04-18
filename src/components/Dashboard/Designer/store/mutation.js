@@ -247,6 +247,7 @@ export default {
     state.activeElement.dataJSON = payload
   },
   updataData (state, payload) {
+    console.log(payload)
     state.activeElement[payload.name] = payload.value
   },
 

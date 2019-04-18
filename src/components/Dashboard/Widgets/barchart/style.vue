@@ -127,11 +127,27 @@
             </label>
           </div>
         </div>
+        <div
+          class="panel-row"
+          v-show="activeElement.showXaxisTick"
+          flex>
+          <vpd-icon name="bold" />
+          <div class="panel-label">刻度偏移</div>
+          <div class="panel-value">
+            <label class="form-switch">
+              <input
+                v-model="activeElement.xAxisLabel"
+                type="checkbox" >
+              <i class="form-icon"/>
+            </label>
+          </div>
+        </div>
 
       </div>
       <div class="panel-item-new">
         <div class="panel-item-title">{{activeElement.xyturn ? 'X 轴' : 'Y 轴'}}</div>
         <div class="panel-row">
+          <vpd-icon name="edit-3" />
           <div class="panel-label">文本颜色</div>
           <div class="panel-value">{{ activeElement.yTextColor }}</div>
           <div>
@@ -143,11 +159,26 @@
         <div
           class="panel-row"
           flex>
+          <vpd-icon name="bold" />
           <div class="panel-label">显示轴</div>
           <div class="panel-value">
             <label class="form-switch">
               <input
                 v-model="activeElement.showY"
+                type="checkbox" >
+              <i class="form-icon"/>
+            </label>
+          </div>
+        </div>
+        <div
+          class="panel-row"
+          flex>
+          <vpd-icon name="bold" />
+          <div class="panel-label">显示网格</div>
+          <div class="panel-value">
+            <label class="form-switch">
+              <input
+                v-model="activeElement.showYSplitLine"
                 type="checkbox" >
               <i class="form-icon"/>
             </label>
@@ -193,23 +224,7 @@
               type="color">
           </div>
         </div>
-        <div
-          class="panel-row"
-          flex>
-          <vpd-icon name="bold" />
-          <div class="panel-label">显示标线</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.showYSplitLine"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
-          </div>
-        </div>
-        <div
-          v-show="activeElement.showYSplitLine"
-          class="panel-row">
+        <div class="panel-row">
           <vpd-icon name="edit-3" />
           <div class="panel-label">标线颜色</div>
           <div class="panel-value">{{ activeElement.splitLineColor }}</div>
@@ -276,7 +291,40 @@
 
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">相关配置</div>
+        <div class="panel-item-title">柱体设置</div>
+        <div class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">宽度</div>
+          <div>
+            <input v-model="activeElement.seriseBarWidth">
+          </div>
+        </div>
+        <div class="panel-row">
+          <vpd-icon name="edit-3" />
+          <div class="panel-label">圆角</div>
+          <div>
+            <input
+              v-model="activeElement.seriseRadius1"
+              type="number"
+              min="0"
+              class="radiusInp">
+            <input
+              v-model="activeElement.seriseRadius2"
+              type="number"
+              min="0"
+              class="radiusInp">
+            <input
+              v-model="activeElement.seriseRadius3"
+              type="number"
+              min="0"
+              class="radiusInp">
+            <input
+              v-model="activeElement.seriseRadius4"
+              type="number"
+              min="0"
+              class="radiusInp">
+          </div>
+        </div>
         <div class="panel-row">
           <vpd-icon name="edit-3" />
           <div class="panel-label">配置颜色</div>
@@ -308,56 +356,6 @@
                 class="pannel-setcolor-item-btn"
                 @click="delLGColor(index)">删除</button>
             </div>
-          </div>
-        </div>
-        <div class="panel-row">
-          <vpd-icon name="edit-3" />
-          <div class="panel-label">折线宽度</div>
-          <div>
-            <input
-              v-model="activeElement.seriesLineWidth"
-              type="number"
-              min="0">
-          </div>
-        </div>
-        <div
-          class="panel-row"
-          flex>
-          <vpd-icon name="bold" />
-          <div class="panel-label">折线平滑</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.isSmooth"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
-          </div>
-        </div>
-        <div>
-          <div class="panel-row">
-            <vpd-icon name="layout" />
-            <div class="panel-label">拐点图形</div>
-            <div class="panel-value">
-              <select v-model="activeElement.seriesSymbol">
-                <!--<option>{{activeElement.legendIcon}}</option>-->
-                <option
-                  v-for="(val, index) in icon"
-                  :key="index" :value="val.value">{{ val.name }}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div
-          v-show="activeElement.seriesSymbol !== 'none'"
-          class="panel-row">
-          <vpd-icon name="edit-3" />
-          <div class="panel-label">拐点大小</div>
-          <div>
-            <input
-              v-model="activeElement.seriesSymbolSize"
-              type="number"
-              min="0">
           </div>
         </div>
       </div>
@@ -457,20 +455,6 @@
           </label>
         </div>
       </div>
-      <div
-        class="panel-row"
-        flex>
-        <vpd-icon name="bold" />
-        <div class="panel-label">显示提示框</div>
-        <div class="panel-value">
-          <label class="form-switch">
-            <input
-              v-model="activeElement.showTooltip"
-              type="checkbox" >
-            <i class="form-icon"/>
-          </label>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -480,7 +464,7 @@ import vpd from '@/components/Dashboard/Designer/mixins/vpd'
 import MyEditor from '@/components/Dashboard/Designer/common/monacoEditor'
 import axios from 'axios'
 export default {
-  name: 'BraidLineChartStyle',
+  name: 'BraidBarChartStyle',
   components: {
     MyEditor
   },
@@ -488,33 +472,6 @@ export default {
   props: ['activeElement', 'tab'],
   data () {
     return {
-      icon: [
-        {
-          name: '无',
-          value: 'none'
-        }, {
-          name: '圆形',
-          value: 'circle'
-        }, {
-          name: '矩形',
-          value: 'rectangle'
-        }, {
-          name: '三角形',
-          value: 'triangle'
-        }, {
-          name: '空心圆',
-          value: 'emptyCircle'
-        }, {
-          name: '菱形',
-          value: 'diamond'
-        }, {
-          name: '标注',
-          value: 'pin'
-        }, {
-          name: '箭头',
-          value: 'arrow'
-        }
-      ],
       dataJSON: JSON.stringify(this.activeElement.dataJSON, null, 2),
       selectStatus: '1'
     }

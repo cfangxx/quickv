@@ -8,16 +8,20 @@
       left: val.left / w * 100 + '%',
       top: val.top / h * 100 + '%',
       zIndex: val.z,
+      color: val.color,
       backgroundColor: val.bgColor,
-      backgroundImage: 'url(' + val.backPic + ')',
-      color: val.color
+      fontSize: val.fontSize + 'px',
+      borderRadius: val.borderRadius + 'px'
     }"
+    @mouseover="mouseOver($event)"
+    @mouseleave="mouseLeave($event)"
     contenteditable="true"
-    @blur="(e) => updateText(e, val.uuid)"
+    class="widget-btn"
     v-html="val.text"/>
 </template>
 
 <script>
+import vpd from '@/components/Dashboard/Designer/mixins/vpd'
 import stylec from './style.vue'
 const WIDGET_NAME = 'braid-button'
 
@@ -35,29 +39,38 @@ export default {
     dragable: true,
     resizable: true,
     name: '',
-    width: 250,
-    height: 60,
+    width: 150,
+    height: 40,
     left: 50,
     top: 0,
     z: 0,
-    bgColor: '#000000',
-    backPic: '',
-    backPicUrl: '',
+    fontSize: 14,
+    isHover: false,
+    bgColor: '#42b983',
+    bgColorHover: '#42b983',
     color: '#ffffff',
+    colorHover: '#ffffff',
+    borderRadius: 4,
     text: '按钮',
     belong: 'page',
     animationName: ''
   },
+  mixins: [vpd],
   props: ['w', 'h', 'val', 'playState'],
-
   methods: {
-    updateText (e, uuid) {
-      let text = e.target.innerHTML
-      this.$vpd.commit('updateData', {
-        uuid: uuid,
-        key: 'text',
-        value: text
-      })
+    mouseOver (e) {
+      // let param = {
+      //   name: 'isHover',
+      //   value: true
+      // }
+      // this.$vpd.commit('updataData', param)
+    },
+    mouseLeave (e) {
+      // let param = {
+      //   name: 'isHover',
+      //   value: false
+      // }
+      // this.$vpd.commit('updateData', param)
     }
   }
 }
@@ -69,4 +82,9 @@ export default {
   background-position: center;
   background-size: 100%;
 }
+  .widget-btn{
+    outline: none;
+    border: none;
+    cursor: pointer;
+  }
 </style>

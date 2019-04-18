@@ -23,11 +23,11 @@
 <script>
 import stylec from './style.vue'
 import echarts from 'echarts/lib/echarts'
-const WIDGET_NAME = 'braid-linechart'
+const WIDGET_NAME = 'braid-barchart'
 export default {
   name: WIDGET_NAME,
   icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-square"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>',
-  title: '折线区域图',
+  title: '柱状图',
   panel: stylec,
   setting: {
     type: WIDGET_NAME,
@@ -60,6 +60,7 @@ export default {
     splitLineColor: '#3c4084', // y轴标线颜色
     showXaxisTick: false, // 是否显示 X 轴刻度线
     showYTick: false, // 是否显示 Y 轴刻度线
+    xAxisLabel: false, // X 轴是否偏移
     showXLine: true, // 是否显示 X 轴轴线
     showYLine: false, // 是否显示Y 轴轴线
     showYSplitLine: true, // 是否显示Y 轴网格线
@@ -67,12 +68,14 @@ export default {
     showX: true, // 是否显示 X 轴
     showY: true, // 是否显示 Y 轴
 
+    seriseBarWidth: '40%', // 柱形图宽度
+    seriseRadius1: 20, // 柱形图圆角
+    seriseRadius2: 20, // 柱形图圆角
+    seriseRadius3: 0, // 柱形图圆角
+    seriseRadius4: 0, // 柱形图圆角
     lgArr: [{ // 设置渐变颜色数组
-      color: '#9e1aa6',
+      color: '#ba3ba3',
       offset: 0
-    }, {
-      color: '#0000ff',
-      offset: 1
     }],
     xyArr: ['xAxis', 'yAxis'],
 
@@ -80,12 +83,6 @@ export default {
     gridLeft: '3%', // 图表位置（距左边）
     gridRight: '3%', // 图表位置（距右边）
     gridBottom: '3%', // 图表位置（距底部）
-
-    seriesLineWidth: 0, // 折线宽度
-    seriesSymbol: 'none', // 拐点图形
-    seriesSymbolSize: 5, // 拐点大小
-    isSmooth: true, // 折线是否平滑
-    showTooltip: false, // 是否显示提示框
 
     dataAPI: 'http://192.168.159.2:7300/mock/5c88c1401cbd339a508e7ef4/czjx', // API拉取地址
     dataAPIAuto: false, // 是否自动刷新
@@ -103,12 +100,12 @@ export default {
           'iPhone'
         ],
         'series': [
-          46,
-          81,
-          58,
-          107,
-          118,
-          136
+          460751,
+          814276,
+          583693,
+          1076385,
+          1186058,
+          1369500
         ]
       }
     }
@@ -128,13 +125,13 @@ export default {
     barChartData () {
       return [
         {
-          type: 'category',
           nameLocation: 'start',
           show: this.val.showX, // 是否显示 X 轴
           nameGap: '50',
-          boundaryGap: false,
+          boundaryGap: true,
           axisTick: {
-            show: this.val.showXaxisTick // 是否显示 X 轴刻度线
+            show: this.val.showXaxisTick, // 是否显示 X 轴刻度线
+            alignWithLabel: this.val.xAxisLabel // X 轴偏移
           },
           axisLine: {
             show: this.val.showXLine, // 是否显示 X 轴轴线
@@ -193,14 +190,7 @@ export default {
           }
         },
         tooltip: {
-          show: this.val.showTooltip, // 是否显示提示框
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#6a7985'
-            }
-          }
+          trigger: 'item'
         },
         legend: {
           data: '销量'
@@ -216,23 +206,12 @@ export default {
         yAxis: this.val.xyturn ? this.barChartData[0] : this.barChartData[1],
         series: [{
           name: '销量',
-          type: 'line',
-          symbol: this.val.seriesSymbol, // 拐点图形 'circle' | 'rectangle' | 'triangle' | 'diamond' | 'pin'（标注）、'arrow'（箭头）
-          symbolSize: this.val.seriesSymbolSize, // 拐点圆的大小
-          smooth: this.val.isSmooth, // 平滑
+          type: 'bar',
+          barWidth: this.val.seriseBarWidth, // 柱形图宽度
           itemStyle: {
             normal: {
-              lineStyle: {
-                width: this.val.seriesLineWidth, // 折线宽度
-                type: 'solid', // 折线样式
-                color: this.val.lgArr[0].color // 折线颜色
-              }
-            }
-          },
-          areaStyle: {
-            show: false,
-            normal: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, this.val.lgArr) // 折线区域渐变色
+              barBorderRadius: [parseInt(this.val.seriseRadius1), parseInt(this.val.seriseRadius2), parseInt(this.val.seriseRadius3), parseInt(this.val.seriseRadius4)], // 柱形图圆角
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, this.val.lgArr) // 柱体颜色/渐变色
             }
           },
           data: this.val.dataJSON.data.series
