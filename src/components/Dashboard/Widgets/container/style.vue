@@ -217,6 +217,7 @@
                     class="panel-preview"
                     @click="addPic">
                     点击上传
+                    <vpd-icon
                       v-show="!activeElement.backPic"
                       name="plus"/>
                   </div>

@@ -9,7 +9,6 @@
       top: val.top / h * 100 + '%',
       zIndex: val.z,
       backgroundColor: val.bgColor,
-      backgroundImage: 'url(' + val.backPic + ')',
       color: val.color
     }"
     contenteditable="true">

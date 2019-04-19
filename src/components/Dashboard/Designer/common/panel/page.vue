@@ -49,7 +49,7 @@
       <div class="panel-label">背景图</div>
       <div class="panel-value">
         <div
-          :style="{ backgroundImage: 'url(' + activeElement.backPic + ')' }"
+          :style="{ backgroundImage: activeElement.backPic}"
           class="panel-preview pic-updata-btn"
           @click="addPic">
           点击上传

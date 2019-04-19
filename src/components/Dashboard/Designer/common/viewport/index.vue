@@ -106,8 +106,7 @@ export default {
     },
     // 页面背景图片
     backPic () {
-      let str = 'url(' + this.$vpd.state.page.backPic + ')'
-      return str
+      return this.$vpd.state.page.backPic
     },
     // 选中项id
     id () {

@@ -188,8 +188,7 @@ export default {
     state.activeElement.backPicUrl = payload[0].src
   },
   addBgPic (state, payload) {
-    state.page.backPic = payload[0].url
-    state.page.backPicUrl = payload[0].src
+    state.activeElement.backPic = 'url(' + payload[0].url + ')'
   },
   // 替换背景色
   replaceBackgroundColor (state, payload) {
