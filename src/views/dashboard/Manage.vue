@@ -66,7 +66,7 @@
 
         <el-form-item :label="'选择模板'">
           <template-list :dataImages="templateList"
-                         @onselectimage="onSelectImage">
+                         @onselect="onSelectTemplate">
           </template-list>
         </el-form-item>
 
@@ -280,7 +280,7 @@ export default {
         list[i]['sequenceNumber'] = i + 1
       }
     },
-    onSelectImage: function (data) {
+    onSelectTemplate: function (data) {
       this.temp.template = data.hash
     }
   }

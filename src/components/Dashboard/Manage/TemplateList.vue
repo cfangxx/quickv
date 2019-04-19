@@ -1,6 +1,22 @@
 <template>
   <div :class="rootClass">
     <ul :class="rootClass + '__wrapper'">
+      <li :class="rootClass + '__item'">
+        <div
+          :class="classThumbnail(imgSelected.hash, blankTemplate.hash)"
+          @click="onSelectImage(blankTemplate)">
+          <div :class="rootClass + '__imgcont'">
+            <img src="http://#"
+                 :height="h"
+                 :width="w"
+                 :class="rootClass + '__img'">
+          </div>
+          <label :class="rootClass + '__lbl'">
+                {{blankTemplate.name}}
+          </label>
+        </div>
+      </li>
+
       <li v-for="(dataImage, index) in dataImagesLocal" :key="index"
         :class="rootClass + '__item'">
         <div
@@ -64,6 +80,10 @@ export default {
       imgSelected: {
         hash: ''
       },
+      blankTemplate: {
+        hash: 'blank',
+        name: '空白模板'
+      },
       imgPreview: false
     }
   },
@@ -81,14 +101,14 @@ export default {
       return `${baseClass}`
     },
     onSelectImage (objectImage) {
-      this.imgPreview = true
       this.imgSelected = Object.assign({}, this.imgSelected, objectImage)
-      this.$emit('onselectimage', objectImage)
+      this.imgPreview = (this.imgSelected.hash !== this.blankTemplate.hash)
+      this.$emit('onselect', objectImage)
     },
     removeFromimgSelected () {
       this.imgPreview = false
       this.imgSelected = {}
-      this.$emit('onselectimage', {})
+      this.$emit('onselect', {})
     }
   },
   watch: {
@@ -145,7 +165,7 @@ export default {
 }
 
 .template-list__thumbnail--selected{
-  background: #0088cc;
+  background: #eeeeee;;
 }
 
 .template-list__img{
