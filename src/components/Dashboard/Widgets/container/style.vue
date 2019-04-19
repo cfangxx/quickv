@@ -1,8 +1,8 @@
 <template>
   <div>
-    <hr>
+    <!--<hr>-->
     <div class="panel-item-new">
-      <div class="panel-item-title">基础参数</div>
+      <!--<div class="panel-item-title">基础参数</div>-->
       <div class="panel-row">
         <div class="panel-label">宽度</div>
         <div>
@@ -108,23 +108,13 @@
         </div>
       </div>
       <hr>
-      <div
-        class="panel-row"
-        style="display: none">
-        <div class="panel-label">背景色</div>
-        <div class="panel-value">{{ activeElement.bgColor }}</div>
-        <div class="panel-value">
-          <input
-            v-model="activeElement.bgColor"
-            type="color" >
-        </div>
-      </div>
       <div class="panel-row">
         <div class="panel-label">圆角</div>
         <div class="panel-value">
           <input
             v-model="activeElement.radius"
-            type="text" >
+            type="number"
+            min="0">
         </div>
       </div>
       <div class="panel-row">
@@ -132,16 +122,18 @@
         <div class="panel-value">
           <input
             v-model="activeElement.borderWidth"
-            type="text" >
+            type="number"
+            min="0">
         </div>
       </div>
       <div class="panel-row">
         <div class="panel-label">边的颜色</div>
         <div class="panel-value">{{ activeElement.borderColor }}</div>
         <div>
-          <input
+          <el-color-picker
             v-model="activeElement.borderColor"
-            type="color" >
+            show-alpha
+            size="small"/>
         </div>
       </div>
     </div>
@@ -172,7 +164,8 @@
                 <div class="panel-value">
                   <el-color-picker
                     v-model="activeElement.bgColor"
-                    show-alpha />
+                    show-alpha
+                    size="small"/>
                 </div>
               </div>
             </li>
@@ -186,21 +179,33 @@
                 <div class="panel-value-new">
                   <el-color-picker
                     v-model="activeElement.bgGradientcolor1"
-                    show-alpha />
+                    show-alpha
+                    size="small"/>
                 </div>& &nbsp;&nbsp;&nbsp;
                 <div class="panel-value-new">
                   <el-color-picker
                     v-model="activeElement.bgGradientcolor2"
-                    show-alpha/>
+                    show-alpha
+                    size="small"/>
                 </div>
               </div>
               <div class="panel-row">
                 <div class="panel-label">方向</div>
                 <div class="panel-value">
-                  <input
-                    v-model="activeElement.bgGradientdir1"
-                    type="text"
-                    placeholder="top bottom left right 180deg" >
+                  <select v-model="activeElement.bgGradientdir1">
+                    <option value="top">向下</option>
+                    <option value="bottom">向上</option>
+                    <option value="left">向右</option>
+                    <option value="right">向左</option>
+                    <option value="top right">左下</option>
+                    <option value="bottom right">左上</option>
+                    <option value="top left">右下</option>
+                    <option value="bottom left">右上</option>
+                  </select>
+                  <!--<input-->
+                    <!--v-model="activeElement.bgGradientdir1"-->
+                    <!--type="text"-->
+                    <!--placeholder="top bottom left right 180deg" >-->
                 </div>
               </div>
             </li>
@@ -243,7 +248,7 @@ import vpd from '@/components/Dashboard/Designer/mixins/vpd'
 export default {
   name: 'BraidContainerTestStyle',
   mixins: [vpd],
-  props: ['activeElement'],
+  props: ['activeElement', 'tab'],
   data () {
     return {
       backgroundCss: [{
