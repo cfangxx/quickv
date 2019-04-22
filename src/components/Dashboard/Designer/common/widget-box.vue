@@ -31,23 +31,6 @@
       </li>
     </ul>
   </div>
-
-  <!-- <div class="menu-bar toolbar-new column-new">
-    <ul
-      class="widget-list columns-new"
-      @mousedown="updateSrollTop">
-      <li
-        v-for="item in widgets"
-        :key="item.name"
-        class="menu-item column col-6 col-6-new"
-        @click="(e) => {addWidget(e, item)}">
-        <vpd-icon
-          :svg="item.icon"
-          :title="item.title" />
-        <span class="menu-caption">{{ item.title }}</span>
-      </li>
-    </ul>
-  </div> -->
 </template>
 
 <script>

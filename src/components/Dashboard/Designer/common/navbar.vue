@@ -5,24 +5,7 @@
         <a>logo</a>
       </section>
       <section class="navbar-cont nav-middle">
-        <widget :zoom="zoom"/>
-        <!-- <div class="icon-item">
-          <svg-icon icon-class="chart" class="classify-icon"/>
-          <span>图表</span>
-          <svg-icon icon-class="dashboard" class="classify-icon"/>
-          <span>指标</span>
-        </div>
-
-        <a class="icon addWidget">添加组件</a>
-        <div class="index-show">
-          <div
-            id="box"
-            class="tip_Wrapinner navbar-widget-cont">
-            <widget
-              :zoom="zoom"
-              class="toolbar column"/>
-          </div>
-        </div> -->
+        <widget-box :zoom="zoom"/>
       </section>
       <section class="navbar-cont navbar-right">
         <a
@@ -42,10 +25,10 @@
 
 <script>
 import vpd from '../mixins/vpd'
-import widget from './widget-box.vue'
+import widgetBox from './widget-box.vue'
 export default {
   components: {
-    widget
+    widgetBox
   },
   mixins: [vpd],
   data () {
@@ -57,7 +40,7 @@ export default {
       return this.$vpd.state.type !== 'page'
     },
     zoom () {
-      return this.$vpd.state.zoom
+      return this.$vpd.state.page.zoom
     }
   },
   mounted () {
@@ -89,7 +72,7 @@ export default {
 
     triggerKeyupFn (e) {
       e.stopPropagation()
-      if (e.keyCode === 46) {
+      if (e.keyCode === 46 && this.$vpd.state.type !== 'braid-txt') {
         this.dele()
       }
     }
