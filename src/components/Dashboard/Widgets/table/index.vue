@@ -120,7 +120,7 @@ export default {
     backPic: '',
     backPicUrl: '',
     radius: 0,
-    borderColor: '',
+    borderColor: '#000000',
     borderWidth: 0,
     text: '表格',
     dir: 'row',

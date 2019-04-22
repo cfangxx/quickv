@@ -52,7 +52,7 @@ export default {
     xTextFontSize: 14, // X 轴文字大小
     xLabelRotate: 0, // X轴文字旋转角度
     showYSplitLine: true, // 是否显示Y 轴网格线
-    splitLineColor: '#ddd', // y轴标线颜色
+    splitLineColor: '#dddddd', // y轴标线颜色
     colorArr: ['#fc8700', '#ff00c0', '#f33a00', '#2cbdff', '#0000ff', '#25da29', '#f1f10e', '#07ecf8', '#af28d7', '#20f807'], // 颜色数组
     polarSize: '70%', // 图表大小调整 如 70% / 300
     splitNumber: 10, // 分割段数
