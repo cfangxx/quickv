@@ -89,17 +89,8 @@ export default {
 
     triggerKeyupFn (e) {
       e.stopPropagation()
-      if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
-        this.save()
-      }
-      if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
-        this.copyWidget()
-      }
       if (e.keyCode === 46) {
         this.dele()
-      }
-      if ((e.ctrlKey || e.metaKey) && e.keyCode === 27) {
-        this.quit()
       }
     }
   }

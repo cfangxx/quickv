@@ -246,7 +246,7 @@
 <script>
 import vpd from '@/components/Dashboard/Designer/mixins/vpd'
 export default {
-  name: 'BraidContainerTestStyle',
+  name: 'BraidContainerStyle',
   mixins: [vpd],
   props: ['activeElement', 'tab'],
   data () {

@@ -58,7 +58,7 @@ export default {
     radius: 0,
     borderColor: '',
     borderWidth: 0,
-    text: '容器test',
+    text: '容器',
     dir: 'row',
     justify: 'flex-start',
     align: 'flex-start',

@@ -19,7 +19,7 @@
       <component
         v-for="val in widgetStore"
         :is="val.type"
-        :data-title="val.type"
+        :data-title="val.text"
         :class="{'g-active': id === val.uuid}"
         :key="val.uuid"
         :val="val"

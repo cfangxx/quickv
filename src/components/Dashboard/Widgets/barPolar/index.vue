@@ -42,7 +42,7 @@ export default {
     top: 50,
     z: 0,
     color: '#555555',
-    text: '图表',
+    text: '堆叠柱状图',
     belong: 'page',
     animationName: '',
 
