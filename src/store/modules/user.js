@@ -115,7 +115,7 @@ const user = {
                 path: item.hash,
                 component: () => import('@/views/dashboard/Dashboard'),
                 name: item.hash,
-                meta: { title: item.name }
+                meta: { title: item.config.title }
               })
             })
           }

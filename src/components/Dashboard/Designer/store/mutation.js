@@ -38,8 +38,8 @@ export default {
     var target = state.activeElement
     var dx = payload.x - state.startX
     var dy = payload.y - state.startY
-    var left = state.originX + Math.floor(dx * 100 / state.zoom)
-    var top = state.originY + Math.floor(dy * 100 / state.zoom)
+    var left = state.originX + Math.floor(dx * 100 / state.page.zoom)
+    var top = state.originY + Math.floor(dy * 100 / state.page.zoom)
 
     target.left = left > 0 ? left : 0
     target.top = top > 0 ? top : 0
@@ -52,28 +52,28 @@ export default {
     var value
 
     if (payload.type === 'right') {
-      value = state.originX + Math.floor(dx * 100 / state.zoom)
+      value = state.originX + Math.floor(dx * 100 / state.page.zoom)
       state.activeElement.width = value > 10 ? value : 10
       return
     }
 
     if (payload.type === 'down') {
-      value = state.originX + Math.floor(dy * 100 / state.zoom)
+      value = state.originX + Math.floor(dy * 100 / state.page.zoom)
       state.activeElement.height = value > 10 ? value : 10
       return
     }
 
     if (payload.type === 'left') {
-      var left = state.originX + Math.floor(dx * 100 / state.zoom)
-      var width = state.originY - Math.floor(dx * 100 / state.zoom)
+      var left = state.originX + Math.floor(dx * 100 / state.page.zoom)
+      var width = state.originY - Math.floor(dx * 100 / state.page.zoom)
       state.activeElement.left = left > 0 ? left : 0
       state.activeElement.width = width > 10 ? width : 10
       return
     }
 
     if (payload.type === 'up') {
-      var top = state.originX + Math.floor(dy * 100 / state.zoom)
-      var height = state.originY - Math.floor(dy * 100 / state.zoom)
+      var top = state.originX + Math.floor(dy * 100 / state.page.zoom)
+      var height = state.originY - Math.floor(dy * 100 / state.page.zoom)
       state.activeElement.top = top > 0 ? top : 0
       state.activeElement.height = height > 10 ? height : 10
     }
@@ -116,7 +116,7 @@ export default {
 
   // 页面缩放
   zoom (state, val) {
-    state.zoom = val
+    state.page.zoom = val
   },
 
   // 初始化选中对象

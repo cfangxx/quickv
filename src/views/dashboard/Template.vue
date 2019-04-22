@@ -24,46 +24,11 @@
           </div>
         </div>
         <div class="item-box-bottom">
-          <h4>{{item.name}}</h4>
-          <p>{{ item.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }} <span class="link-type" >{{ item.resolution }}</span></p>
+          <h4>{{item.config.title}}</h4>
+          <p>{{ item.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }} <span class="link-type" >{{ item.config.width + 'X' + item.config.height }}</span></p>
         </div>
       </div>
     </div>
-
-    <el-row style="display: none">
-      <el-col :span="5">
-        <el-card class="box-card-component" shadow="hover">
-          <div slot="header" class="box-card-header"  @click="handleCreate">
-            <i class="el-icon-plus" style="font-size:60px; margin:30% auto"/>
-          </div>
-          <div style="position:relative;">
-            <span>新建模板</span>
-            <div class="box-card-bottom">
-              <span>添加一个新的模板</span>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-
-      <el-col :span="5" v-for="item in tplList" :key="item.hash" >
-        <el-card class="box-card-component" shadow="hover">
-          <div slot="header" class="box-card-header">
-            <img :src="item.imgUrl | fullImgUrl">
-            <div class="box-card-operation">
-              <i class="el-icon-edit" @click="handleEdit(item.hash)"></i>
-              <i class="el-icon-delete" @click="handleDelete(item.hash)"></i>
-            </div>
-          </div>
-          <div style="position:relative;">
-            <span>{{ item.name }}</span>
-            <div class="box-card-bottom">
-              <time class="time">{{ item.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</time>
-              <span class="link-type" >{{ item.resolution }}</span>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
 
     <!--新建大屏-->
     <el-dialog :title="'新建模板'" :visible.sync="dialogFormVisible">
@@ -141,11 +106,7 @@ export default {
         sort: '+id'
       },
       levelOptions,
-      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      temp: {
-        name: '',
-        level: 1
-      },
+      temp: {},
       dialogFormVisible: false,
       dialogStatus: '',
       createTplRules: {
@@ -160,9 +121,6 @@ export default {
     getTemplates () {
       this.tplListLoading = true
       fetchList().then(response => {
-        if (response.data.total > 0) {
-          this.serialList(response.data.items)
-        }
         this.tplList = response.data.items
         this.total = response.data.total || 0
         this.tplListLoading = false
@@ -180,31 +138,11 @@ export default {
       this.listQuery.page = 1
       this.getTemplates()
     },
-    handleModifyStatus (row, status) {
-      this.$message({
-        message: '操作成功',
-        type: 'success'
-      })
-      row.status = status
-    },
-    sortChange (data) {
-      const { prop, order } = data
-      if (prop === 'id') {
-        this.sortByID(order)
-      }
-    },
-    sortByID (order) {
-      if (order === 'ascending') {
-        this.listQuery.sort = '+id'
-      } else {
-        this.listQuery.sort = '-id'
-      }
-      this.handleFilter()
-    },
     resetTemp () {
       this.temp = {
         name: '',
-        level: 1
+        isTemplate: true,
+        about: '大屏模板'
       }
     },
     handleCreate () {
@@ -223,15 +161,6 @@ export default {
             this.handleEdit(response.hash)
           })
         }
-      })
-    },
-    handleUpdate (row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['TplForm'].clearValidate()
       })
     },
     handleDelete: function (hash) {
@@ -254,14 +183,6 @@ export default {
           redirect: 'template'
         }
       })
-    },
-    handlePreviewDashboard (hash) {
-      this.$router.push('/dashboard/' + hash)
-    },
-    serialList (list) {
-      for (let i = 0; i < list.length; i++) {
-        list[i]['sequenceNumber'] = i + 1
-      }
     }
   }
 }

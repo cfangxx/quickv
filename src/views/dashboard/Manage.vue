@@ -26,7 +26,7 @@
       </el-table-column>
       <el-table-column :label="'名称'" min-width="150px">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.name }}</span>
+          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.config.title }}</span>
         </template>
       </el-table-column>
       <!--<el-table-column :label="'时间'" width="150px" align="center">-->
@@ -36,12 +36,12 @@
       <!--</el-table-column>-->
       <el-table-column :label="'链接'" min-width="250px">
         <template slot-scope="scope">
-          <a class="link-type" :href="scope.row.url" target="_blank">{{ scope.row.url }}</a>
+          <a class="link-type" :href="scope.row.publish.url" target="_blank">{{ scope.row.publish.url }}</a>
         </template>
       </el-table-column>
       <el-table-column :label="'状态'" class-name="status-col" width="100">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status ">{{ scope.row.status | statusFilter}}</el-tag>
+          <el-tag :type="scope.row.publish.status">{{ scope.row.publish.status | statusFilter}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="'操作'" align="center" width="400" class-name="small-padding fixed-width">
@@ -59,9 +59,9 @@
 
     <!--新建大屏-->
     <el-dialog :title="'新建大屏'" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" label-position="top" label-width="70px">
+      <el-form ref="dataForm" :model="createTable" label-position="top" label-width="70px">
         <el-form-item :label="'大屏名称'" placeholder="请输入大屏名称" prop="title">
-          <el-input v-model="temp.name"/>
+          <el-input v-model="createTable.name"/>
         </el-form-item>
 
         <el-form-item :label="'选择模板'">
@@ -71,13 +71,13 @@
         </el-form-item>
 
         <el-form-item :label="'大屏简介'">
-          <el-input type="textarea" :rows="3" placeholder="请填写关于大屏的描述信息" v-model="temp.description"/>
+          <el-input type="textarea" :rows="3" placeholder="请填写关于大屏的描述信息" v-model="createTable.about"/>
         </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ '取消' }}</el-button>
-        <el-button type="primary" @click="dialogStatus===createData()">{{ '创建' }}</el-button>
+        <el-button type="primary" @click="dialogStatus===createSubmit()">{{ '创建' }}</el-button>
       </div>
     </el-dialog>
 
@@ -115,7 +115,7 @@ export default {
   directives: { waves },
   filters: {
     statusFilter (status) {
-      return publishTypeOptions[status]
+      return publishTypeOptions[status] || '未发布'
     }
   },
   computed: {
@@ -139,10 +139,7 @@ export default {
       },
       publishTypeOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      temp: {
-        name: '',
-        template: '',
-        description: ''
+      createTable: {
       },
       templateList: null,
       dialogFormVisible: false,
@@ -203,12 +200,11 @@ export default {
       this.handleFilter()
     },
     resetTemp () {
-      this.temp = {
+      this.createTable = {
         name: '',
         timestamp: Number(new Date()),
-        status: 'developing',
-        template: '',
-        description: ''
+        template: 'blank',
+        about: ''
       }
     },
     handleCreate () {
@@ -223,11 +219,10 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    createData () {
+    createSubmit () {
       this.$refs['dataForm'].validate((valid) => {
-        console.log(this.temp)
         if (valid) {
-          createDashboard(this.temp).then(response => {
+          createDashboard(this.createTable).then(response => {
             // 跳转到编辑页面
             this.$router.push('/edit/dashboard/' + response.hash)
           })
@@ -235,8 +230,8 @@ export default {
       })
     },
     handleUpdate (row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
+      this.createTable = Object.assign({}, row) // copy obj
+      this.createTable.timestamp = new Date(this.createTable.timestamp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -281,7 +276,7 @@ export default {
       }
     },
     onSelectTemplate: function (data) {
-      this.temp.template = data.hash
+      this.createTable.template = data.hash
     }
   }
 }

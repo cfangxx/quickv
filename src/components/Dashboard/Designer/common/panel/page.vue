@@ -5,11 +5,22 @@
     <div
       class="panel-row"
       flex>
-      <div class="panel-label">页面标题</div>
+      <div class="panel-label">大屏名称</div>
       <div class="panel-value">
         <input
           v-model="activeElement.title"
           type="text">
+      </div>
+    </div>
+
+    <div
+      class="panel-row"
+      flex>
+      <div class="panel-label">大屏简介</div>
+      <div class="panel-value">
+        <textarea
+          v-model="activeElement.about">
+        </textarea>
       </div>
     </div>
 
@@ -57,16 +68,6 @@
             v-show="!activeElement.backPic"
             name="plus"/>
         </div>
-      </div>
-    </div>
-    <div
-      class="panel-row"
-      flex>
-      <div class="panel-label">截止日期</div>
-      <div class="panel-value">
-        <input
-          v-model="activeElement.endTime"
-          type="date">
       </div>
     </div>
   </div>

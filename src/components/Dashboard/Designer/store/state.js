@@ -1,6 +1,5 @@
 export default {
   top: 0, // 添加元件的初始纵坐标
-  zoom: 100, // 画布缩放百分比
   type: 'page', // 选中元素类型
   index: -1, // 选中元素索引
   uuid: null, // 选中元素uuid
@@ -19,11 +18,13 @@ export default {
   page: {
     page: true,
     title: '数据可视化大屏', // 页面 title
-    width: 1920,
+    about: '', // 简介
+    width: 1920, // 画布宽度
     height: 1080, // 画布高度
-    endTime: new Date().getTime(), // 截止日期
-    backgroundColor: '#ffffff',
-    backPic: ''
+    endTime: new Date().getTime(), // 修改日期
+    backgroundColor: '#ffffff', // 背景色
+    backPic: '', // 背景图片
+    zoom: 100 // 画布缩放百分比
   },
   widgets: [] // 元件
 }

@@ -1,6 +1,7 @@
 <template>
     <vue-page-designer
-      :value="config"
+      :page="config"
+      :widgets="widget"
       :upload="handleUpload"
       :upload-option="uploadOption"
       @save="handleSave"
@@ -23,6 +24,7 @@ export default {
       hash: this.$route.params.hash,
       details: null,
       config: null,
+      widget: [],
       uploadOption: {
         url: process.env.BASE_API + '/upload/image/' + this.$route.params.hash
         // url: 'https://jsonplaceholder.typicode.com/photos'
@@ -48,11 +50,8 @@ export default {
   methods: {
     handleSave (config) {
       var dashboard = {...this.details}
-
-      dashboard['hash'] = this.hash
-      dashboard['config'] = config
-      dashboard['name'] = config.page.title
-      dashboard['resolution '] = config.page.width + ' X ' + config.page.height
+      dashboard['config'] = config.page
+      dashboard['widget'] = config.widgets
 
       var Painter = document.getElementById('viewport').children[0]
 
@@ -96,6 +95,7 @@ export default {
 
           if (response.data.config) {
             this.config = response.data.config
+            this.widget = response.data.widget
           }
         }
       })

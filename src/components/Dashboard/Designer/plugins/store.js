@@ -114,8 +114,32 @@ export default class Store {
     return this
   }
 
-  replaceState (state) {
-    this.vm.$data.$$state = state
+  replaceState (value) {
+    this.vm.$data.$$state = value
+    return this
+  }
+
+  replacePage (value) {
+    this.vm.$data.$$state.page = Object.assign({}, this.vm.$data.$$state.page, value)
+    return this
+  }
+
+  replaceWidgets (value) {
+    this.vm.$data.$$state.widgets = value
+    return this
+  }
+
+  initState () {
+    this.vm.$data.$$state.page.backgroundColor = '#FFFFFF'
+    this.vm.$data.$$state.page.backPic = ''
+    this.vm.$data.$$state.page.title = ''
+    this.vm.$data.$$state.page.about = ''
+    this.vm.$data.$$state.page.width = 1920
+    this.vm.$data.$$state.page.width = 1080
+    this.vm.$data.$$state.page.zoom = 100
+
+    this.vm.$data.$$state.widgets = []
+
     return this
   }
 }

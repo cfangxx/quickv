@@ -6,7 +6,7 @@
         <toolbar
           :zoom="zoom"
           class="toolbar column"/>
-        <div :style="styleObj1" class="viewport viewport-new">
+        <div :style="styleObj" class="viewport viewport-new">
           <viewport :zoom="zoom"/>
           <div class="zoom-wrap">
             <vpd-slider
@@ -29,7 +29,7 @@
 
 <script>
 import Vue from 'vue'
-import widget from './plugins/widget'
+import widgetLibrary from './plugins/widget'
 import navbar from './common/navbar.vue'
 import toolbar from './common/toolbar.vue'
 import panel from './common/panel/index.vue'
@@ -53,14 +53,14 @@ export default {
   },
   mixins: [vpd],
   props: {
-    value: Object,
-    widgets: Object,
+    page: Object,
+    widgets: Array,
     upload: Function,
     uploadOption: Object
   },
   data () {
     return {
-      styleObj1: {
+      styleObj: {
         width: (1920 - 40) + 'px'
       }
     }
@@ -68,7 +68,7 @@ export default {
 
   computed: {
     zoom () {
-      return this.$vpd.state.zoom
+      return this.$vpd.state.page.zoom
     }
   },
 
@@ -78,14 +78,12 @@ export default {
   },
 
   created () {
-    // 注册 widgets
-    Vue.use(widget, {
-      widgets: this.widgets
-    })
-    // 初始化已有数据
-    if (this.value) {
-      this.$vpd.replaceState(this.value)
-    }
+    // 注册所有可用 widget
+    Vue.use(widgetLibrary)
+
+    // 清空画布
+    this.$vpd.initState()
+
     this.$vpd.$on('save', () => {
       this.$vpd.commit('initActive')
       this.$emit('save', this.$vpd.state)
@@ -115,14 +113,21 @@ export default {
     },
     handleLableWidth () {
       const wid = window.innerWidth
-      this.styleObj1.width = (wid - 40) + 'px'
+      this.styleObj.width = (wid - 40) + 'px'
     }
   },
 
   watch: {
-    value: {
+    page: {
       handler (newValue, oldValue) {
-        this.$vpd.replaceState(newValue)
+        this.$vpd.replacePage(newValue)
+        this.$vpd.commit('initActive')
+      },
+      deep: true
+    },
+    widgets: {
+      handler (newValue, oldValue) {
+        this.$vpd.replaceWidgets(newValue)
       },
       deep: true
     }
