@@ -268,7 +268,7 @@ export default {
       this.$router.push('/edit/dashboard/' + hash)
     },
     handlePreviewDashboard (hash) {
-      this.$router.push('/dashboard/' + hash)
+      this.$router.push('/preview/' + hash)
     },
     serialList (list) {
       for (let i = 0; i < list.length; i++) {

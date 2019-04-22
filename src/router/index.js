@@ -37,6 +37,11 @@ export const constantRouterMap = [
     hidden: true
   },
   {
+    path: '/dashboard/:hash',
+    component: () => import('@/views/dashboard/Preview'),
+    hidden: true
+  },
+  {
     path: '',
     component: Layout,
     redirect: 'manage',
@@ -92,7 +97,7 @@ export const asyncRouterMap = [
 
 export var DashboardRouterMap = [
   {
-    path: '/dashboard',
+    path: '/preview',
     component: Layout,
     name: 'Dashboard',
     meta: {
@@ -101,7 +106,7 @@ export var DashboardRouterMap = [
     },
     children: [{
       path: ':hash',
-      component: () => import('@/views/dashboard/Dashboard')
+      component: () => import('@/views/dashboard/Preview')
     }
     ]
   }

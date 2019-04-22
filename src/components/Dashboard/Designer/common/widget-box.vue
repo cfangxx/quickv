@@ -59,7 +59,7 @@ export default {
   computed: {
     widgets () {
       return function (group) {
-        let widgets = widget.getWidgets()
+        const widgets = widget.getWidgets()
         let result = {}
         for (let item in widgets) {
           if (widgets[item].group === group) {

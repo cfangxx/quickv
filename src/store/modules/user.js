@@ -97,7 +97,7 @@ const user = {
       return new Promise((resolve, reject) => {
         const routers = [
           {
-            path: '/dashboard',
+            path: '/preview',
             name: 'Dashboard',
             meta: {
               title: '我的大屏',
@@ -113,7 +113,7 @@ const user = {
             list.items.forEach(item => {
               routers[0].children.push({
                 path: item.hash,
-                component: () => import('@/views/dashboard/Dashboard'),
+                component: () => import('@/views/dashboard/Preview'),
                 name: item.hash,
                 meta: { title: item.config.title }
               })

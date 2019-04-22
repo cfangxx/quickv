@@ -1,6 +1,7 @@
 <template>
   <vue-page-preview
-    :value="config"/>
+    :page="config"
+    :widgets="widget"/>
 </template>
 
 <script>
@@ -12,7 +13,8 @@ export default {
   components: { vuePagePreview },
   data () {
     return {
-      config: null
+      config: null,
+      widget: []
     }
   },
   created () {
@@ -24,10 +26,12 @@ export default {
   methods: {
     getDashboardConfig () {
       fetchDashboard(this.$route.params.hash).then(response => {
-        if (response && response.data) {
-          const dashboard = response.data
-          if (dashboard.config) {
-            this.config = dashboard.config
+        if (response.data) {
+          this.details = response.data
+
+          if (response.data.config) {
+            this.config = response.data.config
+            this.widget = response.data.widget
           }
         }
       })

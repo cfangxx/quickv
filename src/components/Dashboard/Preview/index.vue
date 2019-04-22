@@ -3,9 +3,7 @@
     <div class="columns col-gapless">
       <div class="viewport column">
         <viewport
-        preview
-        />
-
+        preview/>
       </div>
     </div>
   </div>
@@ -13,34 +11,34 @@
 
 <script>
 import Vue from 'vue'
-import widget from '../Designer/plugins/widget'
+import widgetLibrary from '../Designer/plugins/widget'
 import viewport from '../Designer/common/viewport/index.vue'
 import vpd from '../Designer/mixins/vpd'
 
 export default {
   name: 'VuePagePreview',
   components: {
-    viewport // 页面画布
+    viewport
   },
   mixins: [vpd],
   props: {
-    value: Object,
-    widgets: Object
+    page: Object,
+    widgets: Array
   },
   created () {
-    // 注册 widgets
-    Vue.use(widget, {
-      widgets: this.widgets
-    })
-    // 初始化已有数据
-    if (this.value) {
-      this.$vpd.replaceState(this.value)
-    }
+    Vue.use(widgetLibrary)
   },
   watch: {
-    value: {
+    page: {
       handler (newValue, oldValue) {
-        this.$vpd.replaceState(newValue)
+        this.$vpd.replacePage(newValue)
+        this.$vpd.commit('initActive')
+      },
+      deep: true
+    },
+    widgets: {
+      handler (newValue, oldValue) {
+        this.$vpd.replaceWidgets(newValue)
       },
       deep: true
     }
