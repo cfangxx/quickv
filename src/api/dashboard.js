@@ -40,3 +40,11 @@ export function deleteDashboard (hash) {
     method: 'delete'
   })
 }
+
+export function publishDashboard (hash, option) {
+  return request({
+    url: '/pubulish/' + hash,
+    method: 'post',
+    data: {'option': option}
+  })
+}

@@ -36,7 +36,7 @@
       <!--</el-table-column>-->
       <el-table-column :label="'链接'" min-width="250px">
         <template slot-scope="scope">
-          <a class="link-type" :href="scope.row.publish.url" target="_blank">{{ scope.row.publish.url }}</a>
+          <a class="link-type" :href="scope.row.publish.id | pubUrlFilter" target="_blank">{{ scope.row.publish.id | pubUrlFilter }}</a>
         </template>
       </el-table-column>
       <el-table-column :label="'状态'" class-name="status-col" width="100">
@@ -49,7 +49,7 @@
           <el-button type="primary" size="mini" @click="handlePreviewDashboard(scope.row.hash)">{{ '预览' }}</el-button>
           <el-button size="mini" type="success" @click="handleEdit(scope.row.hash)">{{ '编辑' }}</el-button>
           <el-button size="mini" type="warning" @click="handleModifyStatus(scope.row.hash,'draft')">{{ '克隆' }}</el-button>
-          <el-button size="mini" type="info" @click="handleModifyPublish(scope.row.hash)">{{ '发布' }}</el-button>
+          <el-button size="mini" type="info" @click="handleModifyPublish(scope.row)">{{ '发布' }}</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row,'deleted')">{{ '删除' }}</el-button>
         </template>
       </el-table-column>
@@ -84,11 +84,13 @@
     <!--发布管理-->
     <el-dialog :visible.sync="dialogPublish" :title="dialogPublishTitle">
       <el-radio-group v-model="dialogPublishStatus">
-        <el-radio v-for="(value, key) in publishTypeOptions" :key="key" :label="key">{{ value }}</el-radio>
+        <el-radio label="unpublished">{{"停止发布"}}</el-radio>
+        <el-radio label="published">{{"公开发布"}}</el-radio>
+        <el-radio label="repubulish">{{"重新发布"}}</el-radio>
       </el-radio-group>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogPublish = false">{{ '取消' }}</el-button>
-        <el-button type="primary" @click="dialogPublish = false">{{ '确定' }}</el-button>
+        <el-button type="primary" @click="dialogPublish = handlePublish()">{{ '确定' }}</el-button>
       </span>
     </el-dialog>
 
@@ -96,9 +98,9 @@
 </template>
 
 <script>
-import { createDashboard, deleteDashboard } from '@/api/dashboard'
+import { createDashboard, deleteDashboard, publishDashboard } from '@/api/dashboard'
 import waves from '@/directive/waves' // Waves directive
-import { parseTime } from '@/scripts'
+// import { parseTime } from '@/scripts'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import { mapGetters } from 'vuex'
 import TemplateList from '@/components/Dashboard/Manage/TemplateList'
@@ -106,9 +108,9 @@ import { fetchList } from '@/api/template'
 
 const publishTypeOptions = {
   published: '已发布',
-  unpublished: '未发布',
-  developing: '开发中'
+  unpublished: '未发布'
 }
+
 export default {
   name: 'ManageDashboard',
   components: { Pagination, TemplateList },
@@ -116,6 +118,9 @@ export default {
   filters: {
     statusFilter (status) {
       return publishTypeOptions[status] || '未发布'
+    },
+    pubUrlFilter (hash) {
+      return hash ? window.location.protocol + '//' + window.location.host + '/dashboard/' + hash : ''
     }
   },
   computed: {
@@ -147,6 +152,7 @@ export default {
       dialogPublish: false,
       dialogPublishTitle: '',
       dialogPublishStatus: '',
+      dialogPublishHash: '',
       downloadLoading: false
     }
   },
@@ -178,11 +184,12 @@ export default {
         message: '操作成功',
         type: 'success'
       })
-      row.status = status
+      row.publish.status = status
     },
     handleModifyPublish (row) {
-      this.dialogPublishTitle = '发布管理 - ' + row.name
-      this.dialogPublishStatus = row.status
+      this.dialogPublishTitle = '发布管理 - ' + row.config.title
+      this.dialogPublishStatus = row.publish.status
+      this.dialogPublishHash = row.hash
       this.dialogPublish = true
     },
     sortChange (data) {
@@ -255,14 +262,8 @@ export default {
       this.downloadLoading = true
       alert('下载')
     },
-    formatJson (filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
-        }
-      }))
+    handlePublish () {
+      publishDashboard(this.dialogPublishHash, this.dialogPublishStatus).then(this.getList())
     },
     handleEdit (hash) {
       this.$router.push('/edit/dashboard/' + hash)
