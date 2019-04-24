@@ -233,8 +233,8 @@ export default {
   width: 100%;
   overflow: auto;
   font-size: 0;
-  border: 1px solid #f5f5f5;
-  border-width: 0 1px;
+  /*border: 1px solid #f5f5f5;*/
+  /*border-width: 0 1px;*/
   background-image: linear-gradient(
       45deg,
       #f5f5f5 25%,
@@ -252,8 +252,8 @@ export default {
   background-position: 0 0, 13px 13px;
   background-size: 26px 26px;
   background-color: #f0f3f4;
-  padding-left:20px;
-  padding-top:20px;
+  /*padding-left:20px;*/
+  /*padding-top:20px;*/
 }
 .screen {
   /*margin: 25px auto;*/
