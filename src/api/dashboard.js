@@ -43,8 +43,15 @@ export function deleteDashboard (hash) {
 
 export function publishDashboard (hash, option) {
   return request({
-    url: '/pubulish/' + hash,
+    url: '/publish/' + hash,
     method: 'post',
     data: {'option': option}
+  })
+}
+
+export function fetchPublication (hash) {
+  return request({
+    url: '/publish/' + hash,
+    method: 'get'
   })
 }

@@ -19,11 +19,10 @@ const whiteList = ['/login', '/auth-redirect']
 router.beforeEach((to, from, next) => {
   NProgress.start()
 
-  // if (to.path.match(/^\/dashboard\/\w{32}$/)) {
-  //   next()
-  //   NProgress.done()
-  //   return
-  // }
+  if (to.path.match(/^\/dashboard\/\w{32}$/)) {
+    next()
+    return
+  }
 
   if (getToken()) {
     if (to.path === '/login') {

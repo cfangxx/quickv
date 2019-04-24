@@ -6,7 +6,7 @@
 
 <script>
 import vuePagePreview from '@/components/Dashboard/Preview/index'
-import {fetchDashboard} from '@/api/dashboard'
+import {fetchDashboard, fetchPublication} from '@/api/dashboard'
 
 export default {
   name: 'PreviewDashboard',
@@ -17,7 +17,13 @@ export default {
       widget: []
     }
   },
+  computed: {
+    isPublished () {
+      return this.$route.path.indexOf('/dashboard') !== -1
+    }
+  },
   created () {
+    console.log(this.$route)
     this.$nextTick(() => {
       this.getDashboardConfig()
     })
@@ -25,7 +31,9 @@ export default {
 
   methods: {
     getDashboardConfig () {
-      fetchDashboard(this.$route.params.hash).then(response => {
+      const fetchConfig = (this.isPublished) ? fetchPublication : fetchDashboard
+
+      fetchConfig(this.$route.params.hash).then(response => {
         if (response.data) {
           this.details = response.data
 

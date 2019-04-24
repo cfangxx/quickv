@@ -36,7 +36,7 @@
       <!--</el-table-column>-->
       <el-table-column :label="'链接'" min-width="250px">
         <template slot-scope="scope">
-          <a class="link-type" :href="scope.row.publish.id | pubUrlFilter" target="_blank">{{ scope.row.publish.id | pubUrlFilter }}</a>
+          <a class="link-type" :href="scope.row.publish.hash | pubUrlFilter" target="_blank">{{ scope.row.publish.hash | pubUrlFilter }}</a>
         </template>
       </el-table-column>
       <el-table-column :label="'状态'" class-name="status-col" width="100">
@@ -86,7 +86,7 @@
       <el-radio-group v-model="dialogPublishStatus">
         <el-radio label="unpublished">{{"停止发布"}}</el-radio>
         <el-radio label="published">{{"公开发布"}}</el-radio>
-        <el-radio label="repubulish">{{"重新发布"}}</el-radio>
+        <el-radio label="republish">{{"重新发布"}}</el-radio>
       </el-radio-group>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogPublish = false">{{ '取消' }}</el-button>
@@ -263,7 +263,16 @@ export default {
       alert('下载')
     },
     handlePublish () {
-      publishDashboard(this.dialogPublishHash, this.dialogPublishStatus).then(this.getList())
+      publishDashboard(this.dialogPublishHash, this.dialogPublishStatus).then(response => {
+        this.$notify({
+          title: '成功',
+          message: '更新成功',
+          type: 'success',
+          duration: 2000
+        })
+
+        this.getList()
+      })
     },
     handleEdit (hash) {
       this.$router.push('/edit/dashboard/' + hash)
