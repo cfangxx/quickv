@@ -72,6 +72,7 @@ export default {
     },
     // 取消绑定隐藏菜单事件
     unbindHideEvents () {
+      if (!this.target) return
       this.target.removeEventListener('mousedown', this.triggerHideFn)
       this.target.removeEventListener('mousewheel', this.triggerHideFn)
     },
