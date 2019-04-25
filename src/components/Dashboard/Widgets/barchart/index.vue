@@ -22,6 +22,8 @@
 <script>
 import stylec from './style.vue'
 import echarts from 'echarts/lib/echarts'
+import axios from 'axios'
+
 const WIDGET_NAME = 'braid-barchart'
 export default {
   name: WIDGET_NAME,
@@ -51,7 +53,7 @@ export default {
     chartTitle: '销量', // 图表标题
     textStyleColor: '#666666', // 文本颜色
     itemStyleColor: '#42b983', // 柱状图颜色
-    xyturn: false, // xy轴翻转
+    axisReverse: false, // xy轴翻转
     titleColor: '#666666', // 标题颜色
     xTextColor: '#666666', // X 轴文字颜色
     yTextColor: '#666666', // Y 轴文字颜色
@@ -77,109 +79,113 @@ export default {
       color: '#ba3ba3',
       offset: 0
     }],
-    xyArr: ['xAxis', 'yAxis'],
 
     gridTop: '70', // 图表位置（距顶部）
     gridLeft: '3%', // 图表位置（距左边）
     gridRight: '3%', // 图表位置（距右边）
     gridBottom: '3%', // 图表位置（距底部）
 
-    dataAPI: 'http://192.168.159.2:7300/mock/5c88c1401cbd339a508e7ef4/czjx', // API拉取地址
-    dataAPIAuto: false, // 是否自动刷新
-    dataAPITime: 5, // 自动刷新间隔（秒）
+    dataAPI: 'https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/barchart', // API拉取地址
+    dataAutoRefresh: false, // 是否自动刷新
+    dataOrigin: 'local',
+    dataRefreshTime: 5, // 自动刷新间隔（秒）
+    dataRefresh: false, // 刷新图表, 控制面板中测试dataApi使用
     dataJSON: {
-      'status': 0,
-      'msg': '',
-      'data': {
-        'categories': [
-          '三星',
-          'vivo',
-          'oppo',
-          '华为',
-          '小g米',
-          'iPhone'
-        ],
-        'series': [
-          460751,
-          814276,
-          583693,
-          1076385,
-          1186058,
-          1369500
-        ]
-      }
+      'categories': [
+        '三星',
+        'vivo',
+        'oppo',
+        '华为',
+        '小g米',
+        'iPhone'
+      ],
+      'series': [
+        460751,
+        814276,
+        583693,
+        1076385,
+        1186058,
+        1369500
+      ]
     }
   },
   props: ['w', 'h', 'val', 'playState'],
   data () {
     return {
-      // barCharts: echarts.init(document.getElementsByClassName('fff'))
-    }
-  },
-  watch: {
-    echartWidth () {
-      // console.log(this.val.width)
+      timer: null,
+      dataJSON: {
+        'categories': [],
+        'series': []
+      }
     }
   },
   computed: {
-    barChartData () {
-      return [
-        {
-          nameLocation: 'start',
-          show: this.val.showX, // 是否显示 X 轴
-          nameGap: '50',
-          boundaryGap: true,
-          axisTick: {
-            show: this.val.showXaxisTick, // 是否显示 X 轴刻度线
-            alignWithLabel: this.val.xAxisLabel // X 轴偏移
-          },
-          axisLine: {
-            show: this.val.showXLine, // 是否显示 X 轴轴线
-            lineStyle: {
-              color: this.val.xLineColor // X 轴线条颜色
-            }
-          },
-          splitLine: {
-            show: this.val.showXSplitLine // X 轴网格线
-          },
-          axisLabel: {
-            textStyle: {
-              color: this.val.xTextColor // X 轴文字颜色
-            }
-          },
-          data: this.val.dataJSON.data.categories // 数据
-        }, { // 纵轴标尺固定
-          show: this.val.showY, // 是否显示 Y 轴
-          type: 'value',
-          scale: true,
-          inverse: false,
-          // max: Math.max.apply(null, this.val.dataJSON.data.series),
-          min: 0,
-          axisLine: {
-            show: this.val.showYLine, // 是否显示 Y 轴轴线
-            lineStyle: {
-              color: this.val.yLineColor // Y 轴线条颜色
-            }
-          },
-          axisLabel: {
-            textStyle: {
-              color: this.val.yTextColor // Y 轴文字颜色
-            }
-          },
-          axisTick: {
-            show: this.val.showYTick, // 是否显示 Y 轴刻度线
-            alignWithLabel: this.val.yAxisLabel // Y 轴偏移
-          },
-          splitLine: {
-            show: this.val.showYSplitLine, // 是否显示 Y 轴网格线
-            lineStyle: {
-              type: 'solid',
-              color: this.val.splitLineColor // y轴标线颜色
-            }
-          },
-          boundaryGap: [0.2, 0.2]
-        }
-      ]
+    xAxis () {
+      return {
+        nameLocation: 'start',
+        show: this.val.showX, // 是否显示 X 轴
+        nameGap: '50',
+        boundaryGap: true,
+        axisTick: {
+          show: this.val.showXaxisTick, // 是否显示 X 轴刻度线
+          alignWithLabel: this.val.xAxisLabel // X 轴偏移
+        },
+        axisLine: {
+          show: this.val.showXLine, // 是否显示 X 轴轴线
+          lineStyle: {
+            color: this.val.xLineColor // X 轴线条颜色
+          }
+        },
+        splitLine: {
+          show: this.val.showXSplitLine // X 轴网格线
+        },
+        axisLabel: {
+          textStyle: {
+            color: this.val.xTextColor // X 轴文字颜色
+          }
+        },
+        data: this.chartData.categories // 数据
+      }
+    },
+    yAxis () {
+      return { // 纵轴标尺固定
+        show: this.val.showY, // 是否显示 Y 轴
+        type: 'value',
+        scale: true,
+        inverse: false,
+        // max: Math.max.apply(null, this.val.dataJSON.series),
+        min: 0,
+        axisLine: {
+          show: this.val.showYLine, // 是否显示 Y 轴轴线
+          lineStyle: {
+            color: this.val.yLineColor // Y 轴线条颜色
+          }
+        },
+        axisLabel: {
+          textStyle: {
+            color: this.val.yTextColor // Y 轴文字颜色
+          }
+        },
+        axisTick: {
+          show: this.val.showYTick, // 是否显示 Y 轴刻度线
+          alignWithLabel: this.val.yAxisLabel // Y 轴偏移
+        },
+        splitLine: {
+          show: this.val.showYSplitLine, // 是否显示 Y 轴网格线
+          lineStyle: {
+            type: 'solid',
+            color: this.val.splitLineColor // y轴标线颜色
+          }
+        },
+        boundaryGap: [0.2, 0.2]
+      }
+    },
+    chartData () {
+      if (this.val.dataOrigin === 'local') {
+        return this.val.dataJSON
+      } else {
+        return this.dataJSON
+      }
     },
     options () {
       return {
@@ -202,8 +208,8 @@ export default {
           bottom: this.val.gridBottom, // 下边距
           containLabel: true
         },
-        xAxis: this.val.xyturn ? this.barChartData[1] : this.barChartData[0],
-        yAxis: this.val.xyturn ? this.barChartData[0] : this.barChartData[1],
+        xAxis: this.val.axisReverse ? this.yAxis : this.xAxis,
+        yAxis: this.val.axisReverse ? this.xAxis : this.yAxis,
         series: [{
           name: '销量',
           type: 'bar',
@@ -214,34 +220,60 @@ export default {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, this.val.lgArr) // 柱体颜色/渐变色
             }
           },
-          data: this.val.dataJSON.data.series
+          data: this.chartData.series
         }]
       }
     }
 
   },
   mounted () {
-
+    this.setOptionData()
+  },
+  beforeDestroy () {
+    this.clearTimer()
+  },
+  watch: {
+    'val.dataOrigin': function (origin, old) {
+      if (origin === 'api') {
+        this.setOptionData()
+      }
+    },
+    'val.dataAutoRefresh': function (opt, old) {
+      if (opt) {
+        this.setOptionData()
+      }
+    },
+    'val.dataRefresh': function (opt, old) {
+      this.setOptionData()
+    }
   },
   methods: {
-    changeData () {
-      let data = []
-      for (let i = 0, min = 5, max = 99; i < 6; i++) {
-        data.push(Math.floor(Math.random() * (max + 1 - min) + min))
+    setOptionData () { // API 拉取数据
+      if (this.val.dataOrigin !== 'api') {
+        return
       }
-      this.options.legend.data = data
-      setTimeout(this.changeData, 2000)
-    },
-    updateText (e, uuid) {
-      let text = e.target.innerHTML
-      this.$vpd.commit('updateData', {
-        uuid: uuid,
-        key: 'text',
-        value: text
-      })
-    },
-    updataTest (e, uuid) {
 
+      axios({
+        type: 'get',
+        headers: {'Content-Type': 'application/json'},
+        url: this.val.dataAPI
+      }).then(response => {
+        const res = response.data
+        if (res.code === 0) {
+          this.dataJSON = res.data
+        }
+      })
+
+      this.clearTimer()
+      if (this.val.dataAutoRefresh) {
+        let _this = this
+        this.timer = setTimeout(() => { _this.setOptionData() }, _this.val.dataRefreshTime * 1000)
+      }
+    },
+    clearTimer () {
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
     }
   }
 }

@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">{{activeElement.xyturn ? 'Y 轴' : 'X 轴'}}</div>
+        <div class="panel-item-title">{{activeElement.axisReverse ? 'Y 轴' : 'X 轴'}}</div>
         <div class="panel-row">
           <div class="panel-label">文本颜色</div>
           <div class="panel-value">{{ activeElement.xTextColor }}</div>
@@ -133,7 +133,7 @@
 
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">{{activeElement.xyturn ? 'X 轴' : 'Y 轴'}}</div>
+        <div class="panel-item-title">{{activeElement.axisReverse ? 'X 轴' : 'Y 轴'}}</div>
         <div class="panel-row">
           <div class="panel-label">文本颜色</div>
           <div class="panel-value">{{ activeElement.yTextColor }}</div>
@@ -332,79 +332,74 @@
         </div>
       </div>
     </div>
-    <div v-show="tab === 2">
+
+    <!-- 此处必须用v-if -->
+    <div v-if="tab === 2">
       <div class="panel-item-new">
         <!--<div class="panel-item-title">数据</div>-->
         <div class="data-group">
           <div
-            class="radioscont"
-            @click="handleBind">
+            class="radioscont">
             <label class="radiolabel">
               <input
-                v-model="selectStatus"
+                v-model="activeElement.dataOrigin"
                 type="radio"
                 class="inpRadio"
                 name="task"
-                value="1">API拉取
+                value="api">API拉取
             </label>
             <label class="radiolabel">
               <input
-                v-model="selectStatus"
+                v-model="activeElement.dataOrigin"
                 type="radio"
                 class="inpRadio"
                 name="task"
-                value="2">静态JSON
+                value="local">静态JSON
             </label>
           </div>
           <div class="radiowrap">
-            <div v-if="selectStatus =='1'">
-            <textarea
-              v-model="activeElement.dataAPI"
-              cols="30"
-              rows="3"
-              placeholder="$CUR_HOST/openapi/demo/chart?type=sellGoods"/>
-              <p>可使用示例API：XXXXXXXXXXXXXXXXXXXXXXXXX</p>
-              <button class="btn-small" style="display: none">调试</button>
-              <button
-                class="btn-small"
-                @click="refreshAPIurl">刷新图表</button>
+            <div v-if="dataOrigin == 'api'">
+              <textarea
+                v-model="activeElement.dataAPI"
+                cols="30"
+                rows="3"
+                placeholder="$CUR_HOST/openapi/demo/chart?type=sellGoods"/>
+
+              <p>可使用示例API：</p>
+              <textarea cols="30" rows="2" style="border:none" readonly>https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/barchart</textarea>
+              <br/>
               <div
                 class="panel-row"
                 flex>
+                <el-button type="success" @click="activeElement.dataRefresh = !activeElement.dataRefresh">刷新图表</el-button>
                 <div class="panel-label">自动刷新</div>
                 <div class="panel-value">
                   <label class="form-switch">
                     <input
-                      v-model="activeElement.dataAPIAuto"
+                      v-model="activeElement.dataAutoRefresh"
                       type="checkbox" >
                     <i class="form-icon"/>
                   </label>
                 </div>
               </div>
               <div
-                v-if="activeElement.dataAPIAuto"
+                v-if="activeElement.dataAutoRefresh"
                 class="panel-row">
                 <div class="panel-label">时间间隔</div>
                 <div>
                   <input
-                    :value="activeElement.dataAPITime"
+                    :value="activeElement.dataRefreshTime"
                     type="number"
                     @input="inpTime($event)">
                 </div>
               </div>
               <p>数据的自动刷新在非编辑模式下有效，最小刷新间隔为10秒<span style="color:red">未完成</span></p>
             </div>
-            <div v-if="selectStatus =='2'">
-              <div>
-                <MyEditor
-                  :language="'json'"
-                  :codes="JSON.stringify(activeElement.dataJSON, null, 2)"
-                  @onMounted="jsonOnMounted"
-                  @onCodeChange="jsonOnCodeChange" />
-                <!--<button
-                class="btn-small"
-                @click="refreshMonaco">刷新数据</button>-->
-              </div>
+            <div v-if="dataOrigin == 'local'">
+              <json-editor
+                :codes="localData"
+                @onCodeChange="jsonOnCodeChange" />
+              <!-- <button class="btn-small" @click="refreshMonaco">刷新数据</button> -->
             </div>
           </div>
         </div>
@@ -418,7 +413,7 @@
         <div class="panel-value">
           <label class="form-switch">
             <input
-              v-model="activeElement.xyturn"
+              v-model="activeElement.axisReverse"
               type="checkbox" >
             <i class="form-icon"/>
           </label>
@@ -430,25 +425,22 @@
 
 <script>
 import vpd from '@/components/Dashboard/Designer/mixins/vpd'
-import MyEditor from '@/components/Dashboard/Designer/common/monacoEditor'
-import axios from 'axios'
+import jsonEditor from '@/components/Dashboard/Designer/common/monacoEditor'
+
 export default {
   name: 'BraidBarChartStyle',
   components: {
-    MyEditor
+    jsonEditor
   },
   mixins: [vpd],
   props: ['activeElement', 'tab'],
-  data () {
-    return {
-      dataJSON: JSON.stringify(this.activeElement.dataJSON, null, 2),
-      selectStatus: '1'
-    }
-  },
-  mounted () {
-
-  },
   computed: {
+    dataOrigin () {
+      return this.activeElement.dataOrigin
+    },
+    localData () {
+      return JSON.stringify(this.activeElement.dataJSON, null, 2)
+    },
     // 容器名称
     containerName () {
       var arr = []
@@ -460,9 +452,6 @@ export default {
     }
   },
   methods: {
-    jsonOnMounted (edit) {
-      // console.log(edit);
-    },
     jsonOnCodeChange (value, event) {
       this.$vpd.commit('updataJSON', JSON.parse(value))
     },
@@ -488,36 +477,10 @@ export default {
       }
       this.$vpd.commit('delColor', params)
     },
-    handleBind () {
-      // console.log("取到的值是"+this.selectStatus);
-    },
-    refreshAPIurl () { // API 拉取数据
-      let url = this.activeElement.dataAPI
-      axios({
-        type: 'get',
-        headers: {'Content-Type': 'application/json'},
-        url: url
-      }).then(res => {
-        let data = res.data.data
-        let JSONData = {
-          status: 0,
-          msg: '',
-          data: {
-            categories: [],
-            series: []
-          }
-        }
-        for (let i in data) {
-          JSONData.data.categories.push(data[i].unit)
-          JSONData.data.series.push(data[i].schedule)
-        }
-        this.$vpd.commit('updataJSON', JSONData)
-      })
-    },
     inpTime (e) {
       let time = e.target.value
       let param = {
-        name: 'dataAPITime',
+        name: 'dataRefreshTime',
         value: time
       }
       this.$vpd.commit('updataData', param)
