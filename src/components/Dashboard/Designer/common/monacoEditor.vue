@@ -1,30 +1,11 @@
 <template>
-  <div class="myEditor">
-    <p>
-      <span
-        class="theme"
-        style="float:right;display: none;">
-        <select
-          v-model="theme"
-          size="mini"
-          placeholder="请选择主题"
-          @change="themeChange">
-          <option
-            v-for="item in themeOption"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"/>
-        </select>
-      </span>
-    </p>
-    <div
-      id="container"
-      ref="container"
-      style="height:400px"/>
-  </div>
+  <div id="json-editor"/>
 </template>
+
 <script>
-import * as monaco from 'monaco-editor'
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js'
+import 'monaco-editor/esm/vs/language/json/monaco.contribution'
+
 export default {
   props: {
     codes: {
@@ -36,83 +17,66 @@ export default {
     language: {
       type: String,
       default: function () {
-        return 'html'
-      }
-    },
-    editorOptions: {
-      type: Object,
-      default: function () {
-        return {
-          selectOnLineNumbers: true,
-          roundedSelection: false,
-          readOnly: false, // 只读
-          cursorStyle: 'line', // 光标样式
-          automaticLayout: false, // 自动布局
-          glyphMargin: true, // 字形边缘
-          useTabStops: false,
-          fontSize: 28, // 字体大小
-          autoIndent: true // 自动布局
-          // quickSuggestionsDelay: 500, // 代码提示延时
-        }
+        return 'json'
       }
     }
   },
   data () {
     return {
-      themeOption: [
-        {
-          value: 'vs',
-          label: '默认'
-        },
-        {
-          value: 'hc-black',
-          label: '高亮'
-        },
-        {
-          value: 'vs-dark',
-          label: '深色'
-        }
-      ],
-      theme: 'hc-black',
-      codesCopy: null // 内容备份
+      monacoEditor: null
     }
   },
   mounted () {
     this.initEditor()
   },
+  beforeDestroy () {
+    this.monacoEditor.dispose()
+  },
   methods: {
     initEditor () {
-      console.log(this.codes)
-      let self = this
-      self.$refs.container.innerHTML = ''
-      self.monacoEditor = monaco.editor.create(self.$refs.container, {
-        value: self.codesCopy || self.codes,
-        language: self.language,
-        theme: self.theme, // vs, hc-black, or vs-dark
-        editorOptions: self.editorOptions
+      // custom theme
+      monaco.editor.defineTheme('cryia', {
+        base: 'vs',
+        inherit: true,
+        rules: [{ background: 'EDF9FA' }],
+        colors: {
+          'editor.foreground': '#000000',
+          'editor.background': '#F8F8FF',
+          'editor.selectionBackground': '#B4D5FE',
+          'editor.lineHighlightBackground': '#FFFEEB',
+          'editorCursor.foreground': '#666666',
+          'editorWhitespace.foreground': '#BBBBBB'
+        }
       })
-      self.$emit('onMounted', self.monacoEditor) // 编辑器创建完成回调
-      self.monacoEditor.onDidChangeModelContent(function (event) { // 编辑器内容changge事件
-        self.codesCopy = self.monacoEditor.getValue()
-        self.$emit('onCodeChange', self.monacoEditor.getValue(), event)
+
+      // create editor
+      let that = this
+      this.monacoEditor = monaco.editor.create(document.getElementById('json-editor'), {
+        value: that.codes,
+        language: that.language,
+        theme: 'cryia',
+        lineNumbers: 'off',
+        contextmenu: false,
+        minimap: {enabled: false},
+        roundedSelection: false,
+        scrollBeyondLastLine: false,
+        readOnly: false,
+        selectOnLineNumbers: true
       })
-      // 编辑器随窗口自适应
-      window.addEventListener('resize', function () {
-        this.initEditor()
+
+      this.$emit('onMounted', this.monacoEditor) // 编辑器创建完成回调
+
+      this.monacoEditor.onDidChangeModelContent(function (event) { // 编辑器内容changge事件
+        that.$emit('onCodeChange', that.monacoEditor.getValue(), event)
       })
-    },
-    RunResult () {
-      console.log(this.monacoEditor.getValue())
-    },
-    themeChange (val) {
-      this.initEditor()
     }
   }
 }
 </script>
+
 <style scoped>
-  #container{
-    height:100%;
-    text-align: left;
+  #json-editor{
+    height:600px;
+    border: 1px solid #c5c5c5;
   }
 </style>
