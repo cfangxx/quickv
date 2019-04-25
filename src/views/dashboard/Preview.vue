@@ -23,7 +23,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$route)
     this.$nextTick(() => {
       this.getDashboardConfig()
     })
