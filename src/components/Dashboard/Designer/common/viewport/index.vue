@@ -134,37 +134,39 @@ export default {
       .addEventListener('mousedown', this.handleSelection, false)
 
     // 绑定键盘上下左右键用于元件的移动
-    document.addEventListener(
-      'keydown',
-      e => {
-        e.stopPropagation()
-        var target = this.$vpd.state.activeElement
+    document
+      .getElementById('viewport')
+      .addEventListener(
+        'keydown',
+        e => {
+          e.stopPropagation()
+          var target = this.$vpd.state.activeElement
 
-        // 左
-        if (e.keyCode === 37 && target.left) {
-          target.left -= 1
-          return
-        }
-        // 上
-        if (e.keyCode === 38 && target.top) {
-          e.preventDefault()
-          target.top -= 1
-          return
-        }
-        // 右
-        if (e.keyCode === 39 && target.left) {
-          target.left += 1
-          return
-        }
+          // 左
+          if (e.keyCode === 37 && target.left) {
+            target.left -= 1
+            return
+          }
+          // 上
+          if (e.keyCode === 38 && target.top) {
+            e.preventDefault()
+            target.top -= 1
+            return
+          }
+          // 右
+          if (e.keyCode === 39 && target.left) {
+            target.left += 1
+            return
+          }
 
-        // 下
-        if (e.keyCode === 40 && target.top) {
-          e.preventDefault()
-          target.top += 1
-        }
-      },
-      true
-    )
+          // 下
+          if (e.keyCode === 40 && target.top) {
+            e.preventDefault()
+            target.top += 1
+          }
+        },
+        true
+      )
   },
 
   methods: {
