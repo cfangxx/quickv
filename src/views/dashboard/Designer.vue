@@ -1,11 +1,11 @@
 <template>
-    <vue-page-designer
-      :page="config"
-      :widgets="widget"
-      :upload="handleUpload"
-      :upload-option="uploadOption"
-      @save="handleSave"
-      @quit="handleQuit"/>
+  <vue-page-designer
+    :page="config"
+    :widgets="widget"
+    :upload="handleUpload"
+    :upload-option="uploadOption"
+    @save="handleSave"
+    @quit="handleQuit"/>
 </template>
 
 <script>
@@ -13,6 +13,7 @@ import Vue from 'vue'
 import { fetchDashboard, updateDashboard } from '@/api/dashboard'
 import { fetchTemplate, updateTemplate } from '@/api/template'
 import domtoimage from 'dom-to-image'
+import { Loading } from 'element-ui'
 
 import vuePageDesigner from '@/components/Dashboard/Designer'
 Vue.use(vuePageDesigner)
@@ -49,6 +50,8 @@ export default {
 
   methods: {
     handleSave (config) {
+      const loadingInstance = Loading.service({ fullscreen: true, text: '正在保存...' })
+
       var dashboard = {...this.details}
       dashboard['config'] = config.page
       dashboard['widget'] = config.widgets
@@ -67,12 +70,38 @@ export default {
                 title: '成功',
                 message: '保存成功',
                 type: 'success',
+                offset: 50,
                 duration: 2000
               })
             }
+
+            this.$nextTick(() => {
+              loadingInstance.close()
+            })
+          }).catch(() => {
+            this.$notify({
+              title: '错误',
+              message: '保存失败, 请重试',
+              type: 'error',
+              offset: 50,
+              duration: 2000
+            })
+
+            this.$nextTick(() => {
+              loadingInstance.close()
+            })
           })
-        }).catch(function (error) {
-          console.error('oops, something went wrong!', error)
+        }).catch(() => {
+          this.$notify({
+            title: '错误',
+            message: '保存失败, 请重试',
+            type: 'error',
+            offset: 50,
+            duration: 2000
+          })
+          this.$nextTick(() => {
+            loadingInstance.close()
+          })
         })
     },
     handleQuit () {

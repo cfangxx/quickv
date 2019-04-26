@@ -2,7 +2,7 @@
   <div
     id="viewport"
     class="holder"
-    :style="screeSize">
+    :style="preview ? screeSize : {}">
     <div
       :style="{
         backgroundColor: backgroundColor,
@@ -238,6 +238,9 @@ export default {
 
 <style scoped>
 .holder {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   justify-content: center;
   font-size: 0;
   background-image: linear-gradient(
