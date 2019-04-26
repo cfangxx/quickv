@@ -193,9 +193,10 @@ export default {
   padding-right: 30px;
 }
 .mu-slider {
-  width: 100%;
+  width: 85%;
   position: relative;
-  height: 24px;
+  height: 40px;
+  left: 10px;
 }
 .mu-slider-track {
   position: absolute;
@@ -210,7 +211,7 @@ export default {
   position: absolute;
   height: 2px;
   width: 100%;
-  background-color: $primary-color;
+  background-color: #303133;
   left: 0;
   top: 50%;
   margin-top: -1px;
@@ -220,7 +221,7 @@ export default {
   top: 50%;
   width: 12px;
   height: 12px;
-  background-color: $primary-color;
+  background-color: #303133;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: width .3s, height .3s;

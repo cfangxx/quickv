@@ -1,7 +1,8 @@
 <template>
   <div
     id="viewport"
-    class="holder">
+    class="holder"
+    :style="screeSize">
     <div
       :style="{
         backgroundColor: backgroundColor,
@@ -37,7 +38,7 @@
           :key="child.uuid"
           :val="child"
           :h="height"
-          :w="750"
+          :w="width"
           :data-type="child.type"
           :data-uuid="child.uuid"
           :play-state="playState"
@@ -85,6 +86,14 @@ export default {
   },
 
   computed: {
+    screeSize () {
+      return {
+        width: window.screen.width + 'px',
+        height: window.screen.height + 'px',
+        overflowX: this.width === window.screen.width ? 'hidden' : 'auto',
+        overflowY: this.height === window.screen.height ? 'hidden' : 'auto'
+      }
+    },
     // 已添加的组件
     widgetStore () {
       return this.$vpd.state.widgets.filter(item => item.belong === 'page')
@@ -229,14 +238,8 @@ export default {
 
 <style scoped>
 .holder {
-  /*display: flex;*/
   justify-content: center;
-  height: 100%;
-  width: 100%;
-  overflow: auto;
   font-size: 0;
-  /*border: 1px solid #f5f5f5;*/
-  /*border-width: 0 1px;*/
   background-image: linear-gradient(
       45deg,
       #f5f5f5 25%,
@@ -254,8 +257,6 @@ export default {
   background-position: 0 0, 13px 13px;
   background-size: 26px 26px;
   background-color: #f0f3f4;
-  /*padding-left:20px;*/
-  /*padding-top:20px;*/
 }
 .screen {
   /*margin: 25px auto;*/

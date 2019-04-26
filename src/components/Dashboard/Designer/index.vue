@@ -181,11 +181,12 @@ export default {
 }
 
 .zoom-wrap {
-  width: 200px;
-  height: 30px;
+  width: 500px;
+  height: 40px;
   position: absolute;
   bottom: 20px;
-  left: 100px;
+  left: 600px;
+  background-color: #90939975;
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -196,8 +197,9 @@ export default {
 
 .zoom-value {
   position: absolute;
-  top: 4px;
-  left: -36px;
+  top: 10px;
+  color: white;
+  right: 8px;
 }
 
 #svgspriteit {
