@@ -21,6 +21,7 @@
 <script>
 import stylec from './style.vue'
 const WIDGET_NAME = 'braid-barpolar'
+import axios from 'axios'
 export default {
   name: WIDGET_NAME,
   group: 'chart',
@@ -70,9 +71,11 @@ export default {
     legendIconHeight: 10, // 图例 Icon 高度
     legendIconGap: 10, // 图例 Icon 间距
 
-    dataAPI: 'http://192.168.159.2:7300/mock/5c88c1401cbd339a508e7ef4/czjx', // API拉取地址
-    dataAPIAuto: false, // 是否自动刷新
-    dataAPITime: 5, // 自动刷新间隔（秒）
+    dataAPI: 'https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/barchart', // API拉取地址
+    dataAutoRefresh: false, // 是否自动刷新
+    dataOrigin: 'local',
+    dataRefreshTime: 5, // 自动刷新间隔（秒）
+    dataRefresh: false, // 刷新图表, 控制面板中测试dataApi使用
     dataJSON: {
       'status': 0,
       'msg': '',
@@ -106,7 +109,11 @@ export default {
   props: ['w', 'h', 'val', 'playState'],
   data () {
     return {
-
+      timer: null,
+      dataJSON: {
+        'categories': [],
+        'series': []
+      }
     }
   },
   computed: {
