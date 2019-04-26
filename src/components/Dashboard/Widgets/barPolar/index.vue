@@ -19,9 +19,9 @@
 </template>
 
 <script>
+import axios from 'axios'
 import stylec from './style.vue'
 const WIDGET_NAME = 'braid-barpolar'
-import axios from 'axios'
 export default {
   name: WIDGET_NAME,
   group: 'chart',
@@ -230,13 +230,32 @@ export default {
 
   },
   methods: {
-    changeData () {
-      let data = []
-      for (let i = 0, min = 5, max = 99; i < 6; i++) {
-        data.push(Math.floor(Math.random() * (max + 1 - min) + min))
+    setOptionData () { // API 拉取数据
+      if (this.val.dataOrigin !== 'api') {
+        return
       }
-      this.options.legend.data = data
-      setTimeout(this.changeData, 2000)
+
+      axios({
+        type: 'get',
+        headers: {'Content-Type': 'application/json'},
+        url: this.val.dataAPI
+      }).then(response => {
+        const res = response.data
+        if (res.code === 0) {
+          this.dataJSON = res.data
+        }
+      })
+
+      this.clearTimer()
+      if (this.val.dataAutoRefresh) {
+        let _this = this
+        this.timer = setTimeout(() => { _this.setOptionData() }, _this.val.dataRefreshTime * 1000)
+      }
+    },
+    clearTimer () {
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
     }
   }
 }

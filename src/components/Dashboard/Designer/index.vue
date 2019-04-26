@@ -185,7 +185,8 @@ export default {
   height: 40px;
   position: absolute;
   bottom: 20px;
-  left: 600px;
+  left: 50%;
+  margin-left: -250px;
   background-color: #90939975;
   opacity: 0;
   transition: opacity 0.3s;

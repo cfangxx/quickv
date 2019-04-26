@@ -465,7 +465,6 @@
 <script>
 import vpd from '@/components/Dashboard/Designer/mixins/vpd'
 import MyEditor from '@/components/Dashboard/Designer/common/monacoEditor'
-import axios from 'axios'
 export default {
   name: 'BraidBarPolarStyle',
   components: {
@@ -551,22 +550,6 @@ export default {
     },
     handleBind () {
       // console.log("取到的值是"+this.selectStatus);
-    },
-    refreshAPIurl () { // API 拉取数据
-      let url = this.activeElement.dataAPI
-      axios({
-        type: 'get',
-        headers: {'Content-Type': 'application/json'},
-        url: url
-      }).then(res => {
-        let data = res.data.data
-        let JSONData = {
-          status: 0,
-          msg: '',
-          data: data
-        }
-        this.$vpd.commit('updataJSON', JSONData)
-      })
     },
     inpTime (e) {
       let time = e.target.value

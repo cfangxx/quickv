@@ -76,6 +76,7 @@ export default {
     width:40px;
     padding:60px 0 0 30px;
     box-sizing: border-box;
+    border-right:1px solid #ddd;
   }
   .toolbar-ctrl-panel {
     position: absolute;
