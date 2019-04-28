@@ -45,6 +45,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       poll: config.dev.poll,
     }
   },
+  mode: 'development',
   plugins: [
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
@@ -56,7 +57,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
-      inject: true
+      inject: true,
+	  chunksSortMode: 'none'
     }),
     // copy custom static assets
     new CopyWebpackPlugin([

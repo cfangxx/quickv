@@ -3,6 +3,7 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const { VueLoaderPlugin } = require('vue-loader')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -38,6 +39,9 @@ module.exports = {
       '@': resolve('src'),
     }
   },
+  plugins: [
+    new VueLoaderPlugin()
+  ],
   module: {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
@@ -54,8 +58,8 @@ module.exports = {
           resolve('src'),
           resolve('test'),
           resolve('node_modules/webpack-dev-server/client'),
-          // resolve('node_modules/vue-echarts'),
-          // resolve('node_modules/resize-detector')
+          resolve('node_modules/vue-echarts'),
+          resolve('node_modules/resize-detector')
         ]
       },
       {
