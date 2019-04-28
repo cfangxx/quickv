@@ -57,7 +57,7 @@ export default {
         theme: 'cryia',
         lineNumbers: 'off',
         contextmenu: false,
-        minimap: {enabled: false},
+        minimap: { enabled: false },
         roundedSelection: false,
         scrollBeyondLastLine: false,
         readOnly: false,

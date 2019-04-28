@@ -52,13 +52,13 @@ export default {
     handleSave (config) {
       const loadingInstance = Loading.service({ fullscreen: true, text: '正在保存...' })
 
-      var dashboard = {...this.details}
+      var dashboard = { ...this.details }
       dashboard['config'] = config.page
       dashboard['widget'] = config.widgets
 
       var Painter = document.getElementById('viewport').children[0]
 
-      domtoimage.toPng(Painter, {style: {'transform': 'scale(1)'}})
+      domtoimage.toPng(Painter, { style: { 'transform': 'scale(1)' } })
         .then(function (imgData) {
           dashboard['imgData'] = imgData
         }).then(() => {

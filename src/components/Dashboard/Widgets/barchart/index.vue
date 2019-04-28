@@ -255,7 +255,7 @@ export default {
 
       axios({
         type: 'get',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         url: this.val.dataAPI
       }).then(response => {
         const res = response.data

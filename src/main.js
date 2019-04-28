@@ -17,7 +17,7 @@ import '@/components/Dashboard/Widgets/libs' // chart libs
 
 import * as filters from '@/scripts/filters' // global filters
 
-Vue.use(Element, {size: 'medium'}) // set element-ui default size
+Vue.use(Element, { size: 'medium' }) // set element-ui default size
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {

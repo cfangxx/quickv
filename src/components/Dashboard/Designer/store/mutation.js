@@ -82,7 +82,7 @@ export default {
   // 复制元件
   copy (state, payload) {
     if (state.type !== 'page') {
-      var copy = Object.assign({}, state.activeElement, {top: state.top, uuid: generate('1234567890abcdef', 10)})
+      var copy = Object.assign({}, state.activeElement, { top: state.top, uuid: generate('1234567890abcdef', 10) })
 
       // 由于容器的名称必须是唯一的，故复制容器需作处理
       if (state.activeElement.isContainer) {
@@ -232,7 +232,7 @@ export default {
   },
 
   // 更新数据
-  updateData (state, {uuid, key, value}) {
+  updateData (state, { uuid, key, value }) {
     let widget = state.widgets.find(w => w.uuid === uuid)
     widget[key] = value
   },

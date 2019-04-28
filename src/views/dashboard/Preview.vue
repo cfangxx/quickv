@@ -6,7 +6,7 @@
 
 <script>
 import vuePagePreview from '@/components/Dashboard/Preview/index'
-import {fetchDashboard, fetchPublication} from '@/api/dashboard'
+import { fetchDashboard, fetchPublication } from '@/api/dashboard'
 
 export default {
   name: 'PreviewDashboard',

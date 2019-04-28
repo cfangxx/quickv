@@ -67,10 +67,7 @@
     </ul>
     <!-- 组件样式 -->
     <component
-      v-for="(item, i) in widgetStyle"
-      v-if="item.type === activeElement.type"
-      :is="widgetStyle[i]"
-      :key="i"
+      :is="widgetStyle"
       :tab="activeTab"
       :active-element="activeElement" />
     <!-- 添加到容器 -->
@@ -109,7 +106,15 @@ export default {
 
   computed: {
     widgetStyle () {
-      return widget.getWidgetStyle()
+      const styles = widget.getWidgetStyle()
+      let result = {}
+      for (let item in styles) {
+        if (styles[item].type === this.activeElement.type) {
+          result = styles[item]
+        }
+      }
+
+      return result
     },
     // 页面高度
     height () {

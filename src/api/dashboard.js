@@ -45,7 +45,7 @@ export function publishDashboard (hash, option) {
   return request({
     url: '/publish/' + hash,
     method: 'post',
-    data: {'option': option}
+    data: { 'option': option }
   })
 }
 

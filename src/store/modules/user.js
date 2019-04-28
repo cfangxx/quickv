@@ -93,7 +93,7 @@ const user = {
     },
 
     // 获取用户大屏列表, 添加路由
-    GetUserDashboardList ({commit, state}) {
+    GetUserDashboardList ({ commit, state }) {
       return new Promise((resolve, reject) => {
         const routers = [
           {

@@ -439,7 +439,7 @@ export default {
       let url = this.activeElement.dataAPI
       axios({
         type: 'get',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         url: url
       }).then(res => {
         let data = res.data.data
