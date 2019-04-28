@@ -213,11 +213,12 @@ export default {
   position: absolute;
   padding-top:60px;
   padding-left:40px;
+  left:0;
   flex:1;
   z-index: 1;
 }
 
-.container.grid-xl {
+.navbar1.container.grid-xl {
   max-width: 12200px;
 }
 

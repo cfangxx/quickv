@@ -70,7 +70,11 @@ export default {
   }
 }
 </script>
-
+<style scoped>
+  .toolbar.column{
+    width:40px;
+  }
+</style>
 <style>
   .menu-bar-new.toolbar-container{
     width:40px;
@@ -106,7 +110,7 @@ export default {
   .menu-bar-new.big-panel .min-banner{
     display: none;
   }
-  .toolbar-ctrl-panel.big-panel {
+  .menu-bar-new.toolbar-ctrl-panel.big-panel {
     width: 120px;
   }
   .toolbar-title{
