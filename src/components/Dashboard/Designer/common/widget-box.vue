@@ -44,7 +44,7 @@ const widgetClassOptions = [
   { value: 'table', text: '表格', icon: 'table' },
   { value: 'text', text: '文字', icon: 'language' },
   { value: 'map', text: '地图', icon: 'international' },
-  { value: 'efficacy', text: '特效', icon: 'star' },
+  { value: 'effects', text: '特效', icon: 'star' },
   { value: 'material', text: '素材', icon: 'component' }
 ]
 

@@ -12,6 +12,8 @@ import braidTime from './time/index.vue'
 import braidContainer from './container/index.vue'
 import braidTable from './table/index.vue'
 
+import rotateLine from './effects/rotateLine/index'
+
 export default {
   [braidButton.name]: braidButton,
   [braidLinechart.name]: braidLinechart,
@@ -24,5 +26,8 @@ export default {
   [braidTxt.name]: braidTxt,
   [braidTime.name]: braidTime,
   [braidContainer.name]: braidContainer,
-  [braidTable.name]: braidTable
+  [braidTable.name]: braidTable,
+
+  // effects
+  [rotateLine.name]: rotateLine
 }
