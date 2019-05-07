@@ -1,6 +1,5 @@
 <template>
   <div
-    :class="[playState ? 'anm-' + val.animationName : '']"
     :style="{
       display: val.display,
       position: 'absolute',
@@ -43,7 +42,7 @@ export default {
     isChild: false,
     dragable: true,
     resizable: true,
-    name: '',
+    name: '容器',
     width: 650,
     height: 300,
     left: 50,
@@ -58,7 +57,6 @@ export default {
     radius: 0,
     borderColor: '',
     borderWidth: 0,
-    text: '容器',
     dir: 'row',
     justify: 'flex-start',
     align: 'flex-start',
@@ -69,7 +67,7 @@ export default {
     bgGradientdir1: 'left'
 
   },
-  props: ['w', 'h', 'val', 'playState']
+  props: ['w', 'h', 'val']
 }
 </script>
 

@@ -1,62 +1,9 @@
 <template>
   <div>
     <div v-show="tab === 1">
-      <div class="panel-item-new">
-        <!--<div class="panel-item-title">基础参数</div>-->
-        <div class="panel-row">
-          <div class="panel-label">宽度</div>
-          <div>
-            <input
-              v-model="activeElement.width"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">高度</div>
-          <div>
-            <input
-              v-model="activeElement.height"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">横坐标</div>
-          <div>
-            <input
-              v-model="activeElement.left"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">纵坐标</div>
-          <div>
-            <input
-              v-model="activeElement.top"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">层级</div>
-          <div>
-            <input
-              v-model="activeElement.z"
-              type="number">
-          </div>
-        </div>
-        <div v-if="activeElement.isChild">
-          <div class="panel-row">
-            <div class="panel-label">所属容器</div>
-            <div class="panel-value">
-              <select v-model="activeElement.belong">
-                <option>page</option>
-                <option
-                  v-for="(val, index) in containerName"
-                  :key="index">{{ val }}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- 基础设置 -->
+      <basicSetting :activeElement="activeElement"/>
+
       <div class="panel-item-new">
         <div class="panel-item-title">进度条设置</div>
         <div class="panel-row">
@@ -180,84 +127,12 @@
 
       </div>
     </div>
-    <div v-show="tab === 2">
-      <div class="panel-item-new">
-        <!--<div class="panel-item-title">数据</div>-->
-        <div class="data-group">
-          <div
-            class="radioscont"
-            @click="handleBind">
-            <label class="radiolabel">
-              <input
-                v-model="activeElement.selectStatus"
-                type="radio"
-                class="inpRadio"
-                name="task"
-                value="api">API拉取
-            </label>
-            <label class="radiolabel">
-              <input
-                v-model="activeElement.selectStatus"
-                type="radio"
-                class="inpRadio"
-                name="task"
-                value="json">静态JSON
-            </label>
-          </div>
-          <div class="radiowrap">
-            <div v-if="activeElement.selectStatus =='api'">
-            <textarea
-              v-model="activeElement.dataAPI"
-              cols="30"
-              rows="3"
-              placeholder="$CUR_HOST/openapi/demo/chart?type=sellGoods"/>
-              <p>可使用示例API：XXXXXXXXXXXXXXXXXXXXXXXXX</p>
-              <button class="btn-small" style="display: none">调试</button>
-              <button
-                class="btn-small"
-                @click="refreshAPIurl">刷新图表</button>
-              <div
-                class="panel-row"
-                flex>
-                <div class="panel-label">自动刷新</div>
-                <div class="panel-value">
-                  <label class="form-switch">
-                    <input
-                      v-model="activeElement.dataAPIAuto"
-                      type="checkbox" >
-                    <i class="form-icon"/>
-                  </label>
-                </div>
-              </div>
-              <div
-                v-if="activeElement.dataAPIAuto"
-                class="panel-row">
-                <div class="panel-label">时间间隔</div>
-                <div>
-                  <input
-                    :value="activeElement.dataAPITime"
-                    type="number"
-                    @input="inpTime($event)">
-                </div>
-              </div>
-              <p>数据的自动刷新在非编辑模式下有效，最小刷新间隔为10秒<span style="color:red">未完成</span></p>
-            </div>
-            <div v-if="tab === 2 && activeElement.selectStatus =='json'">
-              <div>
-                <MyEditor
-                  :language="'json'"
-                  :codes="JSON.stringify(activeElement.dataJSON, null, 2)"
-                  @onMounted="jsonOnMounted"
-                  @onCodeChange="jsonOnCodeChange" />
-                <!--<button
-                class="btn-small"
-                @click="refreshMonaco">刷新数据</button>-->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+    <!-- 数据源设置 -->
+    <div v-if="tab === 2">
+      <dataSetting :activeElement="activeElement"/>
     </div>
+
     <div v-show="tab === 3">
 
     </div>
@@ -266,45 +141,18 @@
 
 <script>
 import vpd from '@/components/Dashboard/Designer/mixins/vpd'
-import MyEditor from '@/components/Dashboard/Designer/common/monacoEditor'
-import axios from 'axios'
+import dataSetting from '@/components/Dashboard/Widgets/common/dataSetting'
+import basicSetting from '@/components/Dashboard/Widgets/common/basicSetting'
+
 export default {
   name: 'BraidProgressBarStyle',
   components: {
-    MyEditor
+    dataSetting,
+    basicSetting
   },
   mixins: [vpd],
   props: ['activeElement', 'tab'],
-  data () {
-    return {
-      dataJSON: JSON.stringify(this.activeElement.dataJSON, null, 2),
-      selectStatus: '1'
-    }
-  },
-  mounted () {
-
-  },
-  computed: {
-    // 容器名称
-    containerName () {
-      var arr = []
-      this.$vpd.state.widgets.map(
-        val => val.isContainer && val.name && arr.push(val.name)
-      )
-
-      return arr
-    }
-  },
   methods: {
-    jsonOnMounted (edit) {
-      // console.log(edit)
-    },
-    jsonOnCodeChange (value, event) {
-      this.$vpd.commit('updataJSON', JSON.parse(value))
-    },
-    refreshMonaco () {
-
-    },
     addLGColor () {
       let params = {
         property: 'lgArr',
@@ -323,46 +171,6 @@ export default {
         }
       }
       this.$vpd.commit('delColor', params)
-    },
-    handleBind (e) {
-      let activeStr = e.target.defaultValue
-      let params = {
-        name: 'selectStatus',
-        value: activeStr
-      }
-      this.$vpd.commit('updataData', params)
-    },
-    refreshAPIurl () { // API 拉取数据
-      let url = this.activeElement.dataAPI
-      axios({
-        type: 'get',
-        headers: { 'Content-Type': 'application/json' },
-        url: url
-      }).then(res => {
-        let data = res.data.data
-        let JSONData = {
-          status: 0,
-          msg: '',
-          data: {
-            categories: [],
-            series: []
-          }
-        }
-        for (let i in data) {
-          JSONData.data.categories.push(data[i].unit)
-          JSONData.data.series.push(data[i].schedule)
-        }
-        this.$vpd.commit('updataJSON', JSONData)
-      })
-    },
-    inpTime (e) {
-      let time = e.target.value
-      let param = {
-        name: 'dataAPITime',
-        value: time
-      }
-      this.$vpd.commit('updataData', param)
-      // this.refreshData()
     }
   }
 }

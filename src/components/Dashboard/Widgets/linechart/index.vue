@@ -1,6 +1,5 @@
 <template>
   <div
-    :class="[playState ? 'anm-' + val.animationName : '']"
     :style="{
       position: 'absolute',
       width: val.width / w * 100 + '%',
@@ -22,7 +21,9 @@
 <script>
 import stylec from './style.vue'
 import echarts from 'echarts/lib/echarts'
-import axios from 'axios'
+import vpd from '@/components/Dashboard/Designer/mixins/vpd'
+import dataControl from '@/components/Dashboard/Widgets/common/mixins/dataControl'
+
 const WIDGET_NAME = 'braid-linechart'
 export default {
   name: WIDGET_NAME,
@@ -38,14 +39,14 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    name: '11',
     width: 700,
     height: 350,
     left: 50,
     top: 50,
     z: 0,
     color: '#555555',
-    text: '折线区域图',
+    name: '折线区域图', // 组件名称, 可自定义
+    desc: '', // 描述, 可自定义
     belong: 'page',
     animationName: '',
 
@@ -88,41 +89,89 @@ export default {
     isSmooth: true, // 折线是否平滑
     showTooltip: false, // 是否显示提示框
 
-    dataAPI: 'https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/barchart', // API拉取地址
+    dataAPI: 'https://easy-mock.com/mock/5cc6c0a89edd7844f38df463/cryia/api/salevolume', // API拉取地址
     dataAutoRefresh: false, // 是否自动刷新
-    dataOrigin: 'local',
+    dataOrigin: 'local', // local 本地 api 远程接口
     dataRefreshTime: 5, // 自动刷新间隔（秒）
     dataRefresh: false, // 刷新图表, 控制面板中测试dataApi使用
-    dataJSON: {
-      'categories': [
-        '三星',
-        'vivo',
-        'oppo',
-        '华为',
-        '小g米',
-        'iPhone'
-      ],
-      'series': [
-        46,
-        81,
-        58,
-        107,
-        118,
-        136
-      ]
-    }
-  },
-  props: ['w', 'h', 'val', 'playState'],
-  data () {
-    return {
-      timer: null,
-      dataJSON: {
-        'categories': [],
-        'series': []
+
+    // 数据联动配置
+    linkEnable: false, // 开启联动
+    linkIsMain: false, // 是否是数据源
+    linkMainUUID: '', // 上级的UUID, 通过此标志获取联动的数据
+
+    keyPrimary: 'data',
+    keyTarget: 'statistics', // 响应数据对应的字段名
+    keyXAxis: 'vendor', // 从该字段取x轴数据
+    keyYAxis: 'sales', // 从该字段取y轴数据
+
+    staticData: {
+      'code': 0,
+      'data': {
+        'year': 2019,
+        'statistics': [
+          {
+            'vendor': 'Samsung',
+            'sales': 33801
+          },
+          {
+            'vendor': 'iPhone',
+            'sales': 63395
+          },
+          {
+            'vendor': 'HUAWEI',
+            'sales': 89297
+          },
+          {
+            'vendor': 'VIVO',
+            'sales': 76689
+          },
+          {
+            'vendor': 'OPPO',
+            'sales': 32219
+          },
+          {
+            'vendor': 'MI',
+            'sales': 98748
+          },
+          {
+            'vendor': 'Meizu',
+            'sales': 18290
+          },
+          {
+            'vendor': '8848',
+            'sales': 66282
+          }
+        ]
       }
     }
   },
+  mixins: [vpd, dataControl],
+  props: ['w', 'h', 'val'],
+  data () {
+    return {
+      dynamicData: {}
+    }
+  },
   computed: {
+    categories () {
+      if (this.dynamicData[this.val.keyPrimary] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget]) {
+        return this.dynamicData[this.val.keyPrimary][this.val.keyTarget].map(item => {
+          return item[this.val.keyXAxis]
+        })
+      } else {
+        return []
+      }
+    },
+    dataSeries () {
+      if (this.dynamicData[this.val.keyPrimary] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget]) {
+        return this.dynamicData[this.val.keyPrimary][this.val.keyTarget].map(item => {
+          return item[this.val.keyYAxis]
+        })
+      } else {
+        return []
+      }
+    },
     xAxis () {
       return {
         type: 'category',
@@ -147,7 +196,7 @@ export default {
             color: this.val.xTextColor // X 轴文字颜色
           }
         },
-        data: this.val.dataJSON.categories // 数据
+        data: this.categories // 数据
       }
     },
     yAxis () {
@@ -181,13 +230,6 @@ export default {
           }
         },
         boundaryGap: [0.2, 0.2]
-      }
-    },
-    chartData () {
-      if (this.val.dataOrigin === 'local') {
-        return this.val.dataJSON
-      } else {
-        return this.dataJSON
       }
     },
     options () {
@@ -242,59 +284,8 @@ export default {
             }
           },
           // data: this.val.dataJSON.data.series
-          data: this.chartData.series
+          data: this.dataSeries
         }]
-      }
-    }
-
-  },
-  mounted () {
-    this.setOptionData()
-  },
-  beforeDestroy () {
-    this.clearTimer()
-  },
-  watch: {
-    'val.dataOrigin': function (origin, old) {
-      if (origin === 'api') {
-        this.setOptionData()
-      }
-    },
-    'val.dataAutoRefresh': function (opt, old) {
-      if (opt) {
-        this.setOptionData()
-      }
-    },
-    'val.dataRefresh': function (opt, old) {
-      this.setOptionData()
-    }
-  },
-  methods: {
-    setOptionData () { // API 拉取数据
-      if (this.val.dataOrigin !== 'api') {
-        return
-      }
-
-      axios({
-        type: 'get',
-        headers: { 'Content-Type': 'application/json' },
-        url: this.val.dataAPI
-      }).then(response => {
-        const res = response.data
-        if (res.code === 0) {
-          this.dataJSON = res.data
-        }
-      })
-
-      this.clearTimer()
-      if (this.val.dataAutoRefresh) {
-        let _this = this
-        this.timer = setTimeout(() => { _this.setOptionData() }, _this.val.dataRefreshTime * 1000)
-      }
-    },
-    clearTimer () {
-      if (this.timer) {
-        clearTimeout(this.timer)
       }
     }
   }
@@ -302,11 +293,6 @@ export default {
 </script>
 
 <style scoped>
-.lz-container {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100%;
-}
   .echarts {
     width: 100%;
     height:100%;

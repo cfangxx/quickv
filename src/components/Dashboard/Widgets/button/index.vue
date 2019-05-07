@@ -1,6 +1,5 @@
 <template>
   <button
-    :class="[playState ? 'anm-' + val.animationName : '']"
     :style="{
       position: 'absolute',
       width: val.width / w * 100 + '%',
@@ -39,7 +38,6 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    name: '',
     width: 150,
     height: 40,
     left: 50,
@@ -52,12 +50,15 @@ export default {
     color: '#ffffff',
     colorHover: '#ffffff',
     borderRadius: 4,
-    text: '按钮',
+    name: '按钮', // 组件名称, 可自定义
+    desc: '普通按钮', // 描述, 可自定义
     belong: 'page',
-    animationName: ''
+    animationName: '',
+
+    text: '提交'
   },
   mixins: [vpd],
-  props: ['w', 'h', 'val', 'playState'],
+  props: ['w', 'h', 'val'],
   methods: {
     mouseOver (e) {
       // let param = {

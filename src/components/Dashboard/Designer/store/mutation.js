@@ -241,16 +241,25 @@ export default {
   addColor (state, payload) {
     state.activeElement[payload.property].push(payload.data)
   },
+
   // 更新编辑器 JSON 数据
-  updataJSON (state, payload) {
-    state.activeElement.dataJSON = payload
+  updateJSON (state, payload) {
+    state.activeElement.staticData = payload
   },
-  updataData (state, payload) {
+
+  updateActiveElement (state, payload) {
     state.activeElement[payload.name] = payload.value
   },
 
   // 图表删除颜色
   delColor (state, payload) {
     state.activeElement[payload.property].splice(payload.data.index, 1)
+  },
+
+  updateLinkage (state, { uuid, value }) {
+    let obj = {}
+    obj[uuid] = value
+
+    state.linkage = Object.assign({}, state.linkage, obj)
   }
 }

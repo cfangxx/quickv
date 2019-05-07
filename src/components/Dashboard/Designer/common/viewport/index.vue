@@ -2,7 +2,7 @@
   <div
     id="viewport"
     class="holder"
-    :style="preview ? screeSize : {}">
+    :style="preview ? screenSize : {}">
     <div
       :style="{
         backgroundColor: backgroundColor,
@@ -20,7 +20,7 @@
       <component
         v-for="val in widgetStore"
         :is="val.type"
-        :data-title="val.text"
+        :data-title="val.name"
         :class="{'g-active': id === val.uuid}"
         :key="val.uuid"
         :val="val"
@@ -28,7 +28,6 @@
         :w="width"
         :data-type="val.type"
         :data-uuid="val.uuid"
-        :play-state="playState"
         class="layer">
         <component
           v-for="child in getChilds(val.name)"
@@ -41,7 +40,6 @@
           :w="width"
           :data-type="child.type"
           :data-uuid="child.uuid"
-          :play-state="playState"
           class="layer layer-child" />
       </component>
 
@@ -79,14 +77,8 @@ export default {
     'zoom': Number,
     'preview': Boolean
   },
-  data () {
-    return {
-
-    }
-  },
-
   computed: {
-    screeSize () {
+    screenSize () {
       return {
         width: window.screen.width + 'px',
         height: window.screen.height + 'px',
@@ -94,6 +86,7 @@ export default {
         overflowY: this.height === window.screen.height ? 'hidden' : 'auto'
       }
     },
+
     // 已添加的组件
     widgetStore () {
       return this.$vpd.state.widgets.filter(item => item.belong === 'page')
@@ -113,22 +106,15 @@ export default {
     backgroundColor () {
       return this.$vpd.state.page.backgroundColor
     },
+
     // 页面背景图片
     backPic () {
       return this.$vpd.state.page.backPic
     },
+
     // 选中项id
     id () {
-      // var type = this.$vpd.state.type
-      // var index = this.$vpd.state.index
-      // index = index >= 0 ? index : ''
-      // return type + index
       return this.$vpd.state.uuid
-    },
-
-    // 动画播放状态
-    playState () {
-      return this.$vpd.state.playState
     }
   },
 

@@ -15,6 +15,7 @@ export default {
   playState: false, // 动画播放状态
 
   activeElement: {}, // 选中对象，要么是元件，要么是页面
+  linkage: {}, // 联动数据
   page: {
     page: true,
     title: '数据可视化大屏', // 页面 title

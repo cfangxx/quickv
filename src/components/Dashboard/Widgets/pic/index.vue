@@ -34,6 +34,8 @@ export default {
     left: 0,
     z: 0,
     href: '', // 超链接
+    name: '图片', // 组件名称, 可自定义
+    desc: '', // 描述, 可自定义
     belong: 'page', // 属于哪个容器
     animationName: ''
   },

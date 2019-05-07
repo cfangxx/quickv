@@ -2,51 +2,10 @@
   <div>
     <!--<hr>-->
     <div v-show="tab === 1">
+      <basicSetting :activeElement="activeElement"/>
+
       <div class="panel-item-new">
-        <!--<div class="panel-item-title">基础参数</div>-->
-        <div class="panel-row">
-          <div class="panel-label">宽度</div>
-          <div>
-            <input
-              v-model="activeElement.width"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">高度</div>
-          <div>
-            <input
-              v-model="activeElement.height"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">横坐标</div>
-          <div>
-            <input
-              v-model="activeElement.left"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">纵坐标</div>
-          <div>
-            <input
-              v-model="activeElement.top"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">层级</div>
-          <div>
-            <input
-              v-model="activeElement.z"
-              type="number">
-          </div>
-        </div>
-      </div>
-      <div class="panel-item-new">
-        <div class="panel-item-title">基础设置</div>
+        <div class="panel-item-title">样式</div>
         <div class="panel-row">
           <div class="panel-label">按钮文本</div>
           <div>
@@ -117,8 +76,13 @@
 </template>
 
 <script>
+import basicSetting from '@/components/Dashboard/Widgets/common/basicSetting'
+
 export default {
   name: 'BraidButtonStyle',
+  components: {
+    basicSetting
+  },
   props: ['activeElement', 'tab'],
   methods: {
     addPic () {

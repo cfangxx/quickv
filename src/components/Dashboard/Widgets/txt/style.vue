@@ -1,49 +1,9 @@
 <template>
   <div>
     <div v-show="tab === 1">
-      <div class="panel-item-new">
-        <!--<div class="panel-item-title">基础参数</div>-->
-        <div class="panel-row">
-          <div class="panel-label">宽度</div>
-          <div>
-            <input
-              v-model="activeElement.width"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">高度</div>
-          <div>
-            <input
-              v-model="activeElement.height"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">横坐标</div>
-          <div>
-            <input
-              v-model="activeElement.left"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">纵坐标</div>
-          <div>
-            <input
-              v-model="activeElement.top"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">层级</div>
-          <div>
-            <input
-              v-model="activeElement.z"
-              type="number">
-          </div>
-        </div>
-      </div>
+      <!-- 基础设置 -->
+      <basicSetting :activeElement="activeElement"/>
+
       <hr>
       <div class="panel-row" flex>
         <div class="panel-label">字体</div>
@@ -118,8 +78,12 @@
 </template>
 
 <script>
+import basicSetting from '@/components/Dashboard/Widgets/common/basicSetting'
 export default {
-  name: 'braid-txt-style',
+  name: 'braidTxtStyle',
+  components: {
+    basicSetting
+  },
   props: ['activeElement', 'tab']
 }
 </script>

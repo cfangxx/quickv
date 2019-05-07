@@ -2,7 +2,6 @@
   <div
     class="txt"
     v-html="val.text"
-    :class="[playState ? 'anm-' + val.animationName : '']"
     contenteditable="true"
     @blur="(e) => updateText(e, val.uuid)"
     :style="{
@@ -30,7 +29,7 @@ export default {
   name: WIDGET_NAME,
   group: 'text',
   icon: require('./icon/thumb-text.png'),
-  title: '文本',
+  title: '文本框',
   panel: braidTxtStyle,
   setting: {
     type: WIDGET_NAME,
@@ -52,12 +51,14 @@ export default {
     color: '#000000',
     textAlign: 'center',
     text: '文本',
+    name: '文本框', // 组件名称, 可自定义
+    desc: '', // 描述, 可自定义
     href: '',
     belong: 'page',
     animationName: ''
   },
   // 属性含义参照 widgets/pic/index.vue
-  props: ['val', 'h', 'w', 'playState'],
+  props: ['val', 'h', 'w'],
 
   methods: {
     updateText (e, uuid) {

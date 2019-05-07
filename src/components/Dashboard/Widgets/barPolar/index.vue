@@ -1,6 +1,5 @@
 <template>
   <div
-    :class="[playState ? 'anm-' + val.animationName : '']"
     :style="{
       position: 'absolute',
       width: val.width / w * 100 + '%',
@@ -19,8 +18,10 @@
 </template>
 
 <script>
-import axios from 'axios'
 import stylec from './style.vue'
+import vpd from '@/components/Dashboard/Designer/mixins/vpd'
+import dataControl from '@/components/Dashboard/Widgets/common/mixins/dataControl'
+
 const WIDGET_NAME = 'braid-barpolar'
 export default {
   name: WIDGET_NAME,
@@ -36,14 +37,14 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    name: '11',
     width: 500,
     height: 550,
     left: 50,
     top: 50,
     z: 0,
     color: '#555555',
-    text: '堆叠柱状图',
+    name: '堆叠柱状图', // 组件名称, 可自定义
+    desc: '极坐标系下的堆叠柱状图', // 描述, 可自定义
     belong: 'page',
     animationName: '',
 
@@ -59,91 +60,117 @@ export default {
     splitNumber: 10, // 分割段数
     polarType: 'bar', // 图表标线样式 如 line, bar
 
-    showLegend: true, // 显示图例
+    legendShow: true, // 显示图例
     legendWidth: '60%', // 图例宽度
     legendHeight: '100', // 图例高度
     legendPositionX: 'center', // 图例位置（X 轴）
     legendPositionY: 'bottom', // 图例位置（Y 轴）
     legendFontSize: 12, // 图例文字大小
-    legendTextColor: '#555', // 图例文字颜色
+    legendTextColor: '#000000', // 图例文字颜色
     legendIcon: 'roundRect', // 图例 Icon 如 circle, rect, line, roundRect, triangle, diamond, pin, none
     legendIconWidth: 20, // 图例 Icon 宽度
     legendIconHeight: 10, // 图例 Icon 高度
     legendIconGap: 10, // 图例 Icon 间距
 
-    dataAPI: 'https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/barchart', // API拉取地址
+    dataAPI: 'https://easy-mock.com/mock/5cc6c0a89edd7844f38df463/cryia/api/salevolume', // API拉取地址
     dataAutoRefresh: false, // 是否自动刷新
-    dataOrigin: 'local',
+    dataOrigin: 'local', // local 本地 api 远程接口
     dataRefreshTime: 5, // 自动刷新间隔（秒）
     dataRefresh: false, // 刷新图表, 控制面板中测试dataApi使用
-    dataJSON: {
-      'status': 0,
-      'msg': '',
-      data: [
-        {
-          unit: '财政事业',
-          schedule: 16
-        }, {
-          unit: '民政事业',
-          schedule: 70
-        }, {
-          unit: '财政事业',
-          schedule: 50
-        }, {
-          unit: '水利事业',
-          schedule: 30
-        }, {
-          unit: '人设事业',
-          schedule: 6
-        }, {
-          unit: '住建事业',
-          schedule: 20
-        }, {
-          unit: '工信事业',
-          schedule: 95
-        }
-      ]
-    }
 
+    // 数据联动配置
+    linkEnable: false, // 开启联动
+    linkIsMain: false, // 是否是数据源
+    linkMainUUID: '', // 上级的UUID, 通过此标志获取联动的数据
+
+    keyPrimary: 'data',
+    keyTarget: 'statistics', // 响应数据对应的字段名
+    keyXAxis: 'vendor', // 从该字段取x轴数据
+    keyYAxis: 'sales', // 从该字段取y轴数据
+
+    staticData: {
+      'code': 0,
+      'data': {
+        'year': 2019,
+        'statistics': [
+          {
+            'vendor': 'Samsung',
+            'sales': 33801
+          },
+          {
+            'vendor': 'iPhone',
+            'sales': 63395
+          },
+          {
+            'vendor': 'HUAWEI',
+            'sales': 89297
+          },
+          {
+            'vendor': 'VIVO',
+            'sales': 76689
+          },
+          {
+            'vendor': 'OPPO',
+            'sales': 32219
+          },
+          {
+            'vendor': 'MI',
+            'sales': 98748
+          },
+          {
+            'vendor': 'Meizu',
+            'sales': 18290
+          },
+          {
+            'vendor': '8848',
+            'sales': 66282
+          }
+        ]
+      }
+    }
   },
-  props: ['w', 'h', 'val', 'playState'],
+  mixins: [vpd, dataControl],
+  props: ['w', 'h', 'val'],
   data () {
     return {
-      timer: null,
-      dataJSON: {
-        'categories': [],
-        'series': []
-      }
+      dynamicData: {}
     }
   },
   computed: {
-    dataLength () {
-      let data = this.val.dataJSON.data.map(item => {
-        return item.unit
-      })
-      return data
+    legends () {
+      if (this.dynamicData[this.val.keyPrimary] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget]) {
+        return this.dynamicData[this.val.keyPrimary][this.val.keyTarget].map(item => {
+          return item[this.val.keyXAxis]
+        })
+      } else {
+        return []
+      }
     },
     dataSeries () {
-      let legendData = this.dataLength
       let seriesData = []
-      let arrData = this.val.dataJSON.data
-      for (let i in arrData) {
-        let serItem = {}
-        serItem.type = this.val.polarType
-        serItem.data = []
-        for (let j in arrData) {
-          if (j === i) {
-            let rValue = arrData[j].schedule
-            serItem.data[j] = rValue
-          } else {
-            serItem.data[j] = 0
-          }
+
+      if (this.dynamicData[this.val.keyPrimary]) {
+        const origin = this.dynamicData[this.val.keyPrimary][this.val.keyTarget] || []
+        const legends = this.legends
+
+        for (let i in origin) {
+          let item = {}
+          item.type = this.val.polarType
+          item.data = origin.map((value, index) => {
+            if (index === Number(i)) {
+              return value[this.val.keyYAxis]
+            } else {
+              return 0
+            }
+          })
+          item.coordinateSystem = 'polar'
+          item.name = legends[i]
+          item.stack = 'a'
+
+          seriesData[i] = item
         }
-        serItem.coordinateSystem = 'polar'
-        serItem.name = legendData[i]
-        serItem.stack = 'a'
-        seriesData[i] = serItem
       }
+
       return seriesData
     },
     options () {
@@ -203,7 +230,7 @@ export default {
         },
         series: this.dataSeries,
         legend: {
-          show: this.val.showLegend, // 显示图例
+          show: this.val.legendShow, // 显示图例
           x: this.val.legendPositionX,
           y: this.val.legendPositionY,
           width: this.val.legendWidth,
@@ -216,45 +243,11 @@ export default {
             color: this.val.legendTextColor,
             fontSize: this.val.legendFontSize
           },
-          // data: ['财政', '民政', '财政', '水利', '人设', '住建', '工信']
-          data: this.dataLength
+          data: this.legends
         },
         tooltip: {
           trigger: 'axis'
         }
-      }
-    }
-
-  },
-  mounted () {
-
-  },
-  methods: {
-    setOptionData () { // API 拉取数据
-      if (this.val.dataOrigin !== 'api') {
-        return
-      }
-
-      axios({
-        type: 'get',
-        headers: { 'Content-Type': 'application/json' },
-        url: this.val.dataAPI
-      }).then(response => {
-        const res = response.data
-        if (res.code === 0) {
-          this.dataJSON = res.data
-        }
-      })
-
-      this.clearTimer()
-      if (this.val.dataAutoRefresh) {
-        let _this = this
-        this.timer = setTimeout(() => { _this.setOptionData() }, _this.val.dataRefreshTime * 1000)
-      }
-    },
-    clearTimer () {
-      if (this.timer) {
-        clearTimeout(this.timer)
       }
     }
   }
@@ -262,11 +255,6 @@ export default {
 </script>
 
 <style scoped>
-.lz-container {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100%;
-}
   .echarts {
     width: 100%;
     height:100%;

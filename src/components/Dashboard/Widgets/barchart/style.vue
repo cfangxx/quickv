@@ -1,62 +1,9 @@
 <template>
   <div>
     <div v-show="tab === 1">
-      <div class="panel-item-new">
-        <!--<div class="panel-item-title">基础参数</div>-->
-        <div class="panel-row">
-          <div class="panel-label">宽度</div>
-          <div>
-            <input
-              v-model="activeElement.width"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">高度</div>
-          <div>
-            <input
-              v-model="activeElement.height"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">横坐标</div>
-          <div>
-            <input
-              v-model="activeElement.left"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">纵坐标</div>
-          <div>
-            <input
-              v-model="activeElement.top"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">层级</div>
-          <div>
-            <input
-              v-model="activeElement.z"
-              type="number">
-          </div>
-        </div>
-        <div v-if="activeElement.isChild">
-          <div class="panel-row">
-            <div class="panel-label">所属容器</div>
-            <div class="panel-value">
-              <select v-model="activeElement.belong">
-                <option>page</option>
-                <option
-                  v-for="(val, index) in containerName"
-                  :key="index">{{ val }}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- 基础设置 -->
+      <basicSetting :activeElement="activeElement"/>
+
       <div class="panel-item-new">
         <div class="panel-item-title">{{activeElement.axisReverse ? 'Y 轴' : 'X 轴'}}</div>
         <div class="panel-row">
@@ -333,78 +280,10 @@
       </div>
     </div>
 
-    <!-- 此处必须用v-if -->
     <div v-if="tab === 2">
-      <div class="panel-item-new">
-        <!--<div class="panel-item-title">数据</div>-->
-        <div class="data-group">
-          <div
-            class="radioscont">
-            <label class="radiolabel">
-              <input
-                v-model="activeElement.dataOrigin"
-                type="radio"
-                class="inpRadio"
-                name="task"
-                value="api">API拉取
-            </label>
-            <label class="radiolabel">
-              <input
-                v-model="activeElement.dataOrigin"
-                type="radio"
-                class="inpRadio"
-                name="task"
-                value="local">静态JSON
-            </label>
-          </div>
-          <div class="radiowrap">
-            <div v-if="dataOrigin == 'api'">
-              <textarea
-                v-model="activeElement.dataAPI"
-                cols="30"
-                rows="3"
-                placeholder="$CUR_HOST/openapi/demo/chart?type=sellGoods"/>
-
-              <p>可使用示例API：</p>
-              <textarea cols="30" rows="2" style="border:none" readonly>https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/barchart</textarea>
-              <br/>
-              <div
-                class="panel-row"
-                flex>
-                <el-button type="success" @click="activeElement.dataRefresh = !activeElement.dataRefresh">刷新图表</el-button>
-                <div class="panel-label">自动刷新</div>
-                <div class="panel-value">
-                  <label class="form-switch">
-                    <input
-                      v-model="activeElement.dataAutoRefresh"
-                      type="checkbox" >
-                    <i class="form-icon"/>
-                  </label>
-                </div>
-              </div>
-              <div
-                v-if="activeElement.dataAutoRefresh"
-                class="panel-row">
-                <div class="panel-label">时间间隔</div>
-                <div>
-                  <input
-                    :value="activeElement.dataRefreshTime"
-                    type="number"
-                    @input="inpTime($event)">
-                </div>
-              </div>
-              <p>数据的自动刷新在非编辑模式下有效，最小刷新间隔为10秒<span style="color:red">未完成</span></p>
-            </div>
-            <div v-if="dataOrigin == 'local'">
-              <json-editor
-                :codes="localData"
-                @onCodeChange="jsonOnCodeChange" />
-              <!-- <button class="btn-small" @click="refreshMonaco">刷新数据</button> -->
-            </div>
-          </div>
-        </div>
-      </div>
+      <dataSetting :activeElement="activeElement"/>
     </div>
+
     <div v-show="tab === 3">
       <div
         class="panel-row"
@@ -425,39 +304,18 @@
 
 <script>
 import vpd from '@/components/Dashboard/Designer/mixins/vpd'
-import jsonEditor from '@/components/Dashboard/Designer/common/monacoEditor'
+import dataSetting from '@/components/Dashboard/Widgets/common/dataSetting'
+import basicSetting from '@/components/Dashboard/Widgets/common/basicSetting'
 
 export default {
   name: 'BraidBarChartStyle',
   components: {
-    jsonEditor
+    dataSetting,
+    basicSetting
   },
   mixins: [vpd],
   props: ['activeElement', 'tab'],
-  computed: {
-    dataOrigin () {
-      return this.activeElement.dataOrigin
-    },
-    localData () {
-      return JSON.stringify(this.activeElement.dataJSON, null, 2)
-    },
-    // 容器名称
-    containerName () {
-      var arr = []
-      this.$vpd.state.widgets.map(
-        val => val.isContainer && val.name && arr.push(val.name)
-      )
-
-      return arr
-    }
-  },
   methods: {
-    jsonOnCodeChange (value, event) {
-      this.$vpd.commit('updataJSON', JSON.parse(value))
-    },
-    refreshMonaco () {
-
-    },
     addLGColor () {
       let params = {
         property: 'lgArr',
@@ -476,15 +334,6 @@ export default {
         }
       }
       this.$vpd.commit('delColor', params)
-    },
-    inpTime (e) {
-      let time = e.target.value
-      let param = {
-        name: 'dataRefreshTime',
-        value: time
-      }
-      this.$vpd.commit('updataData', param)
-      // this.refreshData()
     }
   }
 }

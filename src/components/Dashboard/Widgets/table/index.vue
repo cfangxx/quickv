@@ -1,6 +1,5 @@
 <template>
   <div
-    :class="[playState ? 'anm-' + val.animationName : '']"
     :style="{
       display: val.display,
       position: 'absolute',
@@ -109,12 +108,16 @@ export default {
     isChild: false,
     dragable: true,
     resizable: true,
-    name: '',
     width: 550,
     height: 300,
     left: 50,
     top: 0,
     z: 0,
+    name: '表格', // 组件名称, 可自定义
+    desc: '', // 描述, 可自定义
+    belong: 'page',
+    animationName: '',
+
     display: 'block',
     bgColor: '',
     backPic: '',
@@ -122,12 +125,9 @@ export default {
     radius: 0,
     borderColor: '#000000',
     borderWidth: 0,
-    text: '表格',
     dir: 'row',
     justify: 'flex-start',
     align: 'flex-start',
-    belong: 'page',
-    animationName: '',
     fontSize: '14px',
 
     showTh: true, // 是否显示表头
@@ -224,7 +224,7 @@ export default {
     }
 
   },
-  props: ['w', 'h', 'val', 'playState'],
+  props: ['w', 'h', 'val'],
   data () {
     return {
       color: ''
