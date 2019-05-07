@@ -47,6 +47,7 @@ export function autoHover (myChart, option, num, time) {
       type: 'hideTip'
     })
     timer && clearInterval(timer)
+    return
   }
   myChart.on('mouseover', function (params) {
     clearInterval(timer)
@@ -90,23 +91,11 @@ export function autoHover (myChart, option, num, time) {
     }, time)
     if (!time) {
       myChart.dispatchAction({
-        type: 'downplay'
-      })
-      myChart.dispatchAction({
-        type: 'showTip',
-        seriesIndex: 0,
-        dataIndex: count
+        type: 'hideTip'
       })
       timer && clearInterval(timer)
     }
   })
-
-  if (!time) {
-    myChart.dispatchAction({
-      type: 'hideTip'
-    })
-    timer && clearInterval(timer)
-  }
 }
 export default {
   autoHover, timer

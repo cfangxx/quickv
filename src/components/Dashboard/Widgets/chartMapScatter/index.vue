@@ -64,6 +64,7 @@ export default {
     visualTextColor: '#aaaaaa', // 值域条文本颜色
     autoToolTip: false, // 是否开启自动轮播
     autoToolTipTime: 5000, // 自动轮播时间
+    autoToolTipTimer: null,
 
     dataAPI: 'https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/chartMap', // API拉取地址
     dataAutoRefresh: false, // 是否自动刷新
@@ -231,15 +232,9 @@ export default {
   },
   watch: {
     'val.autoToolTip': function (val) {
+      this.drawBar(this.val.autoToolTipTime)
       if (!val) {
         this.drawBar(0)
-        var params = {
-          name: 'autoToolTipTime',
-          value: 0
-        }
-        this.$vpd.commit('updateActiveElement', params)
-      } else {
-        this.drawBar(this.val.autoToolTipTime)
       }
     },
     'val.autoToolTipTime': function (val) {
