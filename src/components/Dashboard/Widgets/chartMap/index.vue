@@ -12,6 +12,7 @@
     }"
     contenteditable="true">
     <v-echart
+      id="bar"
       :options="options"
       autoresize
       class="ffff"/>
@@ -23,13 +24,15 @@ import stylec from './style.vue'
 import 'echarts/map/js/china.js'
 import vpd from '@/components/Dashboard/Designer/mixins/vpd'
 import dataControl from '@/components/Dashboard/Widgets/common/mixins/dataControl'
+import tools from './tools'
+var echarts = require('echarts')
 
 const WIDGET_NAME = 'braid-china-map'
 export default {
   name: WIDGET_NAME,
   group: 'map',
   icon: require('./icon/thumb-chartMap.png'),
-  title: '中国地图',
+  title: '省份分布图',
   panel: stylec,
   setting: {
     type: WIDGET_NAME,
@@ -45,7 +48,7 @@ export default {
     top: 50,
     z: 0,
     color: '#555555',
-    name: '地图', // 组件名称, 可自定义
+    name: '省份分布图', // 组件名称, 可自定义
     desc: '中国地图', // 描述, 可自定义
     belong: 'page',
     animationName: '',
@@ -53,17 +56,17 @@ export default {
     chartTitle: '', // 图表标题
     titleColor: '#666666', // 标题颜色
 
-    lgArr: [{ // 设置渐变颜色数组
-      color: '#ba3ba3',
-      offset: 0
-    }],
+    colorArr: ['#1ccada', '#d2f4f8'],
+    bgMapColor: '', // 地图背景颜色
+    mapBorderColor: '#ffffff', // 地图地域边框颜色
+    mapEmphasisAreaColor: 'rgba(231,235,13,0.9)', // 高亮区域颜色
+    showVisualMap: true, // 是否显示值域条
+    visualTextColor: '#aaaaaa', // 值域条文本颜色
+    autoToolTip: false, // 是否开启自动轮播
+    autoToolTipTime: 5000, // 自动轮播时间
+    autoToolTipTimer: null,
 
-    gridTop: '70', // 图表位置（距顶部）
-    gridLeft: '3%', // 图表位置（距左边）
-    gridRight: '3%', // 图表位置（距右边）
-    gridBottom: '3%', // 图表位置（距底部）
-
-    dataAPI: 'https://easy-mock.com/mock/5cc6c0a89edd7844f38df463/cryia/api/salevolume', // API拉取地址
+    dataAPI: 'https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/chartMap', // API拉取地址
     dataAutoRefresh: false, // 是否自动刷新
     dataOrigin: 'local', // local 本地 api 远程接口
     dataRefreshTime: 5, // 自动刷新间隔（秒）
@@ -139,6 +142,7 @@ export default {
     },
     options () {
       return {
+        backgroundColor: this.val.bgMapColor, // 地图背景色
         title: {
           text: this.val.chartTitle, // 图表标题
           textStyle: {
@@ -146,17 +150,8 @@ export default {
           }
         },
         tooltip: {
-          trigger: 'item'
-        },
-        legend: {
-          data: '销量'
-        },
-        grid: {
-          top: this.val.gridTop, // 上边距
-          left: this.val.gridLeft, // 图表位置 左边距
-          right: this.val.gridRight, // 右边距
-          bottom: this.val.gridBottom, // 下边距
-          containLabel: true
+          trigger: 'item',
+          formatter: '{b}：{c}'
         },
         roamController: {
           show: true,
@@ -166,13 +161,16 @@ export default {
           }
         },
         visualMap: {
-          show: true,
+          show: this.val.showVisualMap, // 显示值域条
           type: 'continuous', // 连续型
           min: 0,
           max: 100, // 值域最大值，必须参数
           left: 'left',
           top: 'bottom',
-          color: ['#1ccada', '#d2f4f8'],
+          color: this.val.colorArr,
+          textStyle: {
+            color: this.val.visualTextColor // 值域条文本颜色
+          },
           calculable: true // 是否启用值域漫游
         },
         series: [{
@@ -181,17 +179,76 @@ export default {
           mapType: 'china',
           roam: false,
           itemStyle: {
-            normal: {
-              areaColor: '#d2f4f8',
-              borderColor: 'rgba(255,255,255,0.9)'
+            normal: { // 普通状态下样式
+              areaColor: this.val.colorArr[1],
+              borderColor: this.val.mapBorderColor, // 地图地域边框颜色
+              textStyle: {
+                color: 'red'
+              }
             },
-            emphasis: {
-              areaColor: '#0000ff'
+            emphasis: { // 高亮状态下样式
+              areaColor: this.val.mapEmphasisAreaColor
             }
           },
           data: this.dataSeries
+        }, {
+          name: '',
+          type: 'effectScatter',
+          coordinateSystem: 'geo',
+          data: [
+            { name: '合肥', value: [117.27, 31.86, 56] },
+            { name: '牡丹江', value: [129.58, 44.6, 94] },
+            { name: '库尔勒', value: [86.06, 41.68, 150] }
+          ],
+          encode: {
+            value: 2
+          },
+          symbolSize: function (val) {
+            return val[2] / 10
+          },
+          showEffectOn: 'render',
+          rippleEffect: {
+            brushType: 'stroke'
+          },
+          hoverAnimation: true,
+          label: {
+            normal: {
+              formatter: '{b}',
+              position: 'right',
+              show: true
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: '#f4e925',
+              shadowBlur: 10,
+              shadowColor: '#333'
+            }
+          },
+          zlevel: 1
         }]
       }
+    }
+  },
+  watch: {
+    'val.autoToolTip': function (val) {
+      this.drawBar(this.val.autoToolTipTime)
+      if (!val) {
+        this.drawBar(0)
+      }
+    },
+    'val.autoToolTipTime': function (val) {
+      this.drawBar(val)
+    }
+  },
+  methods: {
+    drawBar (time) {
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('bar'))
+      // 使用刚指定的配置项和数据显示图表
+      myChart.setOption(this.options)
+      // 使用轮播插件
+      tools.autoHover(myChart, this.options, this.dataSeries.length, time)
     }
   }
 }

@@ -83,6 +83,7 @@ select {
   height:100%;
   position: absolute;
   background-color:transparent;
+  z-index:999;
 }
 
 .panel-value-new {
@@ -144,4 +145,10 @@ select {
 .radiolabel{
   font-weight: normal;
   margin-right:10px;
+}
+.panel-value.panel-value-color-1{
+  min-width: 146px;
+}
+.panel-value.panel-value-color-2{
+  min-width: 40px;
 }
