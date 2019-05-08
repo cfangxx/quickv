@@ -44,8 +44,8 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    width: 300,
-    height: 300,
+    width: 200,
+    height: 200,
     left: 50,
     top: 50,
     z: 0,
@@ -56,7 +56,7 @@ export default {
     animationName: '',
 
     reverse: false,
-    fontSize: 10
+    fontSize: 18
   },
   props: ['w', 'h', 'val'],
   data () {
@@ -73,8 +73,8 @@ export default {
 
 <style scoped>
 .loader {
-    width: 20em;
-    height: 20em;
+    /* width: 20em; */
+    /* height: 20em; */
     /* font-size: 10px; */
     position: relative;
     display: flex;
@@ -120,18 +120,18 @@ export default {
 .face .circle::before {
     position: absolute;
     top: -0.5em;
-    right: -0.6em;
+    right: -0.5em;
     content: '';
-    width: 0.8em;
-    height: 0.8em;
+    width: 0.6em;
+    height: 0.6em;
     background-color: currentColor;
     border-radius: 50%;
-    box-shadow: 0 0 2em,
+    box-shadow: 0 0 1em,
+                0 0 2em,
+                0 0 3em,
                 0 0 4em,
-                0 0 6em,
-                0 0 8em,
-                0 0 10em,
-                0 0 0 0.5em rgba(255, 255, 0, 0.1);
+                0 0 5em,
+                0 0 0 0.3em rgba(255, 255, 0, 0.1);
 }
 
 @keyframes animate {

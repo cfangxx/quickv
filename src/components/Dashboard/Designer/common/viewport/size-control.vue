@@ -122,8 +122,8 @@ export default {
   cursor: ns-resize;
 }
 .square {
-  width: 10px;
-  height: 10px;
+  width: 6px;
+  height: 6px;
   border: 1px solid #2196f3;
   background-color: #fff;
   flex-shrink: 0;

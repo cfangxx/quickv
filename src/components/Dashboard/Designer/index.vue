@@ -61,7 +61,7 @@ export default {
   data () {
     return {
       styleObj: {
-        width: (1920 - 40) + 'px'
+        width: (1920 - 299) + 'px'
       }
     }
   },
@@ -113,7 +113,7 @@ export default {
     },
     handleLableWidth () {
       const wid = window.innerWidth
-      this.styleObj.width = (wid - 40) + 'px'
+      this.styleObj.width = (wid - 299) + 'px'
     }
   },
 

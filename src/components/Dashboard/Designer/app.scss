@@ -61,13 +61,14 @@ select {
   }
 }
 .g-active {
-  outline: 1px solid #2196f3 !important;
+  outline: 1px solid #2196f385 !important;
+  background-color: #2196f321;
   &:hover {
-    outline: 1px solid #2196f3 !important;
+    outline: 1px solid #2196f3b5 !important;
   }
   &::after {
     content: attr(data-title);
-    background: #2196f3;
+    background: #2196f385;
     color: #fff;
     position: absolute;
     top: 0;
