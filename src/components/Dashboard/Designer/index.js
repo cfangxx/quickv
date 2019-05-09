@@ -1,13 +1,13 @@
 import VuePageDesigner from './index.vue'
 
-import slider from './common/slider.vue'
-import icon from './common/icon.vue'
+import Slider from './components/Slider.vue'
+import Icon from './components/Icon.vue'
 
-import './app.scss'
+import './style/app.scss'
 
 const install = function (Vue, opts = {}) {
-  Vue.component('VpdSlider', slider)
-  Vue.component('VpdIcon', icon)
+  Vue.component('VpdSlider', Slider)
+  Vue.component('VpdIcon', Icon)
 
   Vue.component('VuePageDesigner', VuePageDesigner)
 }

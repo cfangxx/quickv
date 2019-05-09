@@ -1,5 +1,5 @@
 export default {
-  top: 0, // 添加元件的初始纵坐标
+  top: 400, // 添加元件的初始纵坐标
   type: 'page', // 选中元素类型
   index: -1, // 选中元素索引
   uuid: null, // 选中元素uuid

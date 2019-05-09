@@ -29,27 +29,29 @@
 
 <script>
 import Vue from 'vue'
-import widgetLibrary from './plugins/widget'
-import navbar from './common/navbar.vue'
-import toolbar from './common/toolbar.vue'
-import panel from './common/panel/index.vue'
-import viewport from './common/viewport/index.vue'
-// import loadSprite from './utils/load-sprite'
+
+import Navbar from './components/Navbar'
+import Toolbar from './components/Toolbar.vue'
+import Panel from './components/Panel'
+import Viewport from './components/Viewport'
+import Slider from './components/Slider.vue'
+import Toast from './components/Toast.vue'
+import Uploader from './components/Uploader.vue'
+
+import WidgetLibrary from './plugins/widget'
+
 import vpd from './mixins/vpd'
-import toast from './common/toast.vue'
-import uploader from './common/uploader.vue'
-import slider from './common/slider.vue'
 
 export default {
   name: 'VuePageDesigner',
   components: {
-    navbar, // 顶部导航栏
-    toolbar, // 左侧菜单栏
-    panel, // 右侧参数面板
-    viewport, // 页面画布
-    [toast.name]: toast, // 提示组件
-    [uploader.name]: uploader, // 上传组件
-    [slider.name]: slider
+    Navbar, // 顶部导航栏
+    Toolbar, // 左侧菜单栏
+    Panel, // 右侧参数面板
+    Viewport, // 页面画布
+    [Toast.name]: Toast, // 提示组件
+    [Uploader.name]: Uploader, // 上传组件
+    [Slider.name]: Slider
   },
   mixins: [vpd],
   props: {
@@ -79,7 +81,7 @@ export default {
 
   created () {
     // 注册所有可用 widget
-    Vue.use(widgetLibrary)
+    Vue.use(WidgetLibrary)
 
     // 清空画布
     this.$vpd.initState()

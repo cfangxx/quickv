@@ -1,33 +1,53 @@
-import braidButton from './button/index.vue'
-import braidLinechart from './linechart/index.vue'
-import braidBarchart from './barchart/index.vue'
-import braidBarpolar from './barPolar/index.vue'
-import braidProgressBar from './chartProgressBar/index.vue'
-import braidMap from './chartMap/index.vue'
+// charts
+import BasicBarChart from './Charts/BasicBarChart'
+import AreaLineChart from './Charts/AreaLineChart'
+import PolarBarChart from './Charts/PolarBarChart'
 
-import braidBg from './bg/index.vue'
-import braidPic from './pic/index.vue'
-import braidTxt from './txt/index.vue'
-import braidTime from './time/index.vue'
-import braidContainer from './container/index.vue'
-import braidTable from './table/index.vue'
+// effects
+import RotateLine from './Effects/RotateLine'
 
-import rotateLine from './effects/rotateLine/index'
+// indicator
+import CircularProgressBar from './Indicator/CircularProgressBar'
+
+// maps
+import ChinaMap from './Maps/ChinaMap'
+import ChinaScatterMap from './Maps/ChinaScatterMap'
+
+// materials
+import Picture from './Materials/Picture'
+import Button from './Materials/Button'
+
+// tables
+import BasicTable from './Tables/BasicTable'
+
+// texts
+import BasicTxtBox from './Texts/BasicTxtBox'
+import BasicRTClock from './Texts/BasicClock'
 
 export default {
-  [braidButton.name]: braidButton,
-  [braidLinechart.name]: braidLinechart,
-  [braidBarchart.name]: braidBarchart,
-  [braidBarpolar.name]: braidBarpolar,
-  [braidProgressBar.name]: braidProgressBar,
-  [braidMap.name]: braidMap,
-  [braidBg.name]: braidBg,
-  [braidPic.name]: braidPic,
-  [braidTxt.name]: braidTxt,
-  [braidTime.name]: braidTime,
-  [braidContainer.name]: braidContainer,
-  [braidTable.name]: braidTable,
+  // chatrs
+  [BasicBarChart.name]: BasicBarChart,
+  [AreaLineChart.name]: AreaLineChart,
+  [PolarBarChart.name]: PolarBarChart,
 
   // effects
-  [rotateLine.name]: rotateLine
+  [RotateLine.name]: RotateLine,
+
+  // indicator
+  [CircularProgressBar.name]: CircularProgressBar,
+
+  // map
+  [ChinaMap.name]: ChinaMap,
+  [ChinaScatterMap.name]: ChinaScatterMap,
+
+  // materials
+  [Picture.name]: Picture,
+  [Button.name]: Button,
+
+  // tables
+  [BasicTable.name]: BasicTable,
+
+  // texts
+  [BasicTxtBox.name]: BasicTxtBox,
+  [BasicRTClock.name]: BasicRTClock
 }

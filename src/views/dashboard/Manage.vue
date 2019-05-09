@@ -65,7 +65,7 @@
         </el-form-item>
 
         <el-form-item :label="'选择模板'">
-          <template-list :dataImages="templateList"
+          <template-list :templates="templateList"
                          @onselect="onSelectTemplate">
           </template-list>
         </el-form-item>
@@ -99,12 +99,12 @@
 
 <script>
 import { createDashboard, deleteDashboard, publishDashboard } from '@/api/dashboard'
-import waves from '@/directive/waves' // Waves directive
-// import { parseTime } from '@/scripts'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import { mapGetters } from 'vuex'
-import TemplateList from '@/components/Dashboard/Manage/TemplateList'
 import { fetchList } from '@/api/template'
+
+import waves from '@/directive/waves' // Waves directive
+import TemplateList from '@/components/Dashboard/Template'
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 const publishTypeOptions = {
   published: '已发布',

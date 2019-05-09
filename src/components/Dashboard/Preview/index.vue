@@ -11,14 +11,14 @@
 
 <script>
 import Vue from 'vue'
-import widgetLibrary from '../Designer/plugins/widget'
-import viewport from '../Designer/common/viewport/index.vue'
+import WidgetLibrary from '../Designer/plugins/widget'
+import Viewport from '../Designer/components/Viewport'
 import vpd from '../Designer/mixins/vpd'
 
 export default {
-  name: 'VuePagePreview',
+  name: 'PreviewDesign',
   components: {
-    viewport
+    Viewport
   },
   mixins: [vpd],
   props: {
@@ -26,7 +26,7 @@ export default {
     widgets: Array
   },
   created () {
-    Vue.use(widgetLibrary)
+    Vue.use(WidgetLibrary)
   },
   watch: {
     page: {
