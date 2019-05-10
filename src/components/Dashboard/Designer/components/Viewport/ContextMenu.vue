@@ -46,11 +46,11 @@ export default {
   },
   methods: {
     HandleDelete () {
-      this.$vpd.commit('delete')
+      this.$vpd.commit('DELETE_WIDGET')
       this.show = false
     },
     handleCopy () {
-      this.$vpd.commit('copy')
+      this.$vpd.commit('COPY_WIDGET')
       this.show = false
     },
     // 初始化事件

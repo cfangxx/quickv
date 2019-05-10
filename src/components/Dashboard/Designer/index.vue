@@ -85,7 +85,7 @@ export default {
     this.$vpd.initState()
 
     this.$vpd.$on('save', () => {
-      this.$vpd.commit('initActive')
+      this.$vpd.commit('INIT_ACTIVE')
       this.$emit('save', this.$vpd.state)
     })
     this.$vpd.$on('quit', () => {
@@ -104,12 +104,12 @@ export default {
 
   updated () {
     // 初始化选中元件（将页面作为初始选中元件）
-    this.$vpd.commit('initActive')
+    this.$vpd.commit('INIT_ACTIVE')
   },
 
   methods: {
     dozoom (val) {
-      this.$vpd.commit('zoom', val)
+      this.$vpd.commit('ZOOM', val)
     },
     handleLableWidth () {
       const wid = window.innerWidth
@@ -121,12 +121,13 @@ export default {
     page: {
       handler (newValue, oldValue) {
         this.$vpd.replacePage(newValue)
-        this.$vpd.commit('initActive')
+        this.$vpd.commit('INIT_ACTIVE')
       },
       deep: true
     },
     widgets: {
       handler (newValue, oldValue) {
+        console.log(newValue)
         this.$vpd.replaceWidgets(newValue)
       },
       deep: true

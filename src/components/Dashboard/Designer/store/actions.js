@@ -2,12 +2,12 @@ export default {
   addWidget ({ state, commit, store }, item) {
     if (item.setting.isUpload) {
       store.$emit('upload', (payload) => {
-        commit('addWidget', { data: payload, item })
+        commit('ADD_WIDGET', { data: payload, item })
       }, true)
     } else {
-      commit('addWidget', { item })
+      commit('ADD_WIDGET', { item })
       // 设置选中
-      commit('select', {
+      commit('SELECT_WIDGET', {
         uuid: state.widgets[state.widgets.length - 1].uuid
       })
     }

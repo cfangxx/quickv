@@ -4,7 +4,7 @@ var move = {
       var target = this.$vpd.state.activeElement
 
       // 设置移动状态初始值
-      this.$vpd.commit('initmove', {
+      this.$vpd.commit('INIT_MOVE', {
         startX: e.pageX,
         startY: e.pageY,
         originX: target.left,
@@ -22,7 +22,7 @@ var move = {
       e.stopPropagation()
       e.preventDefault()
 
-      this.$vpd.commit('move', {
+      this.$vpd.commit('MOVE_WIDGET', {
         x: e.pageX,
         y: e.pageY
       })
@@ -31,7 +31,7 @@ var move = {
     handlemouseup () {
       document.removeEventListener('mousemove', this.handlemousemove, true)
       document.removeEventListener('mouseup', this.handlemouseup, true)
-      this.$vpd.commit('stopmove')
+      this.$vpd.commit('STOP_MOVE')
     }
   }
 }

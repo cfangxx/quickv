@@ -202,7 +202,7 @@ export default {
           uuid = -1
         }
         // 设置选中元素
-        this.$vpd.commit('select', {
+        this.$vpd.commit('SELECT_WIDGET', {
           uuid: uuid || -1
         })
 
@@ -213,7 +213,7 @@ export default {
         }
       } else {
         // 取消选中元素
-        this.$vpd.commit('select', {
+        this.$vpd.commit('SELECT_WIDGET', {
           uuid: -1
         })
       }
@@ -223,7 +223,7 @@ export default {
     replaceImage (e) {
       if (this.$vpd.state.activeElement.isUpload) {
         this.$vpd.$emit('upload', payload => {
-          this.$vpd.commit('replaceImage', payload)
+          this.$vpd.commit('REPLACE_IMAGE', payload)
         })
       }
     },

@@ -98,7 +98,7 @@ export default {
     // 为确保添加的元件出现在可视区内，用画布向上滚动距离作为元件初始 top 值
     updateSrollTop () {
       var top = document.getElementById('viewport').scrollTop / this.zoom * 100
-      this.$vpd.commit('updateSrollTop', top)
+      this.$vpd.commit('UPDATE_SCROLL_TOP', top)
     }
   }
 }

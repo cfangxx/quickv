@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     activeLayer (e, item) {
-      this.$vpd.commit('select', {
+      this.$vpd.commit('SELECT_WIDGET', {
         uuid: item.uuid
       })
       let viewport = document.querySelector('#viewport')

@@ -2,7 +2,7 @@ const generate = require('nanoid/generate')
 
 export default {
   // 选中元件与取消选中
-  select (state, payload) {
+  SELECT_WIDGET (state, payload) {
     state.uuid = payload.uuid
     for (let n in state.widgets) {
       if (state.widgets[n].uuid === payload.uuid) {
@@ -19,34 +19,49 @@ export default {
     }
   },
 
-  // 设置 mousemove 操作的初始值
-  initmove (state, payload) {
-    state.startX = payload.startX
-    state.startY = payload.startY
-    state.originX = payload.originX
-    state.originY = payload.originY
-    state.moving = true
+  // 删除选中元件
+  DELETE_WIDGET (state) {
+    var type = state.type
+    if (type === 'page') return
+    // 如果删除的是容器，须将内部元件一并删除
+    if (state.activeElement.isContainer) {
+      var name = state.activeElement.name
+
+      for (var i = 0; i < state.widgets.length; i++) {
+        if (state.widgets[i].belong === name) {
+          state.widgets.splice(i, 1)
+        }
+      }
+    }
+    // 删除元件
+    state.widgets.splice(state.index, 1)
+    // 重置 activeElement
+    state.activeElement = state.page
+    state.type = 'page'
+    state.uuid = null
+    state.index = -1
   },
 
-  // 元件移动结束
-  stopmove (state) {
-    state.moving = false
-  },
+  // 添加组件
+  ADD_WIDGET (state, { data: data = null, item }) {
+    let def = { top: state.top, uuid: generate('1234567890abcdef', 10) }
+    let setting = JSON.parse(JSON.stringify(item.setting))
 
-  // 移动元件
-  move (state, payload) {
-    var target = state.activeElement
-    var dx = payload.x - state.startX
-    var dy = payload.y - state.startY
-    var left = state.originX + Math.floor(dx * 100 / state.page.zoom)
-    var top = state.originY + Math.floor(dy * 100 / state.page.zoom)
+    if (setting.isContainer) {
+      setting.name = def.uuid
+    }
 
-    target.left = left > 0 ? left : 0
-    target.top = top > 0 ? top : 0
+    if (data) {
+      data.forEach(function (val) {
+        state.widgets.push(Object.assign(setting, val, def))
+      })
+    } else {
+      state.widgets.push(Object.assign(setting, def))
+    }
   },
 
   // 调整元件尺寸
-  resize (state, payload) {
+  RESIZE_WIDGET (state, payload) {
     var dx = payload.x - state.startX
     var dy = payload.y - state.startY
     var value
@@ -80,7 +95,7 @@ export default {
   },
 
   // 复制元件
-  copy (state, payload) {
+  COPY_WIDGET (state, payload) {
     if (state.type !== 'page') {
       var copy = Object.assign({}, state.activeElement, { top: state.top, uuid: generate('1234567890abcdef', 10) })
 
@@ -109,73 +124,58 @@ export default {
     }
   },
 
+  // 设置 mousemove 操作的初始值
+  INIT_MOVE (state, payload) {
+    state.startX = payload.startX
+    state.startY = payload.startY
+    state.originX = payload.originX
+    state.originY = payload.originY
+    state.moving = true
+  },
+
+  // 元件移动结束
+  STOP_MOVE (state) {
+    state.moving = false
+  },
+
+  // 移动元件
+  MOVE_WIDGET (state, payload) {
+    var target = state.activeElement
+    var dx = payload.x - state.startX
+    var dy = payload.y - state.startY
+    var left = state.originX + Math.floor(dx * 100 / state.page.zoom)
+    var top = state.originY + Math.floor(dy * 100 / state.page.zoom)
+
+    target.left = left > 0 ? left : 0
+    target.top = top > 0 ? top : 0
+  },
+
   // 更新元件初始 top 值
-  updateSrollTop (state, top) {
+  UPDATE_SCROLL_TOP (state, top) {
     state.top = top
   },
 
   // 页面缩放
-  zoom (state, val) {
+  ZOOM (state, val) {
     state.page.zoom = val
   },
 
   // 初始化选中对象
-  initActive (state) {
+  INIT_ACTIVE (state) {
     state.activeElement = state.page
     state.type = 'page'
     state.index = -1
     state.uuid = null
-  },
-
-  // 删除选中元件
-  delete (state) {
-    var type = state.type
-    if (type === 'page') return
-    // 如果删除的是容器，须将内部元件一并删除
-    if (state.activeElement.isContainer) {
-      var name = state.activeElement.name
-
-      for (var i = 0; i < state.widgets.length; i++) {
-        if (state.widgets[i].belong === name) {
-          state.widgets.splice(i, 1)
-        }
-      }
-    }
-    // 删除元件
-    state.widgets.splice(state.index, 1)
-    // 重置 activeElement
-    state.activeElement = state.page
-    state.type = 'page'
-    state.uuid = null
-    state.index = -1
-  },
-
-  // 添加组件
-  addWidget (state, { data: data = null, item }) {
-    let def = { top: state.top, uuid: generate('1234567890abcdef', 10) }
-    let setting = JSON.parse(JSON.stringify(item.setting))
-
-    if (setting.isContainer) {
-      setting.name = def.uuid
-    }
-
-    if (data) {
-      data.forEach(function (val) {
-        state.widgets.push(Object.assign(setting, val, def))
-      })
-    } else {
-      state.widgets.push(Object.assign(setting, def))
-    }
   },
 
   // 替换图片
-  replaceImage (state, payload) {
+  REPLACE_IMAGE (state, payload) {
     // state.activeElement.width = payload[0].width
     state.activeElement.url = payload[0].url
   },
 
   // 添加容器背景图
-  addContainerBackPic (state, payload) {
+  ADD_CONTAINER_BACKGROUND_IMAGE (state, payload) {
     state.activeElement.backPic = payload[0].url
     state.activeElement.backPicUrl = payload[0].src
     state.activeElement.width = payload[0].width
@@ -183,20 +183,23 @@ export default {
   },
 
   // 添加背景图
-  addBackPic (state, payload) {
+  ADD_BACKGROUND_IMAGE (state, payload) {
     state.activeElement.backPic = payload[0].url
     state.activeElement.backPicUrl = payload[0].src
   },
-  addBgPic (state, payload) {
+
+  // 页面添加背景图
+  ADD_PAGE_BACKGROUND_IMAGE (state, payload) {
     state.activeElement.backPic = 'url(' + payload[0].url + ')'
   },
+
   // 替换背景色
-  replaceBackgroundColor (state, payload) {
+  REPLACE_BACKGROUND_COLOR (state, payload) {
     state.activeElement.bgColor = payload[0].val
   },
 
   // 添加动画
-  addAnimation (state) {
+  ADD_ANIMATION (state) {
     state.animation.push({
       name: '',
       duration: 3,
@@ -215,7 +218,7 @@ export default {
   },
 
   // 为动画添加 keyframe
-  addkeyframe (state, name) {
+  ADD_KEY_FRAME (state, name) {
     state.animation.map(val => {
       if (val.name === name) {
         val.keyframes.push({
@@ -227,36 +230,36 @@ export default {
   },
 
   // 动画的播放与停止
-  setAnimation (state, status) {
+  SET_ANIMATION (state, status) {
     state.playState = status
   },
 
   // 更新数据
-  updateData (state, { uuid, key, value }) {
+  UPDATE_WIDGET (state, { uuid, key, value }) {
     let widget = state.widgets.find(w => w.uuid === uuid)
     widget[key] = value
   },
 
   // 图表添加颜色
-  addColor (state, payload) {
+  ADD_COLOR (state, payload) {
     state.activeElement[payload.property].push(payload.data)
   },
 
   // 更新编辑器 JSON 数据
-  updateJSON (state, payload) {
+  UPDATE_STATIC_DATA (state, payload) {
     state.activeElement.staticData = payload
   },
 
-  updateActiveElement (state, payload) {
+  UPDATE_ACTIVE_ELEMENT (state, payload) {
     state.activeElement[payload.name] = payload.value
   },
 
   // 图表删除颜色
-  delColor (state, payload) {
+  DELETE_COLOR (state, payload) {
     state.activeElement[payload.property].splice(payload.data.index, 1)
   },
 
-  updateLinkage (state, { uuid, value }) {
+  UPDATE_LINKAGE (state, { uuid, value }) {
     let obj = {}
     obj[uuid] = value
 

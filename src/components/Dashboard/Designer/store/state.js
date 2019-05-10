@@ -27,5 +27,6 @@ export default {
     backPic: '', // 背景图片
     zoom: 100 // 画布缩放百分比
   },
-  widgets: [] // 元件
+  widgets: [], // 元件
+  undo: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 }

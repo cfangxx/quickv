@@ -197,7 +197,7 @@ export default {
         })
         return
       }
-      this.$vpd.commit('addAnimation')
+      this.$vpd.commit('ADD_ANIMATION')
       this.currentName = ''
       this.getCurrentAnimation('')
     },
@@ -215,7 +215,7 @@ export default {
         })
         return
       }
-      this.$vpd.commit('addkeyframe', name)
+      this.$vpd.commit('ADD_KEY_FRAME', name)
     },
 
     validateName (e) {
@@ -242,7 +242,7 @@ export default {
 
     play () {
       // stop animation if any
-      this.$vpd.commit('setAnimation', false)
+      this.$vpd.commit('SET_ANIMATION', false)
 
       setTimeout(() => {
         var animations = this.$vpd.state.animation
@@ -273,7 +273,7 @@ export default {
           }
         })
 
-        this.$vpd.commit('setAnimation', true)
+        this.$vpd.commit('SET_ANIMATION', true)
       }, 200)
     }
   }

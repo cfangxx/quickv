@@ -54,12 +54,12 @@ export default {
 
     // 复制元件
     copyWidget () {
-      this.$vpd.commit('copy')
+      this.$vpd.commit('COPY_WIDGET')
     },
 
     // 删除元件
     dele () {
-      this.$vpd.commit('delete')
+      this.$vpd.commit('DELETE_WIDGET')
     },
 
     // 退出
