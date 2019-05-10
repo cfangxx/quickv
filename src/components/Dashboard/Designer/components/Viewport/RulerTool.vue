@@ -393,7 +393,7 @@ export default {
     left: 0;
     top: 0;
     z-index: 1;
-    /* overflow: hidden; */
+    overflow: hidden;
     user-select: none;
   }
 
@@ -401,7 +401,7 @@ export default {
     position: absolute;
     left: 0;
     top: 0;
-    /* overflow: hidden; */
+    overflow: hidden;
     z-index: 1;
   }
 
@@ -447,6 +447,7 @@ export default {
     height: 3px;
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAABCAMAAADU3h9xAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRFSv//AAAAH8VRuAAAAA5JREFUeNpiYIACgAADAAAJAAE0lmO3AAAAAElFTkSuQmCC) repeat-x left center;/*./image/line_h.png*/
     cursor: n-resize; /*url(./image/cur_move_h.cur), move*/
+    overflow: initial;
   }
 
   .RefLine_v {
@@ -455,6 +456,7 @@ export default {
     _height: 9999px;
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAICAMAAAAPxGVzAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRFSv//AAAAH8VRuAAAAA5JREFUeNpiYEAFAAEGAAAQAAGePof9AAAAAElFTkSuQmCC) repeat-y center top;/*./image/line_v.png*/
     cursor: w-resize;/*url(./image/cur_move_v.cur), move*/
+    overflow: initial;
   }
 
   .RefDot_h {

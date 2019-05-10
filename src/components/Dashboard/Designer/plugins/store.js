@@ -135,7 +135,7 @@ export default class Store {
     this.vm.$data.$$state.page.title = ''
     this.vm.$data.$$state.page.about = ''
     this.vm.$data.$$state.page.width = 1920
-    this.vm.$data.$$state.page.width = 1080
+    this.vm.$data.$$state.page.height = 1080
     this.vm.$data.$$state.page.zoom = 100
 
     this.vm.$data.$$state.widgets = []

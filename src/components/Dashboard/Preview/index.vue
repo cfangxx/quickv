@@ -1,10 +1,8 @@
 <template>
-  <div class="body container grid-xl">
-    <div class="columns col-gapless">
-      <div class="viewport column">
-        <viewport
-        preview/>
-      </div>
+  <div class="columns col-gapless">
+    <div class="viewport">
+      <viewport
+      preview/>
     </div>
   </div>
 </template>
@@ -46,12 +44,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .columns {
-  height: 100%;
-}
-.viewport,
-.control-panel {
   height: 100%;
 }
 
@@ -60,7 +54,14 @@ export default {
   overflow: hidden;
 }
 
-.viewport:hover .zoom-wrap {
-  opacity: 1;
+.echarts {
+  width: 100%;
+  height:100%;
+}
+
+.layer {
+  /deep/ &:hover {
+    outline: 0px solid #2196f385 !important;
+  }
 }
 </style>

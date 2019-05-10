@@ -31,7 +31,7 @@
       <div class="panel-value">
         <input
           v-model="activeElement.width"
-          type="text">
+          type="number">
       </div>
     </div>
 
@@ -42,7 +42,7 @@
       <div class="panel-value">
         <input
           v-model="activeElement.height"
-          type="text">
+          type="number">
       </div>
     </div>
 

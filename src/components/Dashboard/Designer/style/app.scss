@@ -55,37 +55,6 @@ select {
   @extend .form-select;
   @extend .select-sm;
 }
-.layer {
-  &:hover {
-    outline: 1px solid #ddd !important;
-  }
-}
-.g-active {
-  outline: 1px solid #2196f385 !important;
-  background-color: #2196f321;
-  &:hover {
-    outline: 1px solid #2196f3b5 !important;
-  }
-  &::after {
-    content: attr(data-title);
-    background: #2196f385;
-    color: #fff;
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0 5px;
-    font-size: 12px;
-    border-radius: 0 0 0 4px;
-    line-height: 18px;
-  }
-}
-.lay-cont{
-  width:100%;
-  height:100%;
-  position: absolute;
-  background-color:transparent;
-  z-index:999;
-}
 
 .panel-value-new {
   width: 60px;
@@ -139,9 +108,6 @@ select {
 }
 .data-group{
   padding:0 15px;
-}
-.radiowrap{
-
 }
 .radiolabel{
   font-weight: normal;
