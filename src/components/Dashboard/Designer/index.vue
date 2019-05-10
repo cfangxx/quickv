@@ -127,10 +127,18 @@ export default {
     },
     widgets: {
       handler (newValue, oldValue) {
-        console.log(newValue)
         this.$vpd.replaceWidgets(newValue)
+
+        if (!this.$vpd.state.moving) {
+          // this.$vpd.commit('BACKUP_WIDGET')
+        }
       },
       deep: true
+    },
+    '$vpd.state.moving': function (newValue, oldValue) {
+      if (!newValue) {
+        // this.$vpd.commit('BACKUP_WIDGET')
+      }
     }
   }
 }
