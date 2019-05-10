@@ -3,15 +3,13 @@
     <navbar/>
     <div class="body container grid-xl">
       <div class="columns col-gapless">
-        <toolbar
-          :zoom="zoom"
-          class="toolbar column"/>
+        <toolbar :zoom="zoom" class="toolbar column"/>
         <div :style="styleObj" class="viewport viewport-new">
           <viewport :zoom="zoom"/>
           <div class="zoom-wrap">
             <vpd-slider
               :value="zoom"
-              :step="1"
+              :step="5"
               :tuning="false"
               @input="dozoom" />
             <div class="zoom-value">{{ zoom }}%</div>
@@ -31,12 +29,12 @@
 import Vue from 'vue'
 
 import Navbar from './components/Navbar'
-import Toolbar from './components/Toolbar.vue'
+import Toolbar from './components/Toolbar'
 import Panel from './components/Panel'
 import Viewport from './components/Viewport'
-import Slider from './components/Slider.vue'
-import Toast from './components/Toast.vue'
-import Uploader from './components/Uploader.vue'
+import Slider from './components/Slider'
+import Toast from './components/Toast'
+import Uploader from './components/Uploader'
 
 import WidgetLibrary from './plugins/widget'
 
@@ -192,6 +190,7 @@ export default {
   background-color: #90939975;
   opacity: 0;
   transition: opacity 0.3s;
+  z-index: 1;
 }
 
 .viewport:hover .zoom-wrap {
@@ -230,4 +229,38 @@ ul li {
   padding:0;
 }
 
+.layer {
+  &:hover {
+    outline: 1px solid #2196f385;
+    background-color: #2196f321;
+  }
+}
+
+.g-active {
+  outline: 1px solid #2196f385 !important;
+  background-color: #2196f321;
+  &:hover {
+    outline: 1px solid #2196f3b5 !important;
+  }
+  &::after {
+    content: attr(data-title);
+    background: #2196f385;
+    color: #fff;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 5px;
+    font-size: 12px;
+    border-radius: 0 0 0 4px;
+    line-height: 18px;
+  }
+}
+
+.lay-cont{
+  width:100%;
+  height:100%;
+  position: absolute;
+  background-color:transparent;
+  z-index:999;
+}
 </style>

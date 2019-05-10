@@ -56,7 +56,7 @@ export default {
       dashboard['config'] = config.page
       dashboard['widget'] = config.widgets
 
-      var Painter = document.getElementById('viewport').children[0]
+      var Painter = document.getElementById('viewport-screen')
 
       domtoimage.toPng(Painter, { style: { 'transform': 'scale(1)' } })
         .then(function (imgData) {

@@ -3,62 +3,72 @@
     id="viewport"
     class="holder"
     :style="preview ? screenSize : {}">
-    <div
-      :style="{
-        backgroundColor: backgroundColor,
-        backgroundImage: backPic,
-        backgroundRepeat: 'no-repeat',
-        width:width + 'px',
-        height: height + 'px',
-        position: 'relative',
-        transform: 'scale(' + zoom / 100 + ')'
-      }"
-      class="screen"
-      @dblclick="replaceImage">
+    <ruler-tool
+      :ruler-toggle=!preview
+      :width=width
+      :height=height
+      :zoom=zoom
+      :content-layout="{left: 0, top: 0}"
+      :is-scale-revise="true">
+      <div
+        :style="{
+          backgroundColor: backgroundColor,
+          backgroundImage: backPic,
+          backgroundRepeat: 'no-repeat',
+          width: width + 'px',
+          height: height + 'px',
+          position: 'relative',
+          transform: 'scale(' + zoom / 100 + ')'
+        }"
+        class="screen"
+        id="viewport-screen"
+        @dblclick="replaceImage">
 
-      <!-- 组件 -->
-      <component
-        v-for="val in widgetStore"
-        :is="val.type"
-        :data-title="val.name"
-        :class="{'g-active': id === val.uuid}"
-        :key="val.uuid"
-        :val="val"
-        :h="height"
-        :w="width"
-        :data-type="val.type"
-        :data-uuid="val.uuid"
-        class="layer">
+        <!-- 组件 -->
         <component
-          v-for="child in getChilds(val.name)"
-          :is="child.type"
-          :data-title="child.name"
-          :class="{'g-active': id === child.uuid}"
-          :key="child.uuid"
-          :val="child"
+          v-for="val in widgetStore"
+          :is="val.type"
+          :data-title="val.name"
+          :class="{'g-active': id === val.uuid}"
+          :key="val.uuid"
+          :val="val"
           :h="height"
           :w="width"
-          :data-type="child.type"
-          :data-uuid="child.uuid"
-          class="layer layer-child" />
-      </component>
+          :data-type="val.type"
+          :data-uuid="val.uuid"
+          class="layer">
+          <component
+            v-for="child in getChilds(val.name)"
+            :is="child.type"
+            :data-title="child.name"
+            :class="{'g-active': id === child.uuid}"
+            :key="child.uuid"
+            :val="child"
+            :h="height"
+            :w="width"
+            :data-type="child.type"
+            :data-uuid="child.uuid"
+            class="layer layer-child" />
+        </component>
 
-      <!-- 参考线 -->
-      <component v-bind:is="preview ? '' : 'reference-line'"/>
+        <!-- 参考线 -->
+        <component v-bind:is="preview ? '' : 'reference-line'"/>
 
-      <!-- 尺寸控制器 -->
-      <component v-bind:is="preview ? '' : 'size-control'"/>
-    </div>
+        <!-- 尺寸控制器 -->
+        <component v-bind:is="preview ? '' : 'size-control'"/>
 
-      <!-- 右键菜单 -->
-      <component v-bind:is="preview ? '' : 'context-menu'"/>
+        <!-- 右键菜单 -->
+        <component v-bind:is="preview ? '' : 'context-menu'"/>
+      </div>
+    </ruler-tool>
   </div>
 </template>
 
 <script>
 import ReferenceLine from './ReferenceLine'
 import SizeControl from './SizeControl'
-import ContextMenu from './ContextMenu.vue'
+import ContextMenu from './ContextMenu'
+import RulerTool from './RulerTool'
 
 import { move } from '../../mixins'
 import vpd from '../../mixins/vpd'
@@ -68,7 +78,8 @@ export default {
   components: {
     ReferenceLine, // 参考线
     SizeControl, // 尺寸控制
-    ContextMenu // 右键菜单
+    ContextMenu, // 右键菜单
+    RulerTool
   },
 
   mixins: [move, vpd],
@@ -76,6 +87,11 @@ export default {
   props: {
     'zoom': Number,
     'preview': Boolean
+  },
+  data () {
+    return {
+      presetLine: [{ type: 'l', site: 100 }, { type: 'v', site: 200 }]
+    }
   },
   computed: {
     screenSize () {
@@ -94,12 +110,12 @@ export default {
 
     // 画布高度
     height () {
-      return this.$vpd.state.page.height
+      return Number(this.$vpd.state.page.height)
     },
 
     // 页面宽度
     width () {
-      return this.$vpd.state.page.width
+      return Number(this.$vpd.state.page.width)
     },
 
     // 页面背景色
