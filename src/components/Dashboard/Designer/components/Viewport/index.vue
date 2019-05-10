@@ -56,10 +56,10 @@
 
         <!-- 尺寸控制器 -->
         <component v-bind:is="preview ? '' : 'size-control'"/>
+      </div>
 
         <!-- 右键菜单 -->
         <component v-bind:is="preview ? '' : 'context-menu'"/>
-      </div>
     </ruler-tool>
   </div>
 </template>

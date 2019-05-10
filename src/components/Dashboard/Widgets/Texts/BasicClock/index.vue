@@ -1,7 +1,7 @@
 <template>
   <div
     class="txt"
-    v-html="val.timeStr"
+    v-html="timeStr"
     :style="{
       position: val.belong === 'page' ? 'absolute' : 'relative',
       left: val.belong === 'page' ? val.left / w * 100 + '%' : '0',
@@ -57,13 +57,17 @@ export default {
     href: '',
 
     fontSpacing: 0,
-    timeType: 'y-m-d-h-m-s',
-    timeStr: ''
+    timeType: 'y-m-d-h-m-s'
   },
   props: ['val', 'h', 'w'],
+  data () {
+    return {
+      timeStr: ''
+    }
+  },
   mounted () {
     let _this = this
-    this.timer = setInterval(function () { _this.val.timeStr = _this.dateFormat() })
+    this.timer = setInterval(function () { _this.timeStr = _this.dateFormat() })
   },
   beforeDestroy: function () {
     if (this.timer) {
