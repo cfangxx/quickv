@@ -127,17 +127,27 @@ export default {
     },
     widgets: {
       handler (newValue, oldValue) {
-        this.$vpd.replaceWidgets(newValue)
-
+        // console.log('widget变化')
         if (!this.$vpd.state.moving) {
-          // this.$vpd.commit('BACKUP_WIDGET')
+          let arr = JSON.parse(JSON.stringify(newValue))
+          let params = {
+            widget: arr,
+            curUUID: this.$vpd.state.activeElement.uuid
+          }
+          this.$vpd.commit('BACKUP_WIDGET', params)
         }
+        this.$vpd.replaceWidgets(newValue)
       },
       deep: true
     },
     '$vpd.state.moving': function (newValue, oldValue) {
       if (!newValue) {
-        // this.$vpd.commit('BACKUP_WIDGET')
+        let arr = JSON.parse(JSON.stringify(this.$vpd.state.widgets))
+        let params = {
+          widget: arr,
+          curUUID: this.$vpd.state.activeElement.uuid
+        }
+        this.$vpd.commit('BACKUP_WIDGET', params)
       }
     }
   }

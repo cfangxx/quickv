@@ -144,6 +144,11 @@ export default {
       .getElementById('viewport')
       .addEventListener('mousedown', this.handleSelection, false)
 
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.keyCode === 90) {
+        this.$vpd.commit('UPDATA_WIDGETS')
+      }
+    })
     // 绑定键盘上下左右键用于元件的移动
     document
       .getElementById('viewport')
@@ -174,6 +179,9 @@ export default {
           if (e.keyCode === 40 && target.top) {
             e.preventDefault()
             target.top += 1
+          }
+          if (e.ctrlKey && e.keyCode === 90) {
+            this.$vpd.commit('UPDATA_WIDGETS')
           }
         },
         true

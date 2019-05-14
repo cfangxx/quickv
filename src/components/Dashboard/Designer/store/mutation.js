@@ -264,5 +264,30 @@ export default {
     obj[uuid] = value
 
     state.linkage = Object.assign({}, state.linkage, obj)
+  },
+  // 存储撤销步骤
+  BACKUP_WIDGET (state, payload) {
+    if (state.steps.length > 10) {
+      state.steps.shift()
+    }
+    state.steps.push(payload)
+    console.log(state.steps)
+  },
+  // 撤销
+  UPDATA_WIDGETS (state) {
+    let step = state.steps[state.steps.length - 2]
+    // console.log(step)
+    if (!step || !(step.widget instanceof Array)) {
+      return
+    }
+    let newWidget = JSON.parse(JSON.stringify(step.widget))
+    state.widgets = null
+    state.widgets = newWidget
+    let wid = step.widget.find(w => w.uuid === step.curUUID)
+    if (!wid) {
+      return
+    }
+    state.activeElement = wid
+    state.steps.pop()
   }
 }
