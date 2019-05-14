@@ -269,7 +269,7 @@ export default {
   methods: {
     addPic () {
       this.$vpd.$emit('upload', (payload) => {
-        this.$vpd.commit('addContainerBackPic', payload)
+        this.$vpd.commit('ADD_CONTAINER_BACKGROUND_IMAGE', payload)
       })
     },
     changeBackgroundCss (role) {
@@ -278,7 +278,7 @@ export default {
         name: 'bgType',
         value: role
       }
-      this.$vpd.commit('updataData', param)
+      this.$vpd.commit('UPDATE_WIDGET ', param)
     }
   }
 }

@@ -64,7 +64,7 @@ export default {
   methods: {
     updateText (e, uuid) {
       let text = e.target.innerHTML
-      this.$vpd.commit('updateData', {
+      this.$vpd.commit('UPDATE_WIDGET', {
         uuid: uuid,
         key: 'text',
         value: text

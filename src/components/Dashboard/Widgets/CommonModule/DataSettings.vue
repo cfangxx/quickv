@@ -170,14 +170,14 @@ export default {
   },
   methods: {
     changeJsonCode (value, event) {
-      this.$vpd.commit('updateJSON', JSON.parse(value))
+      this.$vpd.commit('UPDATE_STATIC_DATA', JSON.parse(value))
     },
     changeTimer (e) {
       const param = {
         name: 'dataRefreshTime',
         value: e.target.value
       }
-      this.$vpd.commit('updateActiveElement', param)
+      this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
     }
   }
 }

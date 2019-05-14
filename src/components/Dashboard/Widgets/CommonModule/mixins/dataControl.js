@@ -34,12 +34,12 @@ export default {
     },
     'val.linkIsMain': function (n, o) {
       if (n) {
-        this.$vpd.commit('updateLinkage', { uuid: this.val.uuid, value: this.dynamicData })
+        this.$vpd.commit('UPDATE_LINKAGE', { uuid: this.val.uuid, value: this.dynamicData })
       }
     },
     'dynamicData': function (newValue, o) {
       if (this.val.linkEnable && this.val.linkIsMain) {
-        this.$vpd.commit('updateLinkage', { uuid: this.val.uuid, value: newValue })
+        this.$vpd.commit('UPDATE_LINKAGE', { uuid: this.val.uuid, value: newValue })
       }
     },
     'val.staticData': function (newValue, o) {

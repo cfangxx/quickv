@@ -155,7 +155,7 @@ export default {
         property: 'colorArr',
         data: '#0000ff'
       }
-      this.$vpd.commit('addColor', params)
+      this.$vpd.commit('ADD_COLOR', params)
     },
     delLGColor (index) {
       const params = {
@@ -164,7 +164,7 @@ export default {
           index: index
         }
       }
-      this.$vpd.commit('delColor', params)
+      this.$vpd.commit('DELETE_COLOR', params)
     }
   }
 }

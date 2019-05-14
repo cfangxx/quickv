@@ -30,7 +30,7 @@ export default {
     page: {
       handler (newValue, oldValue) {
         this.$vpd.replacePage(newValue)
-        this.$vpd.commit('initActive')
+        this.$vpd.commit('INIT_ACTIVE')
       },
       deep: true
     },

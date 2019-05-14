@@ -159,7 +159,7 @@ export default {
           offset: 1
         }
       }
-      this.$vpd.commit('addColor', params)
+      this.$vpd.commit('ADD_COLOR', params)
     },
     delLGColor (index) {
       let params = {
@@ -168,7 +168,7 @@ export default {
           index: index
         }
       }
-      this.$vpd.commit('delColor', params)
+      this.$vpd.commit('DELETE_COLOR', params)
     }
   }
 }

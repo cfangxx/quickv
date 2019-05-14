@@ -407,7 +407,7 @@ export default {
         property: 'thNumBg',
         data: '#0000ff'
       }
-      this.$vpd.commit('addColor', params)
+      this.$vpd.commit('ADD_COLOR', params)
     },
     delthNumBgColor (index) {
       let params = {
@@ -416,7 +416,7 @@ export default {
           index: index
         }
       }
-      this.$vpd.commit('delColor', params)
+      this.$vpd.commit('DELETE_COLOR', params)
     },
     handleBind () {
       // console.log("取到的值是"+this.selectStatus);
@@ -441,7 +441,7 @@ export default {
           JSONData.data.categories.push(data[i].unit)
           JSONData.data.series.push(data[i].schedule)
         }
-        this.$vpd.commit('updataJSON', JSONData)
+        this.$vpd.commit('UPDATE_STATIC_DATA', JSONData)
       })
     },
     inpTime (e) {
@@ -450,14 +450,14 @@ export default {
         name: 'dataAPITime',
         value: time
       }
-      this.$vpd.commit('updataData', param)
+      this.$vpd.commit('UPDATE_WIDGET', param)
       // this.refreshData()
     },
     jsonOnMounted (edit) {
       // console.log(edit);
     },
     jsonOnCodeChange (value, event) {
-      this.$vpd.commit('updataJSON', JSON.parse(value))
+      this.$vpd.commit('UPDATE_STATIC_DATA', JSON.parse(value))
     }
   }
 }

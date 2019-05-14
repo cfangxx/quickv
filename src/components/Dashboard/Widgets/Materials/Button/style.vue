@@ -88,7 +88,7 @@ export default {
   methods: {
     addPic () {
       this.$vpd.$emit('upload', (payload) => {
-        this.$vpd.commit('addBackPic', payload)
+        this.$vpd.commit('ADD_BACKGROUND_IMAGE', payload)
       })
     }
   }
