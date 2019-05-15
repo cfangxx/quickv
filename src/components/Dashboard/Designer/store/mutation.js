@@ -271,23 +271,5 @@ export default {
       state.steps.shift()
     }
     state.steps.push(payload)
-    console.log(state.steps)
-  },
-  // 撤销
-  UPDATA_WIDGETS (state) {
-    let step = state.steps[state.steps.length - 2]
-    // console.log(step)
-    if (!step || !(step.widget instanceof Array)) {
-      return
-    }
-    let newWidget = JSON.parse(JSON.stringify(step.widget))
-    state.widgets = null
-    state.widgets = newWidget
-    let wid = step.widget.find(w => w.uuid === step.curUUID)
-    if (!wid) {
-      return
-    }
-    state.activeElement = wid
-    state.steps.pop()
   }
 }

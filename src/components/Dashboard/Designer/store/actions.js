@@ -17,5 +17,19 @@ export default {
   },
   quit ({ state, store }) {
     store.$emit('quit', state)
+  },
+  // 撤销 ctrl + z
+  undo ({ state, commit }) {
+    let step = state.steps[state.steps.length - 2]
+    if (!step || !(step.widget instanceof Array)) {
+      return
+    }
+    let newWidget = JSON.parse(JSON.stringify(step.widget))
+    state.widgets = null
+    state.widgets = newWidget
+    commit('SELECT_WIDGET', {
+      uuid: step.curUUID || -1
+    })
+    state.steps.pop()
   }
 }
