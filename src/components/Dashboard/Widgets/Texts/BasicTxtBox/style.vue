@@ -6,6 +6,14 @@
 
       <hr>
       <div class="panel-row" flex>
+        <div class="panel-label">文本</div>
+        <div>
+          <input
+            v-model="activeElement.text"
+            type="text">
+        </div>
+      </div>
+      <div class="panel-row" flex>
         <div class="panel-label">字体</div>
         <div class="panel-value">
           <select v-model="activeElement.fontFamily">

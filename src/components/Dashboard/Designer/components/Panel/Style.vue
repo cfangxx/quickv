@@ -41,8 +41,17 @@ export default {
 
   computed: {
     widgetStyle () {
-      const styles = widget.getWidgetStyle()
-      return styles[Object.keys(styles).filter(key => { return styles[key].type === this.activeElement.type })].name
+      let panel = ''
+      if (this.activeElement.type) {
+        const styles = widget.getWidgetStyle()
+        Object.keys(styles).filter(key => {
+          if (styles[key].type === this.activeElement.type) {
+            panel = key
+          }
+        })
+      }
+
+      return panel
     }
   }
 }
