@@ -10,12 +10,15 @@
       <section class="navbar-cont navbar-right">
         <a
           class="btn btn-link tooltip tooltip-bottom"
-          data-tooltip="保存 Ctrl + S"
+          data-tooltip="撤销 Ctrl + Z"
+          @click="undo"><vpd-icon name="undo" /> 撤销
+        </a>
+        <a
+          class="btn btn-link tooltip tooltip-bottom"
           @click="save"><vpd-icon name="save" /> 保存
         </a>
         <a
           class="btn btn-link tooltip tooltip-bottom"
-          data-tooltip="退出 Ctrl + ESC"
           @click="quit"><vpd-icon name="quit" /> 退出
         </a>
       </section>
@@ -47,30 +50,42 @@ export default {
     document.removeEventListener('keyup', this.triggerKeyupFn)
   },
   methods: {
-    // 保存
     save () {
       this.$vpd.dispatch('save')
     },
 
-    // 复制元件
     copyWidget () {
       this.$vpd.commit('COPY_WIDGET')
     },
 
-    // 删除元件
     dele () {
       this.$vpd.commit('DELETE_WIDGET')
     },
 
-    // 退出
     quit () {
       this.$vpd.dispatch('quit')
     },
 
+    undo () {
+      this.$vpd.dispatch('undo')
+    },
+
     triggerKeyupFn (e) {
       e.stopPropagation()
-      if (e.keyCode === 46 && this.$vpd.state.type !== 'braid-txt') {
+
+      // 快捷键 - 删除
+      if (e.keyCode === 46) {
         this.dele()
+      }
+
+      // 快捷键 - 复制
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
+        this.copyWidget()
+      }
+
+      // 快捷键 - 撤销
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 90) {
+        this.undo()
       }
     }
   }

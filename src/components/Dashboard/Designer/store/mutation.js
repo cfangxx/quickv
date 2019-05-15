@@ -97,7 +97,7 @@ export default {
   // 复制元件
   COPY_WIDGET (state, payload) {
     if (state.type !== 'page') {
-      var copy = Object.assign({}, state.activeElement, { top: state.top, uuid: generate('1234567890abcdef', 10) })
+      var copy = Object.assign({}, JSON.parse(JSON.stringify(state.activeElement)), { top: state.top, uuid: generate('1234567890abcdef', 10) })
 
       // 由于容器的名称必须是唯一的，故复制容器需作处理
       if (state.activeElement.isContainer) {
@@ -265,6 +265,7 @@ export default {
 
     state.linkage = Object.assign({}, state.linkage, obj)
   },
+
   // 存储撤销步骤
   BACKUP_WIDGET (state, payload) {
     if (state.steps.length > 10) {

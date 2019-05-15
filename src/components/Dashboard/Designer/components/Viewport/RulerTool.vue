@@ -153,14 +153,12 @@ export default {
   mounted () {
     document.documentElement.addEventListener('mousemove', this.dottedLineMove, true)
     document.documentElement.addEventListener('mouseup', this.dottedLineUp, true)
-    document.documentElement.addEventListener('keyup', this.keyboard, true)
     this.init()
     this.quickGeneration(this.presetLine)
   },
   beforeDestroy: function () {
     document.documentElement.removeEventListener('mousemove', this.dottedLineMove, true)
     document.documentElement.removeEventListener('mouseup', this.dottedLineUp, true)
-    document.documentElement.removeEventListener('keyup', this.keyboard, true)
   },
   methods: {
     init () {

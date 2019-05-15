@@ -3,7 +3,6 @@
     class="txt"
     v-html="val.text"
     contenteditable="true"
-    @blur="(e) => updateText(e, val.uuid)"
     :style="{
       position: val.belong === 'page' ? 'absolute' : 'relative',
       left: val.belong === 'page' ? val.left / w * 100 + '%' : '0',
@@ -59,18 +58,7 @@ export default {
     animationName: ''
   },
   // 属性含义参照 widgets/pic/index.vue
-  props: ['val', 'h', 'w'],
-
-  methods: {
-    updateText (e, uuid) {
-      let text = e.target.innerHTML
-      this.$vpd.commit('UPDATE_WIDGET', {
-        uuid: uuid,
-        key: 'text',
-        value: text
-      })
-    }
-  }
+  props: ['val', 'h', 'w']
 }
 </script>
 
