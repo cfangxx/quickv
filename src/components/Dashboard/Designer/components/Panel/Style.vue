@@ -42,7 +42,7 @@ export default {
   computed: {
     widgetStyle () {
       const styles = widget.getWidgetStyle()
-      return styles[Object.keys(styles).filter(key => { return styles[key].type === this.activeElement.type })]
+      return styles[Object.keys(styles).filter(key => { return styles[key].type === this.activeElement.type })].name
     }
   }
 }

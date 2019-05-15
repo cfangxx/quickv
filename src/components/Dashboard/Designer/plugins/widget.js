@@ -9,10 +9,11 @@ const install = (Vue, config = {}) => {
   if (install.installed) return
 
   widgets = Object.assign({}, Widgets, config.widgets)
-  // console.log(JSON.parse(JSON.stringify(widgets)))
+
+  // console.log(widgets)
   Object.keys(widgets).forEach(key => {
-    Vue.component(key, widgets[key])
     Vue.component(key, Vue.extend(widgets[key]).extend(vpd))
+
     // style panel
     if (widgets[key]['panel']) {
       let panel = Object.assign({}, widgets[key]['panel'], {
@@ -20,6 +21,7 @@ const install = (Vue, config = {}) => {
       })
       Vue.component(panel.name, Vue.extend(panel).extend(vpd))
       widgetStyle[panel.name] = panel
+
       // remove panel from object
       delete widgets[key]['panel']
     }
