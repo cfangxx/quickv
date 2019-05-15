@@ -47,6 +47,54 @@
       @mousedown="handlemousedown($event, 'down', 'height')">
       <div class="square"/>
     </div>
+
+    <!-- 左上 -->
+    <div
+      :style="{
+        width: elm.width + 'px',
+        top: elm.top + 'px',
+        left: elm.left - (elm.width / 2)  + 'px'
+      }"
+      class="slope"
+      @mousedown="handlemousedown($event, 'upLeft', 'width', 'height')">
+      <div class="square"/>
+    </div>
+
+    <!-- 右上 -->
+    <div
+      :style="{
+        width: elm.width + 'px',
+        top: elm.top + 'px',
+        left: elm.left + (elm.width / 2)  + 'px'
+      }"
+      class="slant"
+      @mousedown="handlemousedown($event, 'upRight', 'width', 'height')">
+      <div class="square"/>
+    </div>
+
+    <!-- 左下 -->
+    <div
+      :style="{
+        width: elm.width + 'px',
+        top: elm.top + elm.height + 'px',
+        left: elm.left - (elm.width / 2)  + 'px'
+      }"
+      class="slant"
+      @mousedown="handlemousedown($event, 'downLeft', 'width', 'height')">
+      <div class="square"/>
+    </div>
+
+    <!-- 右下 -->
+    <div
+      :style="{
+        width: elm.width + 'px',
+        top: elm.top + elm.height + 'px',
+        left: elm.left + (elm.width / 2)  + 'px'
+      }"
+      class="slope"
+      @mousedown="handlemousedown($event, 'downRight', 'width', 'height')">
+      <div class="square"/>
+    </div>
   </div>
 </template>
 
@@ -57,7 +105,7 @@ export default {
   mixins: [vpd],
   data () {
     return {
-      type: '' // 调整方向 left | right | up | down
+      type: '' // 调整方向 left | right | up | down | upLeft | upRight | downLeft | downRight
     }
   },
   computed: {
@@ -78,7 +126,9 @@ export default {
         startX: e.pageX,
         startY: e.pageY,
         originX: this.elm[originX],
-        originY: this.elm[originY]
+        originY: this.elm[originY],
+        originTop: this.elm['top'],
+        originLeft: this.elm['left']
       })
 
       document.addEventListener('mousemove', this.handlemousemove, true)
@@ -107,7 +157,9 @@ export default {
 
 <style scoped>
 .verti,
-.horiz {
+.horiz,
+.slope,
+.slant {
   position: absolute;
   z-index: 999;
   display: flex;
@@ -121,6 +173,14 @@ export default {
 .horiz {
   height: 0;
   cursor: ns-resize;
+}
+.slope {
+  height: 0;
+  cursor: se-resize;
+}
+.slant {
+  height: 0;
+  cursor: ne-resize;
 }
 .square {
   width: 6px;

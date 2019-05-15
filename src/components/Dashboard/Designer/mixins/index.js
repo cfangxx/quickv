@@ -8,7 +8,9 @@ var move = {
         startX: e.pageX,
         startY: e.pageY,
         originX: target.left,
-        originY: target.top
+        originY: target.top,
+        originTop: target.top,
+        OriginLeft: target.left
       })
 
       // 绑定鼠标移动事件

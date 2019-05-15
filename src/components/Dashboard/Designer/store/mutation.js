@@ -62,8 +62,8 @@ export default {
 
   // 调整元件尺寸
   RESIZE_WIDGET (state, payload) {
-    var dx = payload.x - state.startX
-    var dy = payload.y - state.startY
+    const dx = payload.x - state.startX
+    const dy = payload.y - state.startY
     var value
 
     if (payload.type === 'right') {
@@ -79,18 +79,58 @@ export default {
     }
 
     if (payload.type === 'left') {
-      var left = state.originX + Math.floor(dx * 100 / state.page.zoom)
-      var width = state.originY - Math.floor(dx * 100 / state.page.zoom)
+      let left = state.originX + Math.floor(dx * 100 / state.page.zoom)
+      let width = state.originY - Math.floor(dx * 100 / state.page.zoom)
       state.activeElement.left = left > 0 ? left : 0
       state.activeElement.width = width > 10 ? width : 10
       return
     }
 
     if (payload.type === 'up') {
-      var top = state.originX + Math.floor(dy * 100 / state.page.zoom)
-      var height = state.originY - Math.floor(dy * 100 / state.page.zoom)
+      let top = state.originX + Math.floor(dy * 100 / state.page.zoom)
+      let height = state.originY - Math.floor(dy * 100 / state.page.zoom)
       state.activeElement.top = top > 0 ? top : 0
       state.activeElement.height = height > 10 ? height : 10
+    }
+
+    if (payload.type === 'upLeft') {
+      let top = state.originTop + Math.floor(dy * 100 / state.page.zoom)
+      let left = state.originLeft + Math.floor(dx * 100 / state.page.zoom)
+      let width = state.originX - Math.floor(dx * 100 / state.page.zoom)
+      let height = state.originY - Math.floor(dy * 100 / state.page.zoom)
+
+      state.activeElement.top = top > 0 ? top : 0
+      state.activeElement.left = left > 0 ? left : 0
+      state.activeElement.height = height > 10 ? height : 10
+      state.activeElement.width = width > 10 ? width : 10
+    }
+
+    if (payload.type === 'upRight') {
+      let top = state.originTop + Math.floor(dy * 100 / state.page.zoom)
+      let width = state.originX + Math.floor(dx * 100 / state.page.zoom)
+      let height = state.originY - Math.floor(dy * 100 / state.page.zoom)
+
+      state.activeElement.top = top > 0 ? top : 0
+      state.activeElement.height = height > 10 ? height : 10
+      state.activeElement.width = width > 10 ? width : 10
+    }
+
+    if (payload.type === 'downLeft') {
+      let left = state.originLeft + Math.floor(dx * 100 / state.page.zoom)
+      let width = state.originX - Math.floor(dx * 100 / state.page.zoom)
+      let height = state.originY + Math.floor(dy * 100 / state.page.zoom)
+
+      state.activeElement.left = left > 0 ? left : 0
+      state.activeElement.height = height > 10 ? height : 10
+      state.activeElement.width = width > 10 ? width : 10
+    }
+
+    if (payload.type === 'downRight') {
+      let width = state.originX + Math.floor(dx * 100 / state.page.zoom)
+      let height = state.originY + Math.floor(dy * 100 / state.page.zoom)
+
+      state.activeElement.height = height > 10 ? height : 10
+      state.activeElement.width = width > 10 ? width : 10
     }
   },
 
@@ -130,6 +170,8 @@ export default {
     state.startY = payload.startY
     state.originX = payload.originX
     state.originY = payload.originY
+    state.originTop = payload.originTop
+    state.originLeft = payload.originLeft
     state.moving = true
   },
 
