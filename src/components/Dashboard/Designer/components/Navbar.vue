@@ -79,9 +79,9 @@ export default {
       }
 
       // 快捷键 - 复制
-      if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
-        this.copyWidget()
-      }
+      // if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
+      //   this.copyWidget()
+      // }
 
       // 快捷键 - 撤销
       if ((e.ctrlKey || e.metaKey) && e.keyCode === 90) {

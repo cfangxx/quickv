@@ -5,141 +5,143 @@
       <basic-settings :activeElement="activeElement"/>
 
       <div class="panel-item-new">
-        <div class="panel-item-title">{{activeElement.xyturn ? 'Y 轴' : 'X 轴'}}</div>
-        <div class="panel-row">
-          <div class="panel-label">文本颜色</div>
-          <div class="panel-value">{{ activeElement.xTextColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.xTextColor"
-              type="color">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">轴线颜色</div>
-          <div class="panel-value">{{ activeElement.xLineColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.xLineColor"
-              type="color">
-          </div>
-        </div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">显示轴</div>
-          <div class="panel-value">
-            <label class="form-switch">
+        <div @click="isShowX = !isShowX" class="panel-item-title">{{activeElement.axisReverse ? 'Y 轴' : 'X 轴'}}<i :class="isShowX ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowX" class="panel-item-new-set">
+          <div class="panel-row">
+            <div class="panel-label">文本颜色</div>
+            <div class="panel-value">{{ activeElement.xTextColor }}</div>
+            <div>
               <input
-                v-model="activeElement.showX"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
+                v-model="activeElement.xTextColor"
+                type="color">
+            </div>
           </div>
-        </div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">显示网格</div>
-          <div class="panel-value">
-            <label class="form-switch">
+          <div class="panel-row">
+            <div class="panel-label">轴线颜色</div>
+            <div class="panel-value">{{ activeElement.xLineColor }}</div>
+            <div>
               <input
-                v-model="activeElement.showXSplitLine"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
+                v-model="activeElement.xLineColor"
+                type="color">
+            </div>
+          </div>
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示轴</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showX"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示网格</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showXSplitLine"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示刻度</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showXaxisTick"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
           </div>
         </div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">显示刻度</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.showXaxisTick"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
-          </div>
-        </div>
-
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">{{activeElement.xyturn ? 'X 轴' : 'Y 轴'}}</div>
-        <div class="panel-row">
-          <div class="panel-label">文本颜色</div>
-          <div class="panel-value">{{ activeElement.yTextColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.yTextColor"
-              type="color">
-          </div>
-        </div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">显示轴</div>
-          <div class="panel-value">
-            <label class="form-switch">
+        <div @click="isShowY = !isShowY" class="panel-item-title">{{activeElement.axisReverse ? 'X 轴' : 'Y 轴'}}<i :class="isShowY ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowY" class="panel-item-new-set">
+          <div class="panel-row">
+            <div class="panel-label">文本颜色</div>
+            <div class="panel-value">{{ activeElement.yTextColor }}</div>
+            <div>
               <input
-                v-model="activeElement.showY"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
+                v-model="activeElement.yTextColor"
+                type="color">
+            </div>
           </div>
-        </div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">显示刻度</div>
-          <div class="panel-value">
-            <label class="form-switch">
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示轴</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showY"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示刻度</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showYTick"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示轴线</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showYLine"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div
+            v-show="activeElement.showYLine"
+            class="panel-row">
+            <div class="panel-label">轴线颜色</div>
+            <div class="panel-value">{{ activeElement.yLineColor }}</div>
+            <div>
               <input
-                v-model="activeElement.showYTick"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
+                v-model="activeElement.yLineColor"
+                type="color">
+            </div>
           </div>
-        </div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">显示轴线</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.showYLine"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示标线</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showYSplitLine"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
           </div>
-        </div>
-        <div
-          v-show="activeElement.showYLine"
-          class="panel-row">
-          <div class="panel-label">轴线颜色</div>
-          <div class="panel-value">{{ activeElement.yLineColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.yLineColor"
-              type="color">
-          </div>
-        </div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">显示标线</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.showYSplitLine"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
-          </div>
-        </div>
-        <div
+          <div
           v-show="activeElement.showYSplitLine"
           class="panel-row">
           <div class="panel-label">标线颜色</div>
@@ -150,46 +152,47 @@
               type="color">
           </div>
         </div>
-
+        </div>
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">图表设置</div>
-        <div class="panel-row">
-          <div class="panel-label">上边距</div>
-          <div>
-            <input
-              v-model="activeElement.gridTop">
+        <div @click="isShowLine = !isShowLine" class="panel-item-title">图表设置<i :class="isShowLine ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowLine" class="panel-item-new-set">
+          <div class="panel-row">
+            <div class="panel-label">上边距</div>
+            <div>
+              <input
+                v-model="activeElement.gridTop">
+            </div>
           </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">下边距</div>
-          <div>
-            <input
-              v-model="activeElement.gridBottom">
+          <div class="panel-row">
+            <div class="panel-label">下边距</div>
+            <div>
+              <input
+                v-model="activeElement.gridBottom">
+            </div>
           </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">左边距</div>
-          <div>
-            <input
-              v-model="activeElement.gridLeft">
+          <div class="panel-row">
+            <div class="panel-label">左边距</div>
+            <div>
+              <input
+                v-model="activeElement.gridLeft">
+            </div>
           </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">右边距</div>
-          <div>
-            <input
-              v-model="activeElement.gridRight">
+          <div class="panel-row">
+            <div class="panel-label">右边距</div>
+            <div>
+              <input
+                v-model="activeElement.gridRight">
+            </div>
           </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">标题</div>
-          <div>
-            <input
-              v-model="activeElement.chartTitle">
+          <div class="panel-row">
+            <div class="panel-label">标题</div>
+            <div>
+              <input
+                v-model="activeElement.chartTitle">
+            </div>
           </div>
-        </div>
-        <div class="panel-row">
+          <div class="panel-row">
           <div class="panel-label">标题颜色</div>
           <div class="panel-value">{{ activeElement.titleColor }}</div>
           <div>
@@ -198,78 +201,79 @@
               type="color">
           </div>
         </div>
-
+        </div>
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">相关配置</div>
-        <div class="panel-row">
-          <div class="panel-label">配置颜色</div>
-          <div class="panel-setcolor">
-            <div
-              v-for="(item,index) in activeElement.lgArr"
-              :key="index"
-              class="panel-setcolor-item">
-              <div class="panel-value-new">{{ item.color }}</div>
-              <div>
-                <input
-                  v-model="item.color"
-                  type="color">
-                <input
-                  v-if="activeElement.lgArr.length > 1"
-                  v-model="item.offset"
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="1"
-                  class="radiusInp">
-              </div>
-              <button
-                v-if="index == 0"
-                class="pannel-setcolor-item-btn"
-                @click="addLGColor">添加</button>
-              <button
-                v-else
-                class="pannel-setcolor-item-btn"
-                @click="delLGColor(index)">删除</button>
-            </div>
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">折线宽度</div>
-          <div>
-            <input
-              v-model="activeElement.seriesLineWidth"
-              type="number"
-              min="0">
-          </div>
-        </div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">折线平滑</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.isSmooth"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
-          </div>
-        </div>
-        <div>
+        <div @click="isShowSet = !isShowSet" class="panel-item-title">相关配置<i :class="isShowSet ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowSet" class="panel-item-new-set">
           <div class="panel-row">
-            <div class="panel-label">拐点图形</div>
-            <div class="panel-value">
-              <select v-model="activeElement.seriesSymbol">
-                <!--<option>{{activeElement.legendIcon}}</option>-->
-                <option
-                  v-for="(val, index) in icon"
-                  :key="index" :value="val.value">{{ val.name }}</option>
-              </select>
+            <div class="panel-label">配置颜色</div>
+            <div class="panel-setcolor">
+              <div
+                v-for="(item,index) in activeElement.lgArr"
+                :key="index"
+                class="panel-setcolor-item">
+                <div class="panel-value-new">{{ item.color }}</div>
+                <div>
+                  <input
+                    v-model="item.color"
+                    type="color">
+                  <input
+                    v-if="activeElement.lgArr.length > 1"
+                    v-model="item.offset"
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="1"
+                    class="radiusInp">
+                </div>
+                <button
+                  v-if="index == 0"
+                  class="pannel-setcolor-item-btn"
+                  @click="addLGColor">添加</button>
+                <button
+                  v-else
+                  class="pannel-setcolor-item-btn"
+                  @click="delLGColor(index)">删除</button>
+              </div>
             </div>
           </div>
-        </div>
-        <div
+          <div class="panel-row">
+            <div class="panel-label">折线宽度</div>
+            <div>
+              <input
+                v-model="activeElement.seriesLineWidth"
+                type="number"
+                min="0">
+            </div>
+          </div>
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">折线平滑</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.isSmooth"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div>
+            <div class="panel-row">
+              <div class="panel-label">拐点图形</div>
+              <div class="panel-value">
+                <select v-model="activeElement.seriesSymbol">
+                  <!--<option>{{activeElement.legendIcon}}</option>-->
+                  <option
+                    v-for="(val, index) in icon"
+                    :key="index" :value="val.value">{{ val.name }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
           v-show="activeElement.seriesSymbol !== 'none'"
           class="panel-row">
           <div class="panel-label">拐点大小</div>
@@ -279,6 +283,7 @@
               type="number"
               min="0">
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -332,6 +337,10 @@ export default {
   props: ['activeElement', 'tab'],
   data () {
     return {
+      isShowX: true,
+      isShowY: true,
+      isShowLine: true,
+      isShowSet: true,
       icon: [
         {
           name: '无',

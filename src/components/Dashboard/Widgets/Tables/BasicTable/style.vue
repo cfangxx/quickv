@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-show="tab === 1">
-      <div class="panel-item-new">
+      <div style="display: none" class="panel-item-new">
         <!--<div class="panel-item-title">基础参数</div>-->
         <div class="panel-row">
           <div class="panel-label">宽度</div>
@@ -44,54 +44,57 @@
           </div>
         </div>
       </div>
+      <!-- 基础设置 -->
+      <basic-settings :activeElement="activeElement"/>
       <div class="panel-item-new">
-        <div class="panel-item-title">表头</div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">显示表头</div>
-          <div class="panel-value">
-            <label class="form-switch">
+        <div @click="isShowHead = !isShowHead" class="panel-item-title">表头<i :class="isShowHead ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowHead" class="panel-item-new-set">
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示表头</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showTh"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div
+            v-show="activeElement.showTh"
+            class="panel-row">
+            <div class="panel-label">文本颜色</div>
+            <div class="panel-value">{{ activeElement.thColor }}</div>
+            <div class="panel-value">
               <input
-                v-model="activeElement.showTh"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
+                v-model="activeElement.thColor"
+                type="color" >
+            </div>
           </div>
-        </div>
-        <div
-          v-show="activeElement.showTh"
-          class="panel-row">
-          <div class="panel-label">文本颜色</div>
-          <div class="panel-value">{{ activeElement.thColor }}</div>
-          <div class="panel-value">
-            <input
-              v-model="activeElement.thColor"
-              type="color" >
+          <div
+            v-show="activeElement.showTh"
+            class="panel-row">
+            <div class="panel-label">背景颜色</div>
+            <div class="panel-value">{{ activeElement.thBgColor }}</div>
+            <div class="panel-value">
+              <input
+                v-model="activeElement.thBgColor"
+                type="color" >
+            </div>
           </div>
-        </div>
-        <div
-          v-show="activeElement.showTh"
-          class="panel-row">
-          <div class="panel-label">背景颜色</div>
-          <div class="panel-value">{{ activeElement.thBgColor }}</div>
-          <div class="panel-value">
-            <input
-              v-model="activeElement.thBgColor"
-              type="color" >
+          <div
+            v-show="activeElement.showTh"
+            class="panel-row">
+            <div class="panel-label">表头高度</div>
+            <div class="panel-value">
+              <input
+                v-model="activeElement.thHeight"
+                type="number" >
+            </div>
           </div>
-        </div>
-        <div
-          v-show="activeElement.showTh"
-          class="panel-row">
-          <div class="panel-label">表头高度</div>
-          <div class="panel-value">
-            <input
-              v-model="activeElement.thHeight"
-              type="number" >
-          </div>
-        </div>
-        <div
+          <div
           v-show="activeElement.showTh"
           class="panel-row">
           <div class="panel-label">表头文本</div>
@@ -101,88 +104,90 @@
               type="number" >
           </div>
         </div>
+        </div>
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">序号</div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">显示序号</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.showNum"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
-          </div>
-        </div>
-        <div
-          v-show="activeElement.showNum"
-          class="panel-row">
-          <div class="panel-label">序号文字</div>
-          <div class="panel-value">
-            <input
-              v-model="activeElement.thNumText"
-              type="text" >
-          </div>
-        </div>
-        <div
-          v-show="activeElement.showNum"
-          class="panel-row">
-          <div class="panel-label">序号大小</div>
-          <div class="panel-value">
-            <input
-              v-model="activeElement.thNumWidth"
-              type="number" >
-          </div>
-        </div>
-        <div
-          v-show="activeElement.showNum"
-          class="panel-row">
-          <div class="panel-label">文本大小</div>
-          <div class="panel-value">
-            <input
-              v-model="activeElement.thNumFontSize"
-              type="number" >
-          </div>
-        </div>
-        <div
-          v-show="activeElement.showNum"
-          class="panel-row">
-          <div class="panel-label">文本颜色</div>
-          <div class="panel-value">{{ activeElement.thNumColor }}</div>
-          <div class="panel-value">
-            <input
-              v-model="activeElement.thNumColor"
-              type="color" >
-          </div>
-        </div>
-        <div
-          v-show="activeElement.showNum"
-          class="panel-row">
-          <div class="panel-label">样式</div>
+        <div @click="isShowNum = !isShowNum" class="panel-item-title">序号<i :class="isShowNum ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowNum" class="panel-item-new-set">
           <div
-            class="radioscont">
-            <label class="radiolabel">
-              <input
-                v-model="activeElement.thNumType"
-                type="radio"
-                class="inpRadio"
-                name="task"
-                value="none">无样式
-            </label>
-            <label class="radiolabel">
-              <input
-                v-model="activeElement.thNumType"
-                type="radio"
-                class="inpRadio"
-                name="task"
-                value="circle">圆形背景
-            </label>
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示序号</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showNum"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
           </div>
-        </div>
-        <div
+          <div
+            v-show="activeElement.showNum"
+            class="panel-row">
+            <div class="panel-label">序号文字</div>
+            <div class="panel-value">
+              <input
+                v-model="activeElement.thNumText"
+                type="text" >
+            </div>
+          </div>
+          <div
+            v-show="activeElement.showNum"
+            class="panel-row">
+            <div class="panel-label">序号大小</div>
+            <div class="panel-value">
+              <input
+                v-model="activeElement.thNumWidth"
+                type="number" >
+            </div>
+          </div>
+          <div
+            v-show="activeElement.showNum"
+            class="panel-row">
+            <div class="panel-label">文本大小</div>
+            <div class="panel-value">
+              <input
+                v-model="activeElement.thNumFontSize"
+                type="number" >
+            </div>
+          </div>
+          <div
+            v-show="activeElement.showNum"
+            class="panel-row">
+            <div class="panel-label">文本颜色</div>
+            <div class="panel-value">{{ activeElement.thNumColor }}</div>
+            <div class="panel-value">
+              <input
+                v-model="activeElement.thNumColor"
+                type="color" >
+            </div>
+          </div>
+          <div
+            v-show="activeElement.showNum"
+            class="panel-row">
+            <div class="panel-label">样式</div>
+            <div
+              class="radioscont">
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.thNumType"
+                  type="radio"
+                  class="inpRadio"
+                  name="task"
+                  value="none">无样式
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.thNumType"
+                  type="radio"
+                  class="inpRadio"
+                  name="task"
+                  value="circle">圆形背景
+              </label>
+            </div>
+          </div>
+          <div
           v-show="activeElement.showNum && activeElement.thNumType === 'circle'"
           class="panel-row">
           <div class="panel-label">配置颜色</div>
@@ -208,81 +213,83 @@
             </div>
           </div>
         </div>
+        </div>
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">表格</div>
-        <div class="panel-row">
-          <div class="panel-label">每列占比</div>
-          <div class="panel-value">
-            <input
-              v-model="activeElement.tbPercent"
-              type="text" >
+        <div @click="isShowTable = !isShowTable" class="panel-item-title">表格<i :class="isShowTable ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowTable" class="panel-item-new-set">
+          <div class="panel-row">
+            <div class="panel-label">每列占比</div>
+            <div class="panel-value">
+              <input
+                v-model="activeElement.tbPercent"
+                type="text" >
+            </div>
           </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">文本大小</div>
-          <div class="panel-value">
-            <input
-              v-model="activeElement.tbFontSize"
-              type="number" >
+          <div class="panel-row">
+            <div class="panel-label">文本大小</div>
+            <div class="panel-value">
+              <input
+                v-model="activeElement.tbFontSize"
+                type="number" >
+            </div>
           </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">文本颜色</div>
-          <div class="panel-value">{{ activeElement.tbColor }}</div>
-          <div class="panel-value">
-            <input
-              v-model="activeElement.tbColor"
-              type="color" >
+          <div class="panel-row">
+            <div class="panel-label">文本颜色</div>
+            <div class="panel-value">{{ activeElement.tbColor }}</div>
+            <div class="panel-value">
+              <input
+                v-model="activeElement.tbColor"
+                type="color" >
+            </div>
           </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">对齐方式</div>
-          <div class="panel-setcolor">
-            <div class="panel-setcolor-item radioscont">
-              <div>
-                <label class="radiolabel">
-                  <input
-                    v-model="activeElement.tbAlign"
-                    type="radio"
-                    class="inpRadio"
-                    name="task"
-                    value="left">居左
-                </label>
-              </div>
-              <div>
-                <label class="radiolabel">
-                  <input
-                    v-model="activeElement.tbAlign"
-                    type="radio"
-                    class="inpRadio"
-                    name="task"
-                    value="center">居中
-                </label>
-              </div>
-              <div>
-                <label class="radiolabel">
-                  <input
-                    v-model="activeElement.tbAlign"
-                    type="radio"
-                    class="inpRadio"
-                    name="task"
-                    value="right">居右
-                </label>
+          <div class="panel-row">
+            <div class="panel-label">对齐方式</div>
+            <div class="panel-setcolor">
+              <div class="panel-setcolor-item radioscont">
+                <div>
+                  <label class="radiolabel">
+                    <input
+                      v-model="activeElement.tbAlign"
+                      type="radio"
+                      class="inpRadio"
+                      name="task"
+                      value="left">居左
+                  </label>
+                </div>
+                <div>
+                  <label class="radiolabel">
+                    <input
+                      v-model="activeElement.tbAlign"
+                      type="radio"
+                      class="inpRadio"
+                      name="task"
+                      value="center">居中
+                  </label>
+                </div>
+                <div>
+                  <label class="radiolabel">
+                    <input
+                      v-model="activeElement.tbAlign"
+                      type="radio"
+                      class="inpRadio"
+                      name="task"
+                      value="right">居右
+                  </label>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">边的宽度</div>
-          <div class="panel-value">
-            <input
-              v-model="activeElement.borderWidth"
-              type="number"
-              min="0" >
+          <div class="panel-row">
+            <div class="panel-label">边的宽度</div>
+            <div class="panel-value">
+              <input
+                v-model="activeElement.borderWidth"
+                type="number"
+                min="0" >
+            </div>
           </div>
-        </div>
-        <div class="panel-row">
+          <div class="panel-row">
           <div class="panel-label">边的颜色</div>
           <div class="panel-value">{{ activeElement.borderColor }}</div>
           <div>
@@ -290,6 +297,7 @@
               v-model="activeElement.borderColor"
               type="color" >
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -387,16 +395,20 @@
 
 <script>
 import MyEditor from '../../CommonModule/MonacoEditor'
+import BasicSettings from '../../CommonModule/BasicSettings'
 import axios from 'axios'
 
 export default {
   name: 'BasicTableStyle',
   components: {
-    MyEditor
+    MyEditor, BasicSettings
   },
   props: ['activeElement', 'tab'],
   data () {
     return {
+      isShowHead: true,
+      isShowNum: true,
+      isShowTable: true,
       dataJSON: JSON.stringify(this.activeElement.dataJSON, null, 2),
       selectStatus: '1'
     }

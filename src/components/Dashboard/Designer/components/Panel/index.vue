@@ -132,7 +132,7 @@ export default {
     padding: 0;
   }
   .panel-wrap {
-    height: calc(100% - 50px);
+    height: calc(100%);
     padding: 15px 0;
     position: relative;
     overflow-y: auto;
@@ -194,7 +194,7 @@ export default {
   }
   .panel-wrap select,
   .panel-wrap input[type="text"] {
-    width: 100%;
+    /*width: 100%;*/
   }
   .panel-preview {
     width: 150px;
@@ -203,7 +203,7 @@ export default {
     cursor: pointer;
   }
   .panel-item-new {
-    padding-bottom: 10px;
+    /*padding-bottom: 10px;*/
   }
   .panel-item-title {
     width: 100%;
@@ -212,5 +212,12 @@ export default {
     padding: 0 12px;
     background-color: #f5f7fa;
     border-bottom: 1px solid #e6eaf1;
+    cursor: pointer;
+  }
+  .panel-item-new-set{
+    padding: 10px 0;
+  }
+  .panel-title-arrow{
+    float: right;line-height: 40px
   }
 </style>

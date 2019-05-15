@@ -5,75 +5,76 @@
       <basic-settings :activeElement="activeElement"/>
 
       <div class="panel-item-new">
-        <div class="panel-item-title">角度轴</div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">显示轴</div>
-          <div class="panel-value">
-            <label class="form-switch">
+        <div @click="isShowJiao = !isShowJiao" class="panel-item-title">角度轴<i :class="isShowJiao ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowJiao" class="panel-item-new-set">
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示轴</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showX"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div
+            v-show="activeElement.showX"
+            class="panel-row">
+            <div class="panel-label">轴线颜色</div>
+            <div class="panel-value">{{ activeElement.xLineColor }}</div>
+            <div>
               <input
-                v-model="activeElement.showX"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
+                v-model="activeElement.xLineColor"
+                type="color">
+            </div>
           </div>
-        </div>
-        <div
-          v-show="activeElement.showX"
-          class="panel-row">
-          <div class="panel-label">轴线颜色</div>
-          <div class="panel-value">{{ activeElement.xLineColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.xLineColor"
-              type="color">
-          </div>
-        </div>
-        <div
-          v-show="activeElement.showX"
-          class="panel-row">
-          <div class="panel-label">轴线宽度</div>
-          <div>
-            <input
-              v-model="activeElement.xLineWidth"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row"
-             flex>
-          <div class="panel-label">显示刻度</div>
-          <div class="panel-value">
-            <label class="form-switch">
+          <div
+            v-show="activeElement.showX"
+            class="panel-row">
+            <div class="panel-label">轴线宽度</div>
+            <div>
               <input
-                v-model="activeElement.showXaxisTick"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
+                v-model="activeElement.xLineWidth"
+                type="number">
+            </div>
           </div>
-        </div>
-        <div
-          v-show="activeElement.showXaxisTick"
-          class="panel-row">
-          <div class="panel-label">文字颜色</div>
-          <div class="panel-value">{{ activeElement.xTextColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.xTextColor"
-              type="color">
+          <div class="panel-row"
+               flex>
+            <div class="panel-label">显示刻度</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showXaxisTick"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
           </div>
-        </div>
-        <div
-          v-show="activeElement.showXaxisTick"
-          class="panel-row">
-          <div class="panel-label">文字大小</div>
-          <div>
-            <input
-              v-model="activeElement.xTextFontSize"
-              type="number">
+          <div
+            v-show="activeElement.showXaxisTick"
+            class="panel-row">
+            <div class="panel-label">文字颜色</div>
+            <div class="panel-value">{{ activeElement.xTextColor }}</div>
+            <div>
+              <input
+                v-model="activeElement.xTextColor"
+                type="color">
+            </div>
           </div>
-        </div>
-        <div
+          <div
+            v-show="activeElement.showXaxisTick"
+            class="panel-row">
+            <div class="panel-label">文字大小</div>
+            <div>
+              <input
+                v-model="activeElement.xTextFontSize"
+                type="number">
+            </div>
+          </div>
+          <div
           v-show="activeElement.showXaxisTick"
           class="panel-row">
           <div class="panel-label">文字旋转</div>
@@ -83,23 +84,25 @@
               type="number">
           </div>
         </div>
+        </div>
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">径向轴</div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">显示标线</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.showYSplitLine"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
+        <div @click="isShowJing = !isShowJing" class="panel-item-title">径向轴<i :class="isShowJing ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowJing" class="panel-item-new-set">
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示标线</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showYSplitLine"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
           </div>
-        </div>
-        <div
+          <div
           v-show="activeElement.showYSplitLine"
           class="panel-row">
           <div class="panel-label">标线颜色</div>
@@ -110,26 +113,28 @@
               type="color">
           </div>
         </div>
+        </div>
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">图表设置</div>
-        <div class="panel-row">
-          <div class="panel-label">大小调整</div>
-          <div>
-            <input
-              v-model="activeElement.polarSize">
+        <div @click="isShowPolar = !isShowPolar" class="panel-item-title">图表设置<i :class="isShowPolar ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowPolar" class="panel-item-new-set">
+          <div class="panel-row">
+            <div class="panel-label">大小调整</div>
+            <div>
+              <input
+                v-model="activeElement.polarSize">
+            </div>
           </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">分割段数</div>
-          <div>
-            <input
-              v-model="activeElement.splitNumber"
-              type="number"
-              min="1">
+          <div class="panel-row">
+            <div class="panel-label">分割段数</div>
+            <div>
+              <input
+                v-model="activeElement.splitNumber"
+                type="number"
+                min="1">
+            </div>
           </div>
-        </div>
-        <div class="panel-row">
+          <div class="panel-row">
           <div class="panel-label">配置颜色</div>
           <div class="panel-setcolor">
             <div
@@ -155,6 +160,7 @@
             </div>
           </div>
         </div>
+        </div>
       </div>
     </div>
 
@@ -166,149 +172,150 @@
     <!-- 其他设置 -->
     <div v-show="tab === 3">
       <div class="panel-item-new">
-        <div class="panel-item-title">图例设置</div>
-        <div
-          class="panel-row"
-          flex>
-          <div class="panel-label">显示图例</div>
-          <div class="panel-value">
-            <label class="form-switch">
-              <input
-                v-model="activeElement.legendShow"
-                type="checkbox" >
-              <i class="form-icon"/>
-            </label>
+        <div @click="isShowLegend = !isShowLegend" class="panel-item-title">图例设置<i :class="isShowLegend ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowLegend" class="panel-item-new-set">
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示图例</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.legendShow"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
           </div>
-        </div>
-        <div
-          v-show="activeElement.legendShow"
-          class="panel-row">
-          <div class="panel-label">宽度</div>
-          <div>
-            <input v-model="activeElement.legendWidth">
-          </div>
-        </div>
-        <div
-          v-show="activeElement.legendShow"
-          class="panel-row">
-          <div class="panel-label">文字大小</div>
-          <div>
-            <input
-              v-model="activeElement.legendFontSize"
-              type="number" min="8">
-          </div>
-        </div>
-        <div
-          v-show="activeElement.legendShow"
-          class="panel-row">
-          <div class="panel-label">文字颜色</div>
-          <div class="panel-value">{{ activeElement.legendTextColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.legendTextColor"
-              type="color">
-          </div>
-        </div>
-        <div
-          v-show="activeElement.legendShow"
-          class="panel-row"
-          flex>
-          <div class="panel-label">对齐</div>
-          <div class="panel-value">
-            <label class="radiolabel">
-              <input
-                v-model="activeElement.legendPositionX"
-                type="radio"
-                class="inpRadio"
-                name="x"
-                value="left">居左
-            </label>
-            <label class="radiolabel">
-              <input
-                v-model="activeElement.legendPositionX"
-                type="radio"
-                class="inpRadio"
-                name="x"
-                value="center">居中
-            </label>
-            <label class="radiolabel">
-              <input
-                v-model="activeElement.legendPositionX"
-                type="radio"
-                class="inpRadio"
-                name="x"
-                value="right">居右
-            </label>
-          </div>
-        </div>
-        <div
-          v-show="activeElement.legendShow"
-          class="panel-row"
-          flex>
-          <div class="panel-label"></div>
-          <div class="panel-value">
-            <label class="radiolabel">
-              <input
-                v-model="activeElement.legendPositionY"
-                type="radio"
-                class="inpRadio"
-                name="y"
-                value="top">居上
-            </label>
-            <label class="radiolabel">
-              <input
-                v-model="activeElement.legendPositionY"
-                type="radio"
-                class="inpRadio"
-                name="y"
-                value="center">居中
-            </label>
-            <label class="radiolabel">
-              <input
-                v-model="activeElement.legendPositionY"
-                type="radio"
-                class="inpRadio"
-                name="y"
-                value="bottom">居下
-            </label>
-          </div>
-        </div>
-        <div>
           <div
             v-show="activeElement.legendShow"
             class="panel-row">
-            <div class="panel-label">图例图标</div>
-            <div class="panel-value">
-              <select v-model="activeElement.legendIcon">
-                <!--<option>{{activeElement.legendIcon}}</option>-->
-                <option
-                  v-for="(val, index) in icon"
-                  :key="index" :value="val.value">{{ val.name }}</option>
-              </select>
+            <div class="panel-label">宽度</div>
+            <div>
+              <input v-model="activeElement.legendWidth">
             </div>
           </div>
-        </div>
-        <div
-          v-show="activeElement.legendShow"
-          class="panel-row">
-          <div class="panel-label">图标宽度</div>
-          <div>
-            <input
-              v-model="activeElement.legendIconWidth"
-              type="number" min="1">
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row">
+            <div class="panel-label">文字大小</div>
+            <div>
+              <input
+                v-model="activeElement.legendFontSize"
+                type="number" min="8">
+            </div>
           </div>
-        </div>
-        <div
-          v-show="activeElement.legendShow"
-          class="panel-row">
-          <div class="panel-label">图标高度</div>
-          <div>
-            <input
-              v-model="activeElement.legendIconHeight"
-              type="number" min="1">
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row">
+            <div class="panel-label">文字颜色</div>
+            <div class="panel-value">{{ activeElement.legendTextColor }}</div>
+            <div>
+              <input
+                v-model="activeElement.legendTextColor"
+                type="color">
+            </div>
           </div>
-        </div>
-        <div
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row"
+            flex>
+            <div class="panel-label">对齐</div>
+            <div class="panel-value">
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.legendPositionX"
+                  type="radio"
+                  class="inpRadio"
+                  name="x"
+                  value="left">居左
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.legendPositionX"
+                  type="radio"
+                  class="inpRadio"
+                  name="x"
+                  value="center">居中
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.legendPositionX"
+                  type="radio"
+                  class="inpRadio"
+                  name="x"
+                  value="right">居右
+              </label>
+            </div>
+          </div>
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row"
+            flex>
+            <div class="panel-label"></div>
+            <div class="panel-value">
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.legendPositionY"
+                  type="radio"
+                  class="inpRadio"
+                  name="y"
+                  value="top">居上
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.legendPositionY"
+                  type="radio"
+                  class="inpRadio"
+                  name="y"
+                  value="center">居中
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.legendPositionY"
+                  type="radio"
+                  class="inpRadio"
+                  name="y"
+                  value="bottom">居下
+              </label>
+            </div>
+          </div>
+          <div>
+            <div
+              v-show="activeElement.legendShow"
+              class="panel-row">
+              <div class="panel-label">图例图标</div>
+              <div class="panel-value">
+                <select v-model="activeElement.legendIcon">
+                  <!--<option>{{activeElement.legendIcon}}</option>-->
+                  <option
+                    v-for="(val, index) in icon"
+                    :key="index" :value="val.value">{{ val.name }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row">
+            <div class="panel-label">图标宽度</div>
+            <div>
+              <input
+                v-model="activeElement.legendIconWidth"
+                type="number" min="1">
+            </div>
+          </div>
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row">
+            <div class="panel-label">图标高度</div>
+            <div>
+              <input
+                v-model="activeElement.legendIconHeight"
+                type="number" min="1">
+            </div>
+          </div>
+          <div
           v-show="activeElement.legendShow"
           class="panel-row">
           <div class="panel-label">图标间距</div>
@@ -318,10 +325,11 @@
               type="number" min="0">
           </div>
         </div>
+        </div>
       </div>
       <div class="panel-item-new">
-        <div class="panel-item-title">图表样式</div>
-        <div>
+        <div @click="isShowItem = !isShowItem" class="panel-item-title">图表样式<i :class="isShowItem ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowItem" class="panel-item-new-set">
           <div class="panel-row">
             <div class="panel-label">样式</div>
             <div class="panel-value">
@@ -350,6 +358,11 @@ export default {
   props: ['activeElement', 'tab'],
   data () {
     return {
+      isShowJiao: true,
+      isShowJing: true,
+      isShowPolar: true,
+      isShowLegend: true,
+      isShowItem: true,
       icon: [
         {
           name: '无',
