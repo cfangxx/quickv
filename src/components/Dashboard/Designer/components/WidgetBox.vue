@@ -35,7 +35,6 @@
 
 <script>
 import widget from '../plugins/widget'
-import { move } from '../mixins'
 import vpd from '../mixins/vpd'
 
 const widgetClassOptions = [
@@ -49,7 +48,7 @@ const widgetClassOptions = [
 ]
 
 export default {
-  mixins: [move, vpd],
+  mixins: [vpd],
   props: ['zoom'],
   data () {
     return {
@@ -104,7 +103,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .menu-bar {
   .widget-box {
     height: 60px;

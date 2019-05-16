@@ -24,38 +24,42 @@
         id="viewport-screen"
         @dblclick="replaceImage">
 
-        <!-- 组件 -->
-        <component
-          v-for="val in widgetStore"
-          :is="val.type"
-          :data-title="val.name"
-          :class="{'g-active': id === val.uuid}"
-          :key="val.uuid"
-          :val="val"
-          :h="height"
-          :w="width"
-          :data-type="val.type"
-          :data-uuid="val.uuid"
-          class="layer">
+        <drag-select :minHeight="height" v-model="selectedList" ref="dragSelect">
+          <!-- 组件 -->
           <component
-            v-for="child in getChilds(val.name)"
-            :is="child.type"
-            :data-title="child.name"
-            :class="{'g-active': id === child.uuid}"
-            :key="child.uuid"
-            :val="child"
+            v-for="val in widgetStore"
+            :is="val.type"
+            :data-title="val.name"
+            :class="{'g-active': isSelected(val.uuid)}"
+            :key="val.uuid"
+            :val="val"
             :h="height"
             :w="width"
-            :data-type="child.type"
-            :data-uuid="child.uuid"
-            class="layer layer-child" />
-        </component>
+            :data-type="val.type"
+            :data-uuid="val.uuid"
+            class="layer">
+            <component
+              v-for="child in getChilds(val.name)"
+              :is="child.type"
+              :data-title="child.name"
+              :class="{'g-active': isSelected(child.uuid)}"
+              :key="child.uuid"
+              :val="child"
+              :h="height"
+              :w="width"
+              :data-type="child.type"
+              :data-uuid="child.uuid"
+              class="layer layer-child" />
+          </component>
+        </drag-select>
 
         <!-- 参考线 -->
         <component v-bind:is="preview ? '' : 'reference-line'"/>
 
         <!-- 尺寸控制器 -->
         <component v-bind:is="preview ? '' : 'size-control'"/>
+
+        <!-- <component v-bind:is="preview ? '' : 'drag-select'"/> -->
       </div>
 
         <!-- 右键菜单 -->
@@ -69,8 +73,9 @@ import ReferenceLine from './ReferenceLine'
 import SizeControl from './SizeControl'
 import ContextMenu from './ContextMenu'
 import RulerTool from './RulerTool'
+import DragSelect from './DragSelect'
 
-import { move } from '../../mixins'
+import move from '../../mixins/move'
 import vpd from '../../mixins/vpd'
 
 export default {
@@ -79,7 +84,8 @@ export default {
     ReferenceLine, // 参考线
     SizeControl, // 尺寸控制
     ContextMenu, // 右键菜单
-    RulerTool
+    RulerTool, // 标尺辅助线
+    DragSelect // 鼠标框选
   },
 
   mixins: [move, vpd],
@@ -90,6 +96,7 @@ export default {
   },
   data () {
     return {
+      selectedList: [],
       presetLine: [{ type: 'l', site: 100 }, { type: 'v', site: 200 }]
     }
   },
@@ -139,6 +146,7 @@ export default {
     if (this._props.preview) {
       return
     }
+
     // 采用事件代理的方式监听元件的选中操作
     document
       .getElementById('viewport')
@@ -181,6 +189,14 @@ export default {
   },
 
   methods: {
+    isSelected (uuid) {
+      if (this.$vpd.state.multiSelect) {
+        return this.$vpd.state.uuidList.indexOf(uuid) > -1
+      } else {
+        return this.$vpd.state.uuid === uuid
+      }
+    },
+
     handleSelection (e) {
       var target = e.target
       // console.log(e)
@@ -194,22 +210,22 @@ export default {
       } else {
         type = target.getAttribute('data-type')
       }
+
       if (type) {
         uuid = target.getAttribute('data-uuid') || curDiv.getAttribute('data-uuid')
 
-        // console.log(e, type, uuid)
-        if (type === 'braid-bg') {
-          uuid = -1
-        }
         // 设置选中元素
-        this.$vpd.commit('SELECT_WIDGET', {
-          uuid: uuid || -1
-        })
-
-        // 绑定移动事件：只有从属于 page 的，除背景图以外的元件才能移动
-        target = this.$vpd.state.activeElement
-        if (target.belong === 'page' && target.dragable) {
-          this.initmovement(e) // 参见 mixins
+        if (this.$vpd.state.multiSelect && (this.$vpd.state.uuidList.indexOf(uuid) > -1)) {
+          this.initmovement(e)
+        } else {
+          this.$vpd.commit('SELECT_WIDGET', {
+            uuid: uuid || -1
+          })
+          // 绑定移动事件：只有从属于 page 的，除背景图以外的元件才能移动
+          target = this.$vpd.state.activeElement
+          if (target.belong === 'page' && target.dragable) {
+            this.initmovement(e) // 参见 mixins
+          }
         }
       } else {
         // 取消选中元素
@@ -233,6 +249,13 @@ export default {
       return this.$vpd.state.widgets.filter(
         item => item.belong === name
       )
+    }
+  },
+  watch: {
+    selectedList: function (newValue) {
+      if (newValue.length > 0) {
+        this.$vpd.commit('MULTISELECT_WIDGET', newValue)
+      }
     }
   }
 }

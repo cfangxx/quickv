@@ -1,47 +1,6 @@
 const generate = require('nanoid/generate')
 
 export default {
-  // 选中元件与取消选中
-  SELECT_WIDGET (state, payload) {
-    state.uuid = payload.uuid
-    for (let n in state.widgets) {
-      if (state.widgets[n].uuid === payload.uuid) {
-        state.index = n
-      }
-    }
-    if (payload.uuid === -1) {
-      state.activeElement = state.page
-      state.type = 'page'
-    } else {
-      let widget = state.widgets.find(w => w.uuid === payload.uuid)
-      state.activeElement = widget
-      state.type = widget.type
-    }
-  },
-
-  // 删除选中元件
-  DELETE_WIDGET (state) {
-    var type = state.type
-    if (type === 'page') return
-    // 如果删除的是容器，须将内部元件一并删除
-    if (state.activeElement.isContainer) {
-      var name = state.activeElement.name
-
-      for (var i = 0; i < state.widgets.length; i++) {
-        if (state.widgets[i].belong === name) {
-          state.widgets.splice(i, 1)
-        }
-      }
-    }
-    // 删除元件
-    state.widgets.splice(state.index, 1)
-    // 重置 activeElement
-    state.activeElement = state.page
-    state.type = 'page'
-    state.uuid = null
-    state.index = -1
-  },
-
   // 添加组件
   ADD_WIDGET (state, { data: data = null, item }) {
     let def = { top: state.top, uuid: generate('1234567890abcdef', 10) }
@@ -60,7 +19,93 @@ export default {
     }
   },
 
-  // 调整元件尺寸
+  // 复制组件
+  COPY_WIDGET (state, payload) {
+    if (state.type !== 'page') {
+      var copy = Object.assign({}, JSON.parse(JSON.stringify(state.activeElement)), { top: state.top, uuid: generate('1234567890abcdef', 10) })
+
+      // 由于容器的名称必须是唯一的，故复制容器需作处理
+      if (state.activeElement.isContainer) {
+        var name = state.activeElement.name
+        if (name) {
+          // 设置容器副本的名称
+          var copyName = name.split('-')[0] + '-' + state.counter
+          copy.name = copyName
+
+          // 复制容器内的图片和文本
+          for (var i = 0, len = state.widgets.length; i < len; i++) {
+            if (state.widgets[i].belong === name) {
+              state.widgets.push(
+                Object.assign({}, state.widgets[i], { belong: copyName })
+              )
+            }
+          }
+
+          state.counter += 1
+        }
+      }
+
+      state.widgets.push(copy)
+    }
+  },
+
+  // 删除选中组件
+  DELETE_WIDGET (state) {
+    if (state.multiSelect) {
+      const widgets = state.widgets.filter(widget => {
+        return state.uuidList.indexOf(widget.uuid) < 0
+      })
+      state.widgets = widgets
+    } else {
+      if (state.type === 'page') return
+
+      if (state.activeElement.isContainer) {
+        const name = state.activeElement.name
+
+        for (let i = 0; i < state.widgets.length; i++) {
+          if (state.widgets[i].belong === name) {
+            state.widgets.splice(i, 1)
+          }
+        }
+      }
+
+      state.widgets.splice(state.index, 1)
+    }
+
+    // reset activeElement
+    state.activeElement = state.page
+    state.type = 'page'
+    state.uuid = null
+    state.index = -1
+  },
+
+  // 选中组件与取消选中
+  SELECT_WIDGET (state, payload) {
+    state.uuid = payload.uuid
+    state.multiSelect = false
+
+    for (let n in state.widgets) {
+      if (state.widgets[n].uuid === payload.uuid) {
+        state.index = n
+      }
+    }
+    if (payload.uuid === -1) {
+      state.activeElement = state.page
+      state.type = 'page'
+    } else {
+      let widget = state.widgets.find(w => w.uuid === payload.uuid)
+      state.activeElement = widget
+      state.type = widget.type
+    }
+  },
+
+  // 组件多选
+  MULTISELECT_WIDGET (state, payload) {
+    state.multiSelect = true
+    state.uuidList = payload
+  },
+
+  // 调整组件尺寸
   RESIZE_WIDGET (state, payload) {
     const dx = payload.x - state.startX
     const dy = payload.y - state.startY
@@ -134,36 +179,6 @@ export default {
     }
   },
 
-  // 复制元件
-  COPY_WIDGET (state, payload) {
-    if (state.type !== 'page') {
-      var copy = Object.assign({}, JSON.parse(JSON.stringify(state.activeElement)), { top: state.top, uuid: generate('1234567890abcdef', 10) })
-
-      // 由于容器的名称必须是唯一的，故复制容器需作处理
-      if (state.activeElement.isContainer) {
-        var name = state.activeElement.name
-        if (name) {
-          // 设置容器副本的名称
-          var copyName = name.split('-')[0] + '-' + state.counter
-          copy.name = copyName
-
-          // 复制容器内的图片和文本
-          for (var i = 0, len = state.widgets.length; i < len; i++) {
-            if (state.widgets[i].belong === name) {
-              state.widgets.push(
-                Object.assign({}, state.widgets[i], { belong: copyName })
-              )
-            }
-          }
-
-          state.counter += 1
-        }
-      }
-
-      state.widgets.push(copy)
-    }
-  },
-
   // 设置 mousemove 操作的初始值
   INIT_MOVE (state, payload) {
     state.startX = payload.startX
@@ -175,24 +190,38 @@ export default {
     state.moving = true
   },
 
-  // 元件移动结束
+  // 组件移动结束
   STOP_MOVE (state) {
     state.moving = false
   },
 
-  // 移动元件
+  // 移动组件
   MOVE_WIDGET (state, payload) {
-    var target = state.activeElement
-    var dx = payload.x - state.startX
-    var dy = payload.y - state.startY
-    var left = state.originX + Math.floor(dx * 100 / state.page.zoom)
-    var top = state.originY + Math.floor(dy * 100 / state.page.zoom)
+    const dx = payload.x - state.startX
+    const dy = payload.y - state.startY
 
-    target.left = left > 0 ? left : 0
-    target.top = top > 0 ? top : 0
+    if (state.multiSelect) {
+      state.startX = payload.x
+      state.startY = payload.y
+
+      state.uuidList.forEach(uuid => {
+        let widget = state.widgets.find(w => w.uuid === uuid)
+        const left = widget.left + Math.floor(dx * 100 / state.page.zoom)
+        const top = widget.top + Math.floor(dy * 100 / state.page.zoom)
+        widget.left = left > 0 ? left : 0
+        widget.top = top > 0 ? top : 0
+      })
+    } else {
+      let target = state.activeElement
+      const left = state.originX + Math.floor(dx * 100 / state.page.zoom)
+      const top = state.originY + Math.floor(dy * 100 / state.page.zoom)
+
+      target.left = left > 0 ? left : 0
+      target.top = top > 0 ? top : 0
+    }
   },
 
-  // 更新元件初始 top 值
+  // 更新组件初始 top 值
   UPDATE_SCROLL_TOP (state, top) {
     state.top = top
   },
