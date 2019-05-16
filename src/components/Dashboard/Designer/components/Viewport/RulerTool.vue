@@ -479,14 +479,14 @@ export default {
 
   .title-h {
     font-size: 10px;
-    color: #11ffff;
+    color: #18ffff;
     margin-top: 20px;
     float: left;
   }
 
   .title-v {
     font-size: 10px;
-    color: #11ffff;
+    color: #18ffff;
     margin-left: 20px;
   }
 </style>

@@ -21,12 +21,11 @@
 
 <script>
 import widget from '../plugins/widget'
-import { move } from '../mixins'
 import { cumulativeOffset, checkInView } from '../utils/offset'
 import vpd from '../mixins/vpd'
 
 export default {
-  mixins: [move, vpd],
+  mixins: [vpd],
   props: ['zoom'],
   data () {
     return {
