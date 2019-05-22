@@ -12,6 +12,7 @@
     }"
     contenteditable="true">
     <v-echart
+      :id="chartId"
       :options="options"
       autoresize
       class="ffff"/>
@@ -22,7 +23,7 @@
 import stylec from './style.vue'
 import echarts from 'echarts/lib/echarts'
 import dataControl from '../../CommonModule/mixins/dataControl'
-
+import autoToolTip from '../../CommonModule/scripts/echartsAutoToolTip.js'
 const WIDGET_NAME = 'BasicBarChart'
 export default {
   name: WIDGET_NAME,
@@ -57,7 +58,10 @@ export default {
     xTextColor: '#666666', // X 轴文字颜色
     yTextColor: '#666666', // Y 轴文字颜色
     xLineColor: '#666666', // X 轴线条颜色
+    xName: '', // X 轴名称 (x 轴单位文本)
+    yName: '', // Y 轴名称 (y 轴单位文本)
     yLineColor: '#666666', // Y 轴线条颜色
+    yInverse: false, // Y 轴翻转
     splitLineColor: '#3c4084', // y轴标线颜色
     showXaxisTick: false, // 是否显示 X 轴刻度线
     showYTick: false, // 是否显示 Y 轴刻度线
@@ -68,6 +72,8 @@ export default {
     showXSplitLine: false, // 是否显示X 轴网格线
     showX: true, // 是否显示 X 轴
     showY: true, // 是否显示 Y 轴
+    showTitle: false, // 是否显示标题
+    showToolTip: true, // 是否显示提示框
 
     seriseBarWidth: '40%', // 柱形图宽度
     seriseRadius1: 20, // 柱形图圆角
@@ -83,6 +89,9 @@ export default {
     gridLeft: '3%', // 图表位置（距左边）
     gridRight: '3%', // 图表位置（距右边）
     gridBottom: '3%', // 图表位置（距底部）
+
+    autoToolTip: false, // 是否开启自动轮播
+    autoToolTipTime: 5000, // 自动轮播时间
 
     dataAPI: 'https://easy-mock.com/mock/5cc6c0a89edd7844f38df463/cryia/api/salevolume', // API拉取地址
     dataAutoRefresh: false, // 是否自动刷新
@@ -132,10 +141,6 @@ export default {
           {
             'vendor': 'Meizu',
             'sales': 18290
-          },
-          {
-            'vendor': '8848',
-            'sales': 66282
           }
         ]
       }
@@ -145,7 +150,17 @@ export default {
   props: ['w', 'h', 'val'],
   data () {
     return {
+      timer: null,
+      chartId: 'bar' + this.val.uuid,
       dynamicData: {}
+    }
+  },
+  watch: {
+    'val.autoToolTip': function (val) {
+      this.drawBar(val ? this.val.autoToolTipTime : 0)
+    },
+    'val.autoToolTipTime': function (val) {
+      this.drawBar(val)
     }
   },
   computed: {
@@ -169,9 +184,10 @@ export default {
     },
     xAxis () {
       return {
-        nameLocation: 'start',
+        name: this.val.xName, // x 轴单位
+        // nameLocation: 'end',
         show: this.val.showX, // 是否显示 X 轴
-        nameGap: '50',
+        nameGap: '6', // x 轴单位位置
         boundaryGap: true,
         axisTick: {
           show: this.val.showXaxisTick, // 是否显示 X 轴刻度线
@@ -191,6 +207,7 @@ export default {
             color: this.val.xTextColor // X 轴文字颜色
           }
         },
+        position: this.val.yInverse ? 'top' : '',
         data: this.categories // 数据
       }
     },
@@ -198,8 +215,9 @@ export default {
       return { // 纵轴标尺固定
         show: this.val.showY, // 是否显示 Y 轴
         type: 'value',
+        name: this.val.yName,
         scale: true,
-        inverse: false,
+        inverse: this.val.yInverse, // y 轴翻转
         // max: Math.max.apply(null, this.val.dataJSON.series),
         min: 0,
         axisLine: {
@@ -230,16 +248,18 @@ export default {
     options () {
       return {
         title: {
+          show: this.val.showTitle, // 显示标题
           text: this.val.chartTitle, // 图表标题
           textStyle: {
             color: this.val.titleColor
           }
         },
         tooltip: {
-          trigger: 'item'
-        },
-        legend: {
-          data: '销量'
+          show: this.val.showToolTip,
+          trigger: 'axis', // 可选值为 axis | item
+          axisPointer: {
+            type: 'shadow' // 默认为直线，可选为 line | shadow
+          }
         },
         grid: {
           top: this.val.gridTop, // 上边距
@@ -263,6 +283,17 @@ export default {
           data: this.dataSeries
         }]
       }
+    }
+  },
+  methods: {
+    drawBar (time) {
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById(this.chartId))
+      // 使用刚指定的配置项和数据显示图表
+      myChart.setOption(this.options)
+      // 使用轮播插件
+      clearInterval(this.timer)
+      this.timer = autoToolTip.autoHover(myChart, this.options, this.dataSeries.length, time)
     }
   }
 }

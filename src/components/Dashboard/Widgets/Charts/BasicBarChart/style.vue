@@ -8,6 +8,12 @@
         <div @click="isShowX = !isShowX" class="panel-item-title">{{activeElement.axisReverse ? 'Y 轴' : 'X 轴'}}<i :class="isShowX ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
         <div v-show="isShowX" class="panel-item-new-set">
           <div class="panel-row">
+            <div class="panel-label">名称</div>
+            <div>
+              <input v-model="activeElement.xName" type="text">
+            </div>
+          </div>
+          <div class="panel-row">
             <div class="panel-label">文本颜色</div>
             <div class="panel-value">{{ activeElement.xTextColor }}</div>
             <div>
@@ -83,6 +89,12 @@
       <div class="panel-item-new">
         <div @click="isShowY = !isShowY" class="panel-item-title">{{activeElement.axisReverse ? 'X 轴' : 'Y 轴'}}<i :class="isShowY ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
         <div v-show="isShowY" class="panel-item-new-set">
+          <div class="panel-row">
+            <div class="panel-label">名称</div>
+            <div>
+              <input v-model="activeElement.yName" type="text">
+            </div>
+          </div>
           <div class="panel-row">
             <div class="panel-label">文本颜色</div>
             <div class="panel-value">{{ activeElement.yTextColor }}</div>
@@ -164,6 +176,19 @@
               type="color">
           </div>
         </div>
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">是否翻转</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.yInverse"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
       <div class="panel-item-new">
@@ -201,7 +226,20 @@
                 type="text">
             </div>
           </div>
-          <div class="panel-row">
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示标题</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showTitle"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div v-show="activeElement.showTitle" class="panel-row">
             <div class="panel-label">标题</div>
             <div>
               <input
@@ -209,7 +247,7 @@
                 type="text">
             </div>
           </div>
-          <div class="panel-row">
+          <div v-show="activeElement.showTitle" class="panel-row">
             <div class="panel-label">标题颜色</div>
             <div class="panel-value">{{ activeElement.titleColor }}</div>
             <div>
@@ -308,6 +346,47 @@
           </label>
         </div>
       </div>
+      <div class="panel-item-new">
+        <div @click="isShowTooltip = !isShowTooltip" class="panel-item-title">ToolTip设置<i :class="isShowTooltip ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowTooltip" class="panel-item-new-set">
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示提示框</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showToolTip"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div
+            v-show="activeElement.showToolTip"
+            class="panel-row"
+            flex>
+            <div class="panel-label">开启轮播</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.autoToolTip"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div
+            v-show="activeElement.showToolTip && activeElement.autoToolTip"
+            class="panel-row">
+            <div class="panel-label">轮播时间</div>
+            <div>
+              <input
+                v-model="activeElement.autoToolTipTime">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -328,7 +407,8 @@ export default {
       isShowX: true,
       isShowY: true,
       isShowBar: true,
-      isShowBarItem: true
+      isShowBarItem: true,
+      isShowTooltip: true
     }
   },
   methods: {

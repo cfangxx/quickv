@@ -12,7 +12,7 @@
     }"
     contenteditable="true">
     <v-echart
-      id="bar"
+      :id="chartId"
       :options="options"
       autoresize
       class="ffff"/>
@@ -26,7 +26,6 @@ import dataControl from '../../CommonModule/mixins/dataControl'
 import 'echarts/map/js/china.js'
 import echarts from 'echarts'
 import autoToolTip from '../../CommonModule/scripts/echartsAutoToolTip.js'
-
 const WIDGET_NAME = 'BraidChinaMap'
 export default {
   name: WIDGET_NAME,
@@ -128,6 +127,8 @@ export default {
   props: ['w', 'h', 'val'],
   data () {
     return {
+      timer: null,
+      chartId: 'char' + this.val.uuid,
       dynamicData: {}
     }
   },
@@ -240,11 +241,12 @@ export default {
   methods: {
     drawBar (time) {
       // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById('bar'))
+      var myChart = echarts.init(document.getElementById(this.chartId))
       // 使用刚指定的配置项和数据显示图表
       myChart.setOption(this.options)
       // 使用轮播插件
-      autoToolTip.autoHover(myChart, this.options, this.dataSeries.length, time)
+      clearInterval(this.timer)
+      this.timer = autoToolTip.autoHover(myChart, this.options, this.dataSeries.length, time)
     }
   }
 }

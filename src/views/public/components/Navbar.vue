@@ -17,6 +17,11 @@
               {{ '大屏管理' }}
             </el-dropdown-item>
           </router-link>
+          <router-link to="/info">
+            <el-dropdown-item>
+              <span style="display:block;">{{ '编辑资料' }}</span>
+            </el-dropdown-item>
+          </router-link>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">{{ '退出' }}</span>
           </el-dropdown-item>

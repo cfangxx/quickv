@@ -128,12 +128,20 @@ select {
   height:100%;
 }
 
-button,input, input[type='number'],input[type='text'], optgroup, select {
+input, input[type='number'],input[type='text'], optgroup, select {
   height: 28px;
   line-height: 28px;
   border: 1px solid #ccc;
   font-size:13px;
   padding: 0 0 0 5px;
+}
+.panel-wrap button{
+  height: 28px;
+  line-height: 28px;
+  border: none;
+  font-size:13px;
+  padding: 0;
+  outline: none;
 }
 textarea{
   font-size:13px;

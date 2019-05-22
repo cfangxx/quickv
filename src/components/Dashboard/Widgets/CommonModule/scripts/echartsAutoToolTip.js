@@ -7,8 +7,10 @@
  *  @param time     //轮播间隔时长
  *  @param timer    // 定义定时器，用来清空定时器
  */
-export let timer = null
+// export let timer = null
+let timer = null
 export function autoHover (myChart, option, num, time) {
+  timer = null
   var defaultData = { // 设置默认值
     time: 2000,
     num: 100
@@ -48,58 +50,58 @@ export function autoHover (myChart, option, num, time) {
     })
     timer && clearInterval(timer)
   }
-  myChart.on('mouseover', function (params) {
-    clearInterval(timer)
-    myChart.dispatchAction({
-      type: 'downplay',
-      seriesIndex: 0
-    })
-    myChart.dispatchAction({
-      type: 'highlight',
-      seriesIndex: 0,
-      dataIndex: params.dataIndex
-    })
-    myChart.dispatchAction({
-      type: 'showTip',
-      seriesIndex: 0,
-      dataIndex: params.dataIndex
-    })
-  })
+  // myChart.on('mouseover', function (params) {
+  //   clearInterval(timer)
+  //   myChart.dispatchAction({
+  //     type: 'downplay',
+  //     seriesIndex: 0
+  //   })
+  //   myChart.dispatchAction({
+  //     type: 'highlight',
+  //     seriesIndex: 0,
+  //     dataIndex: params.dataIndex
+  //   })
+  //   myChart.dispatchAction({
+  //     type: 'showTip',
+  //     seriesIndex: 0,
+  //     dataIndex: params.dataIndex
+  //   })
+  // })
 
-  myChart.on('mouseout', function () {
-    timer && clearInterval(timer)
-    timer = setInterval(function () {
-      myChart.dispatchAction({
-        type: 'downplay',
-        seriesIndex: 0 // serieIndex的索引值   可以触发多个
-      })
-      myChart.dispatchAction({
-        type: 'highlight',
-        seriesIndex: 0,
-        dataIndex: count
-      })
-      myChart.dispatchAction({
-        type: 'showTip',
-        seriesIndex: 0,
-        dataIndex: count
-      })
-      count++
-      if (count >= 17) {
-        count = 0
-      }
-    }, time)
-    if (!time) {
-      myChart.dispatchAction({
-        type: 'downplay'
-      })
-      myChart.dispatchAction({
-        type: 'showTip',
-        seriesIndex: 0,
-        dataIndex: count
-      })
-      timer && clearInterval(timer)
-    }
-  })
+  // myChart.on('mouseout', function () {
+  //   timer && clearInterval(timer)
+  //   timer = setInterval(function () {
+  //     myChart.dispatchAction({
+  //       type: 'downplay',
+  //       seriesIndex: 0 // serieIndex的索引值   可以触发多个
+  //     })
+  //     myChart.dispatchAction({
+  //       type: 'highlight',
+  //       seriesIndex: 0,
+  //       dataIndex: count
+  //     })
+  //     myChart.dispatchAction({
+  //       type: 'showTip',
+  //       seriesIndex: 0,
+  //       dataIndex: count
+  //     })
+  //     count++
+  //     if (count >= 17) {
+  //       count = 0
+  //     }
+  //   }, time)
+  //   if (!time) {
+  //     myChart.dispatchAction({
+  //       type: 'downplay'
+  //     })
+  //     myChart.dispatchAction({
+  //       type: 'showTip',
+  //       seriesIndex: 0,
+  //       dataIndex: count
+  //     })
+  //     timer && clearInterval(timer)
+  //   }
+  // })
 
   if (!time) {
     myChart.dispatchAction({
@@ -107,7 +109,9 @@ export function autoHover (myChart, option, num, time) {
     })
     timer && clearInterval(timer)
   }
+  // console.log(timer)
+  return timer
 }
 export default {
-  autoHover, timer
+  autoHover
 }
