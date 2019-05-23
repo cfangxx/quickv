@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input :placeholder="'大屏名称'" v-model="listQuery.title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input :placeholder="'大屏名称'" v-model="listQuery.title" clearable style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
-      <el-select v-model="listQuery.type" :placeholder="'发布状态'" clearable class="filter-item" style="width: 130px">
+      <el-select v-model="listQuery.status" :placeholder="'发布状态'" clearable class="filter-item" style="width: 130px">
         <el-option v-for="(key, value) in publishTypeOptions" :key="key" :label="key" :value="value"/>
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ '搜索' }}</el-button>
@@ -93,7 +93,7 @@
     <!--发布管理-->
     <el-dialog :visible.sync="dialogPublish" :title="dialogPublishTitle">
       <el-radio-group v-model="dialogPublishStatus">
-        <el-radio label="unpublished">{{"停止发布"}}</el-radio>
+        <el-radio label="unpublish">{{"停止发布"}}</el-radio>
         <el-radio label="published">{{"公开发布"}}</el-radio>
         <el-radio label="republish">{{"重新发布"}}</el-radio>
       </el-radio-group>
@@ -118,7 +118,7 @@ import clip from '@/scripts/clipboard'
 
 const publishTypeOptions = {
   published: '已发布',
-  unpublished: '未发布'
+  unpublish: '未发布'
 }
 
 export default {
@@ -147,10 +147,8 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        importance: undefined,
         title: undefined,
-        type: undefined,
-        sort: '+id'
+        status: undefined
       },
       publishTypeOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],

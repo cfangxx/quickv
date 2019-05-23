@@ -93,7 +93,7 @@ const user = {
     },
 
     // 获取用户大屏列表, 添加路由
-    GetUserDashboardList ({ commit, state }) {
+    GetUserDashboardList ({ commit, state }, query) {
       return new Promise((resolve, reject) => {
         const routers = [
           {
@@ -107,7 +107,7 @@ const user = {
             ]
           }
         ]
-        fetchList().then(response => {
+        fetchList(query).then(response => {
           const list = response.data
           if (list && list.total > 0) {
             list.items.forEach(item => {
