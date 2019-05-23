@@ -35,8 +35,17 @@
         <!--</template>-->
       <!--</el-table-column>-->
       <el-table-column :label="'链接'" min-width="250px">
-        <template slot-scope="scope">
-          <a class="link-type" :href="scope.row.publish.hash | pubUrlFilter" target="_blank">{{ scope.row.publish.hash | pubUrlFilter }}</a>
+        <template slot-scope="scope" >
+          <div v-show="scope.row.publish.status === 'published'">
+            <!-- <el-link type="primary"> -->
+            <el-link type="primary" :href="scope.row.publish.hash | pubUrlFilter" target="_blank">{{ scope.row.publish.hash | pubUrlFilter }}</el-link>
+            <el-tooltip class="item" effect="dark" content="复制" placement="bottom">
+              <el-button size="mini" type="success" icon="el-icon-document" @click="handleCopy(scope.row.publish.hash, $event)" circle></el-button>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="下载" placement="bottom">
+              <el-button size="mini" type="primary" icon="el-icon-download" @click="handleDownload(scope.row.publish.hash)" circle></el-button>
+            </el-tooltip>
+          </div>
         </template>
       </el-table-column>
       <el-table-column :label="'状态'" class-name="status-col" width="100">
@@ -46,10 +55,10 @@
       </el-table-column>
       <el-table-column :label="'操作'" align="center" width="400" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handlePreviewDashboard(scope.row.hash)">{{ '预览' }}</el-button>
+          <el-button size="mini" type="primary" @click="handlePreviewDashboard(scope.row.hash)">{{ '预览' }}</el-button>
           <el-button size="mini" type="success" @click="handleEdit(scope.row.hash)">{{ '编辑' }}</el-button>
-          <el-button size="mini" type="warning" @click="handleModifyStatus(scope.row.hash,'draft')">{{ '克隆' }}</el-button>
           <el-button size="mini" type="info" @click="handleModifyPublish(scope.row)">{{ '发布' }}</el-button>
+          <el-button size="mini" type="warning" @click="handleModifyStatus(scope.row.hash,'draft')">{{ '克隆' }}</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row,'deleted')">{{ '删除' }}</el-button>
         </template>
       </el-table-column>
@@ -98,13 +107,14 @@
 </template>
 
 <script>
-import { createDashboard, deleteDashboard, publishDashboard } from '@/api/dashboard'
+import { createDashboard, deleteDashboard, publishDashboard, downloadDashboard } from '@/api/dashboard'
 import { mapGetters } from 'vuex'
 import { fetchList } from '@/api/template'
 
 import waves from '@/directive/waves' // Waves directive
 import TemplateList from '@/components/Dashboard/Template'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import clip from '@/scripts/clipboard'
 
 const publishTypeOptions = {
   published: '已发布',
@@ -206,6 +216,11 @@ export default {
       }
       this.handleFilter()
     },
+    handleCopy (text, event) {
+      const pubUrlFilter = this.$options.filters['pubUrlFilter']
+
+      clip(pubUrlFilter(text), event)
+    },
     resetTemp () {
       this.createTable = {
         name: '',
@@ -258,9 +273,15 @@ export default {
         this.getList()
       })
     },
-    handleDownload () {
+    handleDownload (hash) {
       this.downloadLoading = true
-      alert('下载')
+      // alert('下载')
+      downloadDashboard(hash).then(response => {
+        if (response.code === 0) {
+          console.log(response)
+          window.location = process.env.BASE_API + '/' + response.data
+        }
+      })
     },
     handlePublish () {
       publishDashboard(this.dialogPublishHash, this.dialogPublishStatus).then(response => {

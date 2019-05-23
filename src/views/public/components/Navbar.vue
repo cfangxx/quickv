@@ -6,24 +6,26 @@
 
     <div class="right-menu">
 
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
+          <!-- <span class="link-type">{{ name }}</span> -->
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
           <i class="el-icon-caret-bottom"/>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              {{ '大屏管理' }}
-            </el-dropdown-item>
-          </router-link>
-          <router-link to="/info">
-            <el-dropdown-item>
-              <span style="display:block;">{{ '编辑资料' }}</span>
+          <el-dropdown-item disabled>
+            <i class="el-icon-user"></i>
+            <span>{{ name }}</span>
+          </el-dropdown-item>
+          <router-link to="/profile">
+            <el-dropdown-item divided>
+              <i class="el-icon-setting" />
+              <span>{{ '编辑资料' }}</span>
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">{{ '退出' }}</span>
+            <i class="el-icon-remove-outline" />
+            <span @click="logout">{{ '退出' }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

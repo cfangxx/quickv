@@ -8,3 +8,12 @@ export function getUserInfo () {
     method: 'get'
   })
 }
+
+export function updataAccount (data) {
+  const id = getUserId()
+  return request({
+    url: '/user/' + id + '/account',
+    method: 'post',
+    data
+  })
+}

@@ -46,15 +46,22 @@ export const constantRouterMap = [
         component: () => import('@/views/dashboard/Manage'),
         name: 'manage',
         meta: { title: '大屏管理', icon: 'dashboard', noCache: true, affix: true }
-      },
-      {
-        path: 'info',
-        component: () => import('@/views/dashboard/Info'),
-        hidden: true
       }
     ]
   },
-
+  {
+    path: '/profile',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'profile',
+        component: () => import('@/views/account/UserProfile'),
+        meta: { title: '编辑资料', noCache: true, affix: true }
+      }
+    ],
+    hidden: true
+  },
   {
     path: '/dashboard/:hash',
     component: () => import('@/views/dashboard/Preview'),

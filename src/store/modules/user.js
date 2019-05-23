@@ -1,5 +1,5 @@
 import { loginByUsername, logout } from '@/api/login'
-import { getUserInfo } from '@/api/user'
+import { getUserInfo, updataAccount } from '@/api/user'
 import { fetchList } from '@/api/dashboard'
 import { setToken, removeToken, setUserId, removeUserId } from '@/scripts/auth'
 import { constantRouterMap } from '@/router'
@@ -83,7 +83,7 @@ const user = {
             reject(new Error('getInfo: roles must be a non-null array!'))
           }
 
-          commit('SET_NAME', user.name)
+          commit('SET_NAME', user.username)
           commit('SET_AVATAR', user.avatar)
           resolve(response)
         }).catch(error => {
@@ -153,6 +153,14 @@ const user = {
           resolve()
         }).catch(error => {
           reject(error)
+        })
+      })
+    },
+
+    UpdateAccount ({ commit }, account) {
+      return new Promise(resolve => {
+        updataAccount(account).then(response => {
+          resolve(response)
         })
       })
     },

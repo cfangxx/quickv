@@ -2,14 +2,18 @@
   <div class="info-container">
     <div style="float: left">
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="密码" prop="pass">
-          <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+        <el-form-item label="原密码" prop="oldPassword">
+          <el-input type="password" v-model="ruleForm.oldPassword" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" prop="checkPass">
-          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        <el-form-item label="新密码" prop="newPassword">
+          <el-input type="password" v-model="ruleForm.newPassword" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="checkPassword">
+          <el-input type="password" v-model="ruleForm.checkPassword" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+          <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -20,8 +24,7 @@
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        <img :src="avatar" class="avatar">
         <div class="el-upload__tip" slot="tip">点击更改头像</div>
       </el-upload>
     </div>
@@ -29,8 +32,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'Info',
+  name: 'UserProfile',
+  computed: {
+    ...mapGetters([
+      'avatar'
+    ])
+  },
   data () {
     var validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -47,7 +57,7 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.ruleForm.pass) {
+      } else if (value !== this.ruleForm.newPassword) {
         callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
@@ -57,15 +67,18 @@ export default {
       imageUrl: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
       uploadUrl: '',
       ruleForm: {
-        pass: '',
-        checkPass: '',
-        age: ''
+        oldPassword: '',
+        newPassword: '',
+        checkPassword: ''
       },
       rules: {
-        pass: [
+        oldPassword: [
           { validator: validatePass, trigger: 'blur' }
         ],
-        checkPass: [
+        newPassword: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        checkPassword: [
           { validator: validatePass2, trigger: 'blur' }
         ]
       }
@@ -89,10 +102,28 @@ export default {
       }
       return (isJPG || isPNG || isGIF) && isLt2M
     },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          this.$store.dispatch('UpdateAccount', this.ruleForm).then(response => {
+            if (response.code === 0) {
+              this.$message({
+                message: '密码修改成功, 请重新登陆',
+                type: 'success',
+                duration: 3000
+              })
+
+              const that = this
+              setTimeout(() => {
+                that.$store.dispatch('LogOut').then(() => {
+                  location.reload()
+                })
+              }, 3000)
+            }
+          })
         } else {
           console.log('error submit!!')
           return false
