@@ -1,11 +1,24 @@
 <template>
-  <vue-page-designer
-    :page="config"
-    :widgets="widget"
-    :upload="handleUpload"
-    :upload-option="uploadOption"
-    @save="handleSave"
-    @quit="handleQuit"/>
+  <div>
+    <vue-page-designer
+      :page="config"
+      :widgets="widget"
+      :upload="handleUpload"
+      :upload-option="uploadOption"
+      @save="handleSave"
+      @quit="handleQuit"/>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="300">
+      <span>您的修改未保存！！！『直接退出』将不会保存您所做的修改。</span>
+      <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="toRouter">直接退出</el-button>
+      <el-button type="primary" @click="save">保存并退出</el-button>
+    </span>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -25,7 +38,13 @@ export default {
       hash: this.$route.params.hash,
       details: null,
       config: null,
-      widget: [],
+      widget: null,
+
+      startConfig: null,
+      startWidget: null,
+      dialogVisible: false,
+      myconfig: null, // 退出时用来获取方法 handleSave 的参数
+
       uploadOption: {
         url: process.env.BASE_API + '/upload/image/' + this.$route.params.hash
         // url: 'https://jsonplaceholder.typicode.com/photos'
@@ -73,6 +92,10 @@ export default {
                 offset: 50,
                 duration: 2000
               })
+              if (config.isQuit) {
+                this.dialogVisible = false
+                this.toRouter()
+              }
             }
 
             this.$nextTick(() => {
@@ -104,8 +127,24 @@ export default {
           })
         })
     },
-    handleQuit () {
+    handleQuit (config) {
+      let configStr = JSON.stringify(config.page)
+      let widgetStr = JSON.stringify(config.widgets)
+      let startConfigStr = JSON.stringify(this.startConfig)
+      let startWidgetStr = JSON.stringify(this.startWidget)
+      if (configStr !== startConfigStr || widgetStr !== startWidgetStr) {
+        this.myconfig = JSON.parse(JSON.stringify(config))
+        this.myconfig.isQuit = true
+        this.dialogVisible = true
+      } else {
+        this.toRouter()
+      }
+    },
+    toRouter () {
       this.$router.push({ path: '/' + (this.isTemplate ? 'template' : '') })
+    },
+    save () {
+      this.handleSave(this.myconfig)
     },
     handleUpload (files) {
       return new Promise(resolve => {
@@ -125,6 +164,8 @@ export default {
           if (response.data.config) {
             this.config = response.data.config
             this.widget = response.data.widget
+            this.startConfig = JSON.parse(JSON.stringify(response.data.config))
+            this.startWidget = JSON.parse(JSON.stringify(response.data.widget))
           }
         }
       })

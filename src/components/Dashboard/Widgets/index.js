@@ -2,6 +2,7 @@
 import BasicBarChart from './Charts/BasicBarChart'
 import AreaLineChart from './Charts/AreaLineChart'
 import PolarBarChart from './Charts/PolarBarChart'
+import BasicPieChart from './Charts/BasicPieChart'
 
 // effects
 import RotateLine from './Effects/RotateLine'
@@ -29,6 +30,7 @@ export default {
   [BasicBarChart.name]: BasicBarChart,
   [AreaLineChart.name]: AreaLineChart,
   [PolarBarChart.name]: PolarBarChart,
+  [BasicPieChart.name]: BasicPieChart,
 
   // effects
   [RotateLine.name]: RotateLine,
