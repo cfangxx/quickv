@@ -92,6 +92,8 @@ export default {
                 offset: 50,
                 duration: 2000
               })
+              this.startConfig = JSON.parse(JSON.stringify(config.page))
+              this.startWidget = JSON.parse(JSON.stringify(config.widgets))
               if (config.isQuit) {
                 this.dialogVisible = false
                 this.toRouter()
@@ -132,7 +134,9 @@ export default {
       let widgetStr = JSON.stringify(config.widgets)
       let startConfigStr = JSON.stringify(this.startConfig)
       let startWidgetStr = JSON.stringify(this.startWidget)
+      // console.log(config, this.startConfig, this.startWidget)
       if (configStr !== startConfigStr || widgetStr !== startWidgetStr) {
+        // console.log('已修改')
         this.myconfig = JSON.parse(JSON.stringify(config))
         this.myconfig.isQuit = true
         this.dialogVisible = true
