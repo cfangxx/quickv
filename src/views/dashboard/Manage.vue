@@ -62,7 +62,17 @@
           <el-button size="mini" type="success" @click="handleDesign(scope.row.hash)">{{ '编辑' }}</el-button>
           <el-button size="mini" type="info" @click="showPublishDialog(scope.row)">{{ '发布' }}</el-button>
           <el-button size="mini" type="warning" @click="handleClone(scope.row.hash, scope.row.config.title)">{{ '克隆' }}</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{ '删除' }}</el-button>
+
+          <div style="display:inline-block; padding-left:10px">
+            <el-popover  placement="bottom" width="200" :ref="`popover-${scope.$index}`">
+              <p>确定要删除大屏 {{ scope.row.config.title }} 吗?</p>
+              <div style="text-align: right; margin: 0">
+                <el-button size="mini" type="text" @click="scope._self.$refs[`popover-${scope.$index}`].doClose()">取消</el-button>
+                <el-button size="mini" type="primary" @click="scope._self.$refs[`popover-${scope.$index}`].doClose() === handleDelete(scope.row)">确定</el-button>
+              </div>
+              <el-button size="mini" type="danger" slot="reference">{{ '删除' }}</el-button>
+            </el-popover>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -71,7 +81,7 @@
 
     <!--新建大屏-->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="createTable" label-position="top" label-width="70px">
+      <el-form ref="dataForm" v-model="createTable" label-position="top" label-width="70px">
         <el-form-item :label="'大屏名称'" placeholder="请输入大屏名称" prop="title">
           <el-input v-model="createTable.name"/>
         </el-form-item>
@@ -142,6 +152,7 @@ export default {
   },
   data () {
     return {
+      delPopover: false,
       tableKey: 0,
       list: null,
       total: 0,
