@@ -36,11 +36,6 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'UserProfile',
-  computed: {
-    ...mapGetters([
-      'avatar'
-    ])
-  },
   data () {
     var validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -83,6 +78,11 @@ export default {
         ]
       }
     }
+  },
+  computed: {
+    ...mapGetters([
+      'avatar'
+    ])
   },
   methods: {
     handleAvatarSuccess (res, file) {

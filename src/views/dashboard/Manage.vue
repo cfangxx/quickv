@@ -37,12 +37,11 @@
       <el-table-column :label="'链接'" min-width="250px">
         <template slot-scope="scope" >
           <div v-show="scope.row.publish.status === 'published'">
-            <!-- <el-link type="primary"> -->
             <el-link type="primary" :href="scope.row.publish.hash | pubUrlFilter" target="_blank">{{ scope.row.publish.hash | pubUrlFilter }}</el-link>
-            <el-tooltip class="item" effect="dark" content="复制" placement="bottom">
+            <el-tooltip effect="dark" content="复制" placement="bottom">
               <el-button size="mini" type="success" icon="el-icon-document" @click="handleCopy(scope.row.publish.hash, $event)" circle></el-button>
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="下载" placement="bottom">
+            <el-tooltip effect="dark" content="下载" placement="bottom">
               <el-button size="mini" type="primary" icon="el-icon-download" @click="handleDownload(scope.row.publish.hash)" circle></el-button>
             </el-tooltip>
           </div>
@@ -50,30 +49,34 @@
       </el-table-column>
       <el-table-column :label="'状态'" class-name="status-col" width="100">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.publish.status">{{ scope.row.publish.status | statusFilter}}</el-tag>
+          <el-tooltip :disabled="scope.row | needRepublish" content="内容已更新, 未重新发布" placement="bottom">
+            <el-badge is-dot style="margin-top: 3px;" :hidden="scope.row | needRepublish">
+              <el-tag :type="scope.row.publish.status">{{ scope.row.publish.status | statusFilter}}</el-tag>
+            </el-badge>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column :label="'操作'" align="center" width="400" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handlePreviewDashboard(scope.row.hash)">{{ '预览' }}</el-button>
-          <el-button size="mini" type="success" @click="handleEdit(scope.row.hash)">{{ '编辑' }}</el-button>
-          <el-button size="mini" type="info" @click="handleModifyPublish(scope.row)">{{ '发布' }}</el-button>
-          <el-button size="mini" type="warning" @click="handleModifyStatus(scope.row.hash,'draft')">{{ '克隆' }}</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row,'deleted')">{{ '删除' }}</el-button>
+          <el-button size="mini" type="primary" @click="handlePreview(scope.row.hash)">{{ '预览' }}</el-button>
+          <el-button size="mini" type="success" @click="handleDesign(scope.row.hash)">{{ '编辑' }}</el-button>
+          <el-button size="mini" type="info" @click="showPublishDialog(scope.row)">{{ '发布' }}</el-button>
+          <el-button size="mini" type="warning" @click="handleClone(scope.row.hash, scope.row.config.title)">{{ '克隆' }}</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{ '删除' }}</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <!--新建大屏-->
-    <el-dialog :title="'新建大屏'" :visible.sync="dialogFormVisible">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="createTable" label-position="top" label-width="70px">
         <el-form-item :label="'大屏名称'" placeholder="请输入大屏名称" prop="title">
           <el-input v-model="createTable.name"/>
         </el-form-item>
 
-        <el-form-item :label="'选择模板'">
+        <el-form-item :label="'选择模板'" v-show="this.templateList">
           <template-list :templates="templateList"
                          @onselect="onSelectTemplate">
           </template-list>
@@ -86,7 +89,7 @@
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ '取消' }}</el-button>
-        <el-button type="primary" @click="dialogStatus===createSubmit()">{{ '创建' }}</el-button>
+        <el-button type="primary" @click="createSubmit()">{{ '创建' }}</el-button>
       </div>
     </el-dialog>
 
@@ -131,12 +134,11 @@ export default {
     },
     pubUrlFilter (hash) {
       return hash ? window.location.protocol + '//' + window.location.host + '/dashboard/' + hash : ''
+    },
+    needRepublish (row) {
+      return row.publish.status !== 'published' || row.config.timestamp <= row.publish.timestamp
     }
-  },
-  computed: {
-    ...mapGetters([
-      'userRouters'
-    ])
+
   },
   data () {
     return {
@@ -152,17 +154,21 @@ export default {
       },
       publishTypeOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      createTable: {
-      },
+      createTable: {},
       templateList: null,
+      dialogTitle: '',
       dialogFormVisible: false,
-      dialogStatus: '',
       dialogPublish: false,
       dialogPublishTitle: '',
       dialogPublishStatus: '',
       dialogPublishHash: '',
       downloadLoading: false
     }
+  },
+  computed: {
+    ...mapGetters([
+      'userRouters'
+    ])
   },
   created () {
     this.getList()
@@ -187,14 +193,7 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    handleModifyStatus (row, status) {
-      this.$message({
-        message: '操作成功',
-        type: 'success'
-      })
-      row.publish.status = status
-    },
-    handleModifyPublish (row) {
+    showPublishDialog (row) {
       this.dialogPublishTitle = '发布管理 - ' + row.config.title
       this.dialogPublishStatus = row.publish.status
       this.dialogPublishHash = row.hash
@@ -224,7 +223,8 @@ export default {
         name: '',
         timestamp: Number(new Date()),
         template: 'blank',
-        about: ''
+        about: '',
+        mode: 'create'
       }
     },
     handleCreate () {
@@ -233,11 +233,21 @@ export default {
       })
 
       this.resetTemp()
-      this.dialogStatus = '新建大屏'
+      this.dialogTitle = '新建大屏'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+    },
+    handleClone (hash, title) {
+      this.resetTemp()
+      this.templateList = null
+      this.dialogTitle = '大屏克隆 - <' + title + '>'
+
+      this.createTable.template = hash
+      this.createTable.mode = 'clone'
+
+      this.dialogFormVisible = true
     },
     createSubmit () {
       this.$refs['dataForm'].validate((valid) => {
@@ -293,10 +303,10 @@ export default {
         this.getList()
       })
     },
-    handleEdit (hash) {
+    handleDesign (hash) {
       this.$router.push('/edit/dashboard/' + hash)
     },
-    handlePreviewDashboard (hash) {
+    handlePreview (hash) {
       this.$router.push('/preview/' + hash)
     },
     serialList (list) {
@@ -327,4 +337,5 @@ export default {
   .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
   }
+
 </style>

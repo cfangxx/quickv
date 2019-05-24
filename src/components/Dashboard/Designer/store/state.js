@@ -27,11 +27,11 @@ export default {
     about: '', // 简介
     width: 1920, // 画布宽度
     height: 1080, // 画布高度
-    endTime: new Date().getTime(), // 修改日期
     backgroundColor: '#ffffff', // 背景色
     backPic: '', // 背景图片
-    zoom: 100 // 画布缩放百分比
+    zoom: 100, // 画布缩放百分比
+    timestamp: new Date().getTime() // 修改日期
   },
   widgets: [], // 组件
-  steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  steps: []
 }

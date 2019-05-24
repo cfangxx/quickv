@@ -15,7 +15,7 @@
       <span slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">取 消</el-button>
       <el-button @click="toRouter">直接退出</el-button>
-      <el-button type="primary" @click="save">保存并退出</el-button>
+      <el-button type="primary" @click="saveAndQuit">保存并退出</el-button>
     </span>
     </el-dialog>
   </div>
@@ -43,7 +43,7 @@ export default {
       startConfig: null,
       startWidget: null,
       dialogVisible: false,
-      myconfig: null, // 退出时用来获取方法 handleSave 的参数
+      dumpConfig: null, // 退出时用来获取方法 handleSave 的参数
 
       uploadOption: {
         url: process.env.BASE_API + '/upload/image/' + this.$route.params.hash
@@ -52,6 +52,7 @@ export default {
       isTemplate: false
     }
   },
+
   watch: {
     $route: {
       handler: function (route) {
@@ -92,8 +93,10 @@ export default {
                 offset: 50,
                 duration: 2000
               })
-              this.startConfig = JSON.parse(JSON.stringify(config.page))
-              this.startWidget = JSON.parse(JSON.stringify(config.widgets))
+
+              this.startConfig = JSON.stringify(config.page)
+              this.startWidget = JSON.stringify(config.widgets)
+
               if (config.isQuit) {
                 this.dialogVisible = false
                 this.toRouter()
@@ -132,13 +135,11 @@ export default {
     handleQuit (config) {
       let configStr = JSON.stringify(config.page)
       let widgetStr = JSON.stringify(config.widgets)
-      let startConfigStr = JSON.stringify(this.startConfig)
-      let startWidgetStr = JSON.stringify(this.startWidget)
-      // console.log(config, this.startConfig, this.startWidget)
-      if (configStr !== startConfigStr || widgetStr !== startWidgetStr) {
+      if (configStr !== this.startConfig || widgetStr !== this.startWidget) {
         // console.log('已修改')
-        this.myconfig = JSON.parse(JSON.stringify(config))
-        this.myconfig.isQuit = true
+        this.dumpConfig = { ...config }
+        this.dumpConfig.isQuit = true
+
         this.dialogVisible = true
       } else {
         this.toRouter()
@@ -147,8 +148,8 @@ export default {
     toRouter () {
       this.$router.push({ path: '/' + (this.isTemplate ? 'template' : '') })
     },
-    save () {
-      this.handleSave(this.myconfig)
+    saveAndQuit () {
+      this.handleSave(this.dumpConfig)
     },
     handleUpload (files) {
       return new Promise(resolve => {
@@ -168,12 +169,13 @@ export default {
           if (response.data.config) {
             this.config = response.data.config
             this.widget = response.data.widget
-            this.startConfig = JSON.parse(JSON.stringify(response.data.config))
-            this.startWidget = JSON.parse(JSON.stringify(response.data.widget))
+            this.startConfig = JSON.stringify(response.data.config)
+            this.startWidget = JSON.stringify(response.data.widget)
           }
         }
       })
     }
   }
+
 }
 </script>

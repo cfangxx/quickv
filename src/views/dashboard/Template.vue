@@ -81,8 +81,6 @@ export default {
       return process.env.BASE_API + url
     }
   },
-  computed: {
-  },
   data () {
     const validateTplName = (rule, value, callback) => {
       if (value.length <= 0) {
