@@ -1,5 +1,4 @@
-import { DashboardRouterMap, asyncRouterMap } from '@/router'
-
+import { permissionRouterMap, constantRouterMap } from '@/router'
 /**
  * 通过meta.role判断是否与当前用户权限匹配
  * @param roles
@@ -15,7 +14,7 @@ function hasPermission (roles, route) {
 
 /**
  * 递归过滤异步路由表，返回符合用户角色权限的路由表
- * @param routes asyncRouterMap
+ * @param routes permissionRouterMap
  * @param roles
  */
 function filterAsyncRouter (routes, roles) {
@@ -41,7 +40,7 @@ const permission = {
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
-      state.asyncRouters = DashboardRouterMap.concat(routers)
+      state.asyncRouters = constantRouterMap.concat(routers)
       state.routers = routers
     }
   },
@@ -51,9 +50,9 @@ const permission = {
         const { roles } = data
         let accessedRouters
         if (roles.includes('admin')) {
-          accessedRouters = asyncRouterMap
+          accessedRouters = permissionRouterMap
         } else {
-          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+          accessedRouters = filterAsyncRouter(permissionRouterMap, roles)
         }
         commit('SET_ROUTERS', accessedRouters)
         resolve()

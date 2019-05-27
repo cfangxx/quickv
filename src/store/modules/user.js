@@ -2,37 +2,20 @@ import { loginByUsername, logout } from '@/api/login'
 import { getUserInfo, updataAccount } from '@/api/user'
 import { fetchList } from '@/api/dashboard'
 import { setToken, removeToken, setUserId, removeUserId } from '@/scripts/auth'
-import { constantRouterMap } from '@/router'
-import store from '@/store/index'
 
 const user = {
   state: {
     id: '',
-    status: '',
-    code: '',
     token: '',
     name: '',
     avatar: '',
     introduction: '',
-    roles: [],
-    setting: {
-      articlePlatform: []
-    },
-    routers: []
+    roles: []
   },
 
   mutations: {
-    SET_CODE: (state, code) => {
-      state.code = code
-    },
     SET_TOKEN: (state, token) => {
       state.token = token
-    },
-    SET_SETTING: (state, setting) => {
-      state.setting = setting
-    },
-    SET_STATUS: (state, status) => {
-      state.status = status
     },
     SET_NAME: (state, name) => {
       state.name = name
@@ -45,10 +28,6 @@ const user = {
     },
     SET_USER_ID: (state, id) => {
       state.id = id
-    },
-    SET_USER_ROUTER: (state, routers) => {
-      const permissionRouters = store.getters.permissionRouters
-      state.routers = constantRouterMap.concat(permissionRouters).concat(routers)
     }
   },
 
@@ -101,9 +80,21 @@ const user = {
             name: 'Dashboard',
             meta: {
               title: '我的大屏',
-              icon: 'chart'
+              icon: 'list'
             },
             children: [
+              {
+                path: 'all',
+                component: () => import('@/views/dashboard/Manage'),
+                name: 'all',
+                meta: { title: '全部大屏', icon: 'excel', noCache: true, affix: true }
+              },
+              {
+                path: 'unbank',
+                component: () => import('@/views/dashboard/Manage'),
+                name: 'unbank',
+                meta: { title: '未分组', icon: 'excel', noCache: true, affix: true }
+              }
             ]
           }
         ]
@@ -120,7 +111,6 @@ const user = {
             })
           }
 
-          commit('SET_USER_ROUTER', routers)
           resolve(response)
         }).catch(error => {
           reject(error)

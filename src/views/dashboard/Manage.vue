@@ -108,7 +108,7 @@
       <el-radio-group v-model="dialogPublishStatus">
         <el-radio label="unpublish">{{"停止发布"}}</el-radio>
         <el-radio label="published">{{"公开发布"}}</el-radio>
-        <el-radio label="republish">{{"重新发布"}}</el-radio>
+        <el-radio v-show="dialogPublishStatus == 'published'" label="republish">{{"重新发布"}}</el-radio>
       </el-radio-group>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogPublish = false">{{ '取消' }}</el-button>
@@ -318,7 +318,11 @@ export default {
       this.$router.push('/edit/dashboard/' + hash)
     },
     handlePreview (hash) {
-      this.$router.push('/preview/' + hash)
+      const routeUrl = this.$router.resolve({
+        path: '/preview/' + hash
+      })
+
+      window.open(routeUrl.href, '_blank')
     },
     serialList (list) {
       for (let i = 0; i < list.length; i++) {

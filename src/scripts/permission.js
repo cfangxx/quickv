@@ -33,11 +33,9 @@ router.beforeEach((to, from, next) => {
         store.dispatch('GetUserInfo').then(response => {
           const roles = response.data.roles
           store.dispatch('GenerateRoutes', { roles }).then(() => {
-            router.addRoutes(store.getters.asyncRouters)
+            router.addRoutes(store.getters.permissionRouters)
             next({ ...to, replace: true })
           })
-        }).then(() => {
-          store.dispatch('GetUserDashboardList') // 整理左侧菜单栏内容
         }).catch((err) => {
           store.dispatch('LogOut').then(() => {
             Message.error(err)

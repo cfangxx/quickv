@@ -50,6 +50,22 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/project',
+    component: Layout,
+    meta: {
+      title: '我的大屏',
+      icon: 'chart'
+    },
+    children: [
+      {
+        path: ':group',
+        component: () => import('@/views/dashboard/Manage'),
+        meta: { title: '我的大屏', icon: 'dashboard', noCache: true, affix: true }
+      }
+    ],
+    hidden: true
+  },
+  {
     path: '/profile',
     component: Layout,
     children: [
@@ -63,7 +79,7 @@ export const constantRouterMap = [
     hidden: true
   },
   {
-    path: '/dashboard/:hash',
+    path: '/preview/:hash',
     component: () => import('@/views/dashboard/Preview'),
     hidden: true
   },
@@ -74,13 +90,7 @@ export const constantRouterMap = [
   }
 ]
 
-export default new Router({
-  mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
-export const asyncRouterMap = [
+export const permissionRouterMap = [
   {
     path: '/template',
     component: Layout,
@@ -108,19 +118,8 @@ export const asyncRouterMap = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-export var DashboardRouterMap = [
-  {
-    path: '/preview',
-    component: Layout,
-    name: 'Dashboard',
-    meta: {
-      title: '我的大屏',
-      icon: 'chart'
-    },
-    children: [{
-      path: ':hash',
-      component: () => import('@/views/dashboard/Preview')
-    }
-    ]
-  }
-]
+export default new Router({
+  mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})
