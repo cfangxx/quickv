@@ -81,7 +81,7 @@
 
     <!--新建大屏-->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" v-model="createTable" label-position="top" label-width="70px">
+      <el-form ref="dataForm" :model="createTable" label-position="top" label-width="70px">
         <el-form-item :label="'大屏名称'" placeholder="请输入大屏名称" prop="title">
           <el-input v-model="createTable.name"/>
         </el-form-item>
