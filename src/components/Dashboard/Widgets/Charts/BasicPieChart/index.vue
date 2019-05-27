@@ -57,7 +57,19 @@ export default {
     titleFontSize: 24,
     showToolTip: true, // 是否显示提示框
 
-    seriesRadius: ['50%', '70%'], // 圆环大小
+    legendShow: true, // 显示图例
+    legendWidth: '60%', // 图例宽度
+    legendHeight: '100', // 图例高度
+    legendPositionX: 'center', // 图例位置（X 轴）
+    legendPositionY: 'bottom', // 图例位置（Y 轴）
+    legendFontSize: 12, // 图例文字大小
+    legendTextColor: '#000000', // 图例文字颜色
+    legendIcon: 'roundRect', // 图例 Icon 如 circle, rect, line, roundRect, triangle, diamond, pin, none
+    legendIconWidth: 20, // 图例 Icon 宽度
+    legendIconHeight: 10, // 图例 Icon 高度
+    legendIconGap: 10, // 图例 Icon 间距
+
+    seriesRadius: ['40%', '60%'], // 圆环大小
 
     colorArr: ['#fc8700', '#ff00c0', '#f33a00', '#2cbdff', '#0000ff', '#25da29', '#f1f10e', '#07ecf8', '#af28d7'],
 
@@ -86,32 +98,32 @@ export default {
         'year': 2019,
         'statistics': [
           {
-            'name': 'Samsung',
-            'value': 33801
+            'value': 33801,
+            'name': 'Samsung'
           },
           {
-            'name': 'iPhone',
-            'value': 63395
+            'value': 63395,
+            'name': 'iPhone'
           },
           {
-            'name': 'HUAWEI',
-            'value': 89297
+            'value': 89297,
+            'name': 'HUAWEI'
           },
           {
-            'name': 'VIVO',
-            'value': 76689
+            'value': 76689,
+            'name': 'VIVO'
           },
           {
-            'name': 'OPPO',
-            'value': 32219
+            'value': 32219,
+            'name': 'OPPO'
           },
           {
-            'name': 'MI',
-            'value': 98748
+            'value': 98748,
+            'name': 'MI'
           },
           {
-            'name': 'Meizu',
-            'value': 18290
+            'value': 18290,
+            'name': 'Meizu'
           }
         ]
       }
@@ -147,7 +159,7 @@ export default {
     dataSeries () {
       if (this.dynamicData[this.val.keyPrimary] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget]) {
         return this.dynamicData[this.val.keyPrimary][this.val.keyTarget].map(item => {
-          return item[this.val.keyYAxis]
+          return { 'value': item[this.val.keyYAxis], 'name': item[this.val.keyXAxis] }
         })
       } else {
         return []
@@ -168,16 +180,24 @@ export default {
         },
         tooltip: {
           show: this.val.showToolTip,
-          trigger: 'item', // 可选值为 axis | item
-          formatter: "{a}:{b}: {c} ({d}%)"
-          // axisPointer: {
-          //   type: 'shadow' // 默认为直线，可选为 line | shadow
-          // }
+          trigger: 'item',
+          position: 'inside',
+          formatter: '{a}<br/>{b}: {c} ({d}%)'
         },
         legend: {
-          orient: 'horizontal',
-          x: 'center',
-          y: 'bottom',
+          show: this.val.legendShow, // 显示图例
+          x: this.val.legendPositionX,
+          y: this.val.legendPositionY,
+          width: this.val.legendWidth,
+          // height: this.val.lengendHeight,
+          icon: this.val.legendIcon, // 图例图标
+          itemWidth: parseInt(this.val.legendIconWidth), // 图里图标宽度
+          itemHeight: parseInt(this.val.legendIconHeight), // 图里图标高度
+          itemGap: parseInt(this.val.legendIconGap), // 图里图标间距
+          textStyle: {
+            color: this.val.legendTextColor,
+            fontSize: this.val.legendFontSize
+          },
           data: this.categories
         },
         color: this.val.colorArr,
@@ -185,21 +205,34 @@ export default {
           name: '销量',
           type: 'pie',
           radius: this.val.seriesRadius,
+          center: ['50%', '50%'],
           avoidLabelOverlap: true,
+          hoverAnimation: true, // 是否开启 hover 在扇区上的放大动画效果
+          silent: false, // 图形是否不响应和触发鼠标事件
           itemStyle: {
             normal: {
-
+              label: {
+                // textStyle: {
+                //   baseline: 'middle', // 垂直对齐方式
+                //   fontSize: 14,
+                //   color: '#666',
+                //   align: 'center' // 水平对齐方式
+                // }
+              }
             }
           },
           label: {
             normal: {
-              show: false
-              // position: 'center'
+              show: false,
+              position: 'center'
+              // formatter: function (params) {
+              // return params.name + ': ' + params.value
+              // }
             },
             emphasis: {
               show: true,
               textStyle: {
-                fontSize: '30',
+                fontSize: '14',
                 fontWeight: 'bold'
               }
             }
