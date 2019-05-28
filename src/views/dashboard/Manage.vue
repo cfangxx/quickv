@@ -26,7 +26,8 @@
       </el-table-column>
       <el-table-column :label="'名称'" min-width="150px">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.config.title }}</span>
+          <!--<span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.config.title }}</span>-->
+          <span>{{ scope.row.config.title }}</span>
         </template>
       </el-table-column>
       <!--<el-table-column :label="'时间'" width="150px" align="center">-->
@@ -105,10 +106,17 @@
 
     <!--发布管理-->
     <el-dialog :visible.sync="dialogPublish" :title="dialogPublishTitle">
-      <el-radio-group v-model="dialogPublishStatus">
-        <el-radio label="unpublish">{{"停止发布"}}</el-radio>
-        <el-radio label="published">{{"公开发布"}}</el-radio>
-        <el-radio v-show="dialogPublishStatus == 'published'" label="republish">{{"重新发布"}}</el-radio>
+      <el-radio-group v-model="endDialogPublishStatus">
+        <!--<el-radio label="unpublish">{{"停止发布"}}</el-radio>-->
+        <!--<el-radio label="published">{{"公开发布"}}</el-radio>-->
+        <!--<el-radio v-show="dialogPublishStatus == 'published'" label="republish">{{"重新发布"}}</el-radio>-->
+        <el-radio v-show="dialogPublishStatus == 'published'" label="unpublish">{{"停止发布"}}</el-radio>
+        <el-tooltip effect="dark" content="生成一个新地址" placement="bottom">
+          <el-radio label="published">{{"公开发布"}}</el-radio>
+        </el-tooltip>
+        <el-tooltip effect="dark" content="更新当前地址内容" placement="bottom">
+          <el-radio v-show="dialogPublishStatus == 'published' && diaConfigTime > diaPublishTime" label="republish">{{"重新发布"}}</el-radio>
+        </el-tooltip>
       </el-radio-group>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogPublish = false">{{ '取消' }}</el-button>
@@ -172,6 +180,9 @@ export default {
       dialogPublish: false,
       dialogPublishTitle: '',
       dialogPublishStatus: '',
+      endDialogPublishStatus: '',
+      diaConfigTime: 0,
+      diaPublishTime: 0,
       dialogPublishHash: '',
       downloadLoading: false
     }
@@ -208,6 +219,10 @@ export default {
       this.dialogPublishTitle = '发布管理 - ' + row.config.title
       this.dialogPublishStatus = row.publish.status
       this.dialogPublishHash = row.hash
+
+      this.diaConfigTime = row.config.timestamp
+      this.diaPublishTime = row.publish.timestamp
+
       this.dialogPublish = true
     },
     sortChange (data) {
@@ -303,7 +318,7 @@ export default {
       })
     },
     handlePublish () {
-      publishDashboard(this.dialogPublishHash, this.dialogPublishStatus).then(response => {
+      publishDashboard(this.dialogPublishHash, this.endDialogPublishStatus).then(response => {
         this.$notify({
           title: '成功',
           message: '更新成功',

@@ -285,6 +285,11 @@ export default {
       }
     }
   },
+  mounted () {
+    if (this.val.autoToolTip) {
+      this.drawBar(this.val.autoToolTipTime)
+    }
+  },
   methods: {
     drawBar (time) {
       // 基于准备好的dom，初始化echarts实例

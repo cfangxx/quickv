@@ -26,24 +26,25 @@
 
 <script>
 import stylec from './style.vue'
-const WIDGET_NAME = 'braid-container'
+const WIDGET_NAME = 'braidRect'
 
 export default {
   name: WIDGET_NAME,
   group: 'material',
   icon: require('./icon/thumb-container.png'),
-  title: '容器',
+  title: '矩形',
   panel: stylec,
   setting: {
     type: WIDGET_NAME,
-    isContainer: true,
+    isContainer: false,
     hasGuide: true,
     isUpload: false,
     isChild: false,
     dragable: true,
     resizable: true,
-    name: '容器',
-    width: 650,
+    name: '矩形',
+    desc: '普通矩形', // 描述, 可自定义
+    width: 350,
     height: 300,
     left: 50,
     top: 0,
@@ -67,7 +68,12 @@ export default {
     bgGradientdir1: 'left'
 
   },
-  props: ['w', 'h', 'val']
+  props: ['w', 'h', 'val'],
+  watch: {
+    'val.bgType': function (newVal, oldVal) {
+      console.log(this.val.bgType)
+    }
+  }
 }
 </script>
 

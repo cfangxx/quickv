@@ -14,14 +14,14 @@
         <div class="panel-label">描述</div>
         <div>
           <textarea
-            v-model="activeElement.desc"/>
+            v-model.number="activeElement.desc"/>
         </div>
       </div>
       <div class="panel-row">
         <div class="panel-label">宽度</div>
         <div>
           <input
-            v-model="activeElement.width"
+            v-model.number="activeElement.width"
             type="number">
         </div>
       </div>
@@ -37,7 +37,7 @@
         <div class="panel-label">横坐标</div>
         <div>
           <input
-            v-model="activeElement.left"
+            v-model.number="activeElement.left"
             type="number">
         </div>
       </div>
@@ -45,7 +45,7 @@
         <div class="panel-label">纵坐标</div>
         <div>
           <input
-            v-model="activeElement.top"
+            v-model.number="activeElement.top"
             type="number">
         </div>
       </div>
@@ -53,7 +53,7 @@
         <div class="panel-label">层级</div>
         <div>
           <input
-            v-model="activeElement.z"
+            v-model.number="activeElement.z"
             type="number">
         </div>
       </div>

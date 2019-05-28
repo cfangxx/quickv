@@ -17,6 +17,7 @@ import ChinaScatterMap from './Maps/ChinaScatterMap'
 // materials
 import Picture from './Materials/Picture'
 import Button from './Materials/Button'
+import Rect from './Materials/Rect'
 
 // tables
 import BasicTable from './Tables/BasicTable'
@@ -45,6 +46,7 @@ export default {
   // materials
   [Picture.name]: Picture,
   [Button.name]: Button,
+  [Rect.name]: Rect,
 
   // tables
   [BasicTable.name]: BasicTable,

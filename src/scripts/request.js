@@ -38,7 +38,7 @@ service.interceptors.response.use(
 
     if (response.data.code !== 0) {
       Message({
-        message: response.data,
+        message: response.data.msg || response.data.message,
         type: 'error',
         duration: 5 * 1000
       })
