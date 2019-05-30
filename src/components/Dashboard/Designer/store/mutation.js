@@ -46,6 +46,11 @@ export default {
       }
 
       state.widgets.push(copy)
+    } else {
+      var sum = state.widgets.length
+      for (let i = 0; i < sum; i++) {
+        state.widgets.push(Object.assign({}, state.widgets[i], { top: state.top, uuid: generate('1234567890abcdef', 10) }))
+      }
     }
   },
 
