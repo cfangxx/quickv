@@ -6,7 +6,7 @@
 
       <hr>
       <div class="panel-row" flex>
-        <div class="panel-label">文本</div>
+        <div class="panel-label">文本内容</div>
         <div>
           <input
             v-model="activeElement.text"

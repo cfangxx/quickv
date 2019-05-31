@@ -149,6 +149,7 @@ export default {
   line-height: 20px;
   border: 1px solid #ddd;
   width: 160px;
+  cursor: pointer;
 
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -177,7 +178,12 @@ export default {
 }
 
 .template-list__lbl{
+  display: block;
   line-height: 3;
+  width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 @media only screen and (max-width: 200px) {

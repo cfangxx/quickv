@@ -15,13 +15,13 @@
         <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
-    <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">{{ 'tagsView.refresh' }}</li>
-      <li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">{{
-      'tagsView.close' }}</li>
-      <li @click="closeOthersTags">{{ 'tagsView.closeOthers' }}</li>
-      <li @click="closeAllTags(selectedTag)">{{ 'tagsView.closeAll' }}</li>
-    </ul>
+    <!--<ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">-->
+      <!--<li @click="refreshSelectedTag(selectedTag)">{{ 'tagsView.refresh' }}</li>-->
+      <!--<li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">{{-->
+      <!--'tagsView.close' }}</li>-->
+      <!--<li @click="closeOthersTags">{{ 'tagsView.closeOthers' }}</li>-->
+      <!--<li @click="closeAllTags(selectedTag)">{{ 'tagsView.closeAll' }}</li>-->
+    <!--</ul>-->
   </div>
 </template>
 

@@ -58,6 +58,9 @@ export default {
     yTextColor: '#666666', // Y 轴文字颜色
     xLineColor: '#666666', // X 轴线条颜色
     yLineColor: '#666666', // Y 轴线条颜色
+    xName: '', // x 轴名称（单位文本）
+    yName: '', // x 轴名称（单位文本）
+    xRotate: 0, // x 轴文本旋转角度
     splitLineColor: '#3c4084', // y轴标线颜色
     showXaxisTick: false, // 是否显示 X 轴刻度线
     showYTick: false, // 是否显示 Y 轴刻度线
@@ -79,7 +82,7 @@ export default {
 
     gridTop: '70', // 图表位置（距顶部）
     gridLeft: '3%', // 图表位置（距左边）
-    gridRight: '3%', // 图表位置（距右边）
+    gridRight: '8%', // 图表位置（距右边）
     gridBottom: '3%', // 图表位置（距底部）
 
     seriesLineWidth: 0, // 折线宽度
@@ -173,10 +176,14 @@ export default {
     },
     xAxis () {
       return {
+        name: this.val.xName,
+        nameTextStyle: {
+          color: this.val.xTextColor
+        },
         type: 'category',
-        nameLocation: 'start',
+        nameLocation: 'end',
         show: this.val.showX, // 是否显示 X 轴
-        nameGap: '50',
+        nameGap: '12',
         boundaryGap: false,
         axisTick: {
           show: this.val.showXaxisTick // 是否显示 X 轴刻度线
@@ -191,6 +198,8 @@ export default {
           show: this.val.showXSplitLine // X 轴网格线
         },
         axisLabel: {
+          interval: 0, // 当x轴宽度不够时，设置每隔几项显示一项
+          rotate: this.val.xRotate, // x轴文本旋转角度 -90 ~ 90
           textStyle: {
             color: this.val.xTextColor // X 轴文字颜色
           }
@@ -200,6 +209,10 @@ export default {
     },
     yAxis () {
       return { // 纵轴标尺固定
+        name: this.val.yName,
+        nameTextStyle: {
+          color: this.val.yTextColor
+        },
         show: this.val.showY, // 是否显示 Y 轴
         type: 'value',
         scale: true,

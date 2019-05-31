@@ -23,6 +23,13 @@
             </div>
           </div>
           <div class="panel-row">
+            <div class="panel-label">文本旋转</div>
+            <div>
+              <input
+                v-model.number="activeElement.xRotate" type="number">
+            </div>
+          </div>
+          <div class="panel-row">
             <div class="panel-label">轴线颜色</div>
             <div class="panel-value">{{ activeElement.xLineColor }}</div>
             <div>
@@ -271,24 +278,33 @@
             <div class="panel-label">圆角</div>
             <div>
               <input
-                v-model="activeElement.seriseRadius1"
+                v-model.number="activeElement.seriseRadiuses[0]"
                 type="number"
                 min="0"
+                max="99"
                 class="radiusInp">
               <input
-                v-model="activeElement.seriseRadius2"
+                v-model.number="activeElement.seriseRadiuses[1]"
                 type="number"
                 min="0"
+                max="99"
+                class="radiusInp">
+            </div>
+          </div>
+          <div class="panel-row">
+            <div class="panel-label"></div>
+            <div>
+              <input
+                v-model.number="activeElement.seriseRadiuses[2]"
+                type="number"
+                min="0"
+                max="99"
                 class="radiusInp">
               <input
-                v-model="activeElement.seriseRadius3"
+                v-model.number="activeElement.seriseRadiuses[3]"
                 type="number"
                 min="0"
-                class="radiusInp">
-              <input
-                v-model="activeElement.seriseRadius4"
-                type="number"
-                min="0"
+                max="99"
                 class="radiusInp">
             </div>
           </div>
@@ -382,7 +398,7 @@
             <div class="panel-label">轮播时间</div>
             <div>
               <input
-                v-model="activeElement.autoToolTipTime">
+                v-model="activeElement.autoToolTipTime"> ms
             </div>
           </div>
         </div>

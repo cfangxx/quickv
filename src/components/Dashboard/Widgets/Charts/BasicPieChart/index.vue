@@ -50,12 +50,17 @@ export default {
     belong: 'page',
     animationName: '',
 
-    chartTitle: '销量', // 图表标题
     textStyleColor: '#666666', // 文本颜色
+
+    chartTitle: '销量', // 图表标题
     showTitle: false, // 是否显示标题
     titleColor: '#fc8700', // 标题颜色
-    titleFontSize: 24,
-    showToolTip: true, // 是否显示提示框
+    titleFontSize: 24, // 标题字号
+    titleX: 'center', // 标题水平安放位置，默认为'left'，可选为：'center' | 'left' | 'right' | {number}（x坐标，单位px）
+    titleY: 'top', // 标题垂直安放位置，默认为top，可选为：'top' | 'bottom' | 'center' | {number}（y坐标，单位px）
+    titleSubText: '', // 副标题文本，'\n'指定换行
+    titleSubColor: '#999999', // 副标题文本颜色
+    titleSubFontSize: 12, // 副标题文本字号
 
     legendShow: true, // 显示图例
     legendWidth: '60%', // 图例宽度
@@ -73,6 +78,7 @@ export default {
 
     colorArr: ['#fc8700', '#ff00c0', '#f33a00', '#2cbdff', '#0000ff', '#25da29', '#f1f10e', '#07ecf8', '#af28d7'],
 
+    showToolTip: true, // 是否显示提示框
     autoToolTip: false, // 是否开启自动轮播
     autoToolTipTime: 5000, // 自动轮播时间
 
@@ -170,12 +176,17 @@ export default {
         title: {
           show: this.val.showTitle, // 显示标题
           text: this.val.chartTitle, // 图表标题
-          x: 'center',
-          y: 'center',
-          textStyle: {
+          x: this.val.titleX,
+          y: this.val.titleY,
+          subtext: this.val.titleSubText,
+          textStyle: { // 标题文本设置
             fontSize: this.val.titleFontSize,
             color: this.val.titleColor,
             fontWeight: 'normal'
+          },
+          subtextStyle: { // 副标题文本设置
+            fontSize: this.val.titleSubFontSize,
+            color: this.val.titleSubColor
           }
         },
         tooltip: {

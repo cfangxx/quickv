@@ -23,41 +23,6 @@
                 type="text">
             </div>
           </div>
-          <div
-            class="panel-row"
-            flex>
-            <div class="panel-label">显示文本</div>
-            <div class="panel-value">
-              <label class="form-switch">
-                <input
-                  v-model="activeElement.showTitle"
-                  type="checkbox" >
-                <i class="form-icon"/>
-              </label>
-            </div>
-          </div>
-          <div
-            v-show="activeElement.showTitle"
-            class="panel-row">
-            <div class="panel-label">文本大小</div>
-            <div>
-              <input
-                v-model="activeElement.titleFontSize"
-                type="number"
-                min="0">
-            </div>
-          </div>
-          <div
-            v-show="activeElement.showTitle"
-            class="panel-row">
-            <div class="panel-label">文本颜色</div>
-            <div class="panel-value">{{ activeElement.titleColor }}</div>
-            <div>
-              <input
-                v-model="activeElement.titleColor"
-                type="color">
-            </div>
-          </div>
           <div class="panel-row">
             <div class="panel-label">配置颜色</div>
             <div class="panel-setcolor">
@@ -250,6 +215,140 @@
         </div>
       </div>
       <div class="panel-item-new">
+        <div @click="isShowTITLE = !isShowTITLE" class="panel-item-title">标题设置<i :class="isShowTITLE ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowTITLE" class="panel-item-new-set">
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示标题</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showTitle"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div v-show="activeElement.showTitle" class="panel-row">
+            <div class="panel-label">标题文本</div>
+            <div>
+              <input
+                v-model="activeElement.chartTitle"
+                type="text">
+            </div>
+          </div>
+          <div v-show="activeElement.showTitle" class="panel-row">
+            <div class="panel-label">标题颜色</div>
+            <div class="panel-value">{{ activeElement.titleColor }}</div>
+            <div>
+              <input
+                v-model="activeElement.titleColor"
+                type="color">
+            </div>
+          </div>
+          <div v-show="activeElement.showTitle" class="panel-row">
+            <div class="panel-label">文本大小</div>
+            <div>
+              <input
+                v-model="activeElement.titleFontSize"
+                type="number"
+                min="0">
+            </div>
+          </div>
+          <div
+            v-show="activeElement.showTitle"
+            class="panel-row"
+            flex>
+            <div class="panel-label">对齐</div>
+            <div class="panel-value">
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.titleX"
+                  type="radio"
+                  class="inpRadio"
+                  name="x"
+                  value="left">居左
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.titleX"
+                  type="radio"
+                  class="inpRadio"
+                  name="x"
+                  value="center">居中
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.titleX"
+                  type="radio"
+                  class="inpRadio"
+                  name="x"
+                  value="right">居右
+              </label>
+            </div>
+          </div>
+          <div
+            v-show="activeElement.showTitle"
+            class="panel-row"
+            flex>
+            <div class="panel-label"></div>
+            <div class="panel-value">
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.titleY"
+                  type="radio"
+                  class="inpRadio"
+                  name="y"
+                  value="top">居上
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.titleY"
+                  type="radio"
+                  class="inpRadio"
+                  name="y"
+                  value="center">居中
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.titleY"
+                  type="radio"
+                  class="inpRadio"
+                  name="y"
+                  value="bottom">居下
+              </label>
+            </div>
+          </div>
+          <div v-show="activeElement.showTitle" class="panel-row">
+            <div class="panel-label">副标题文本</div>
+            <div>
+              <input
+                v-model="activeElement.titleSubText"
+                type="text">
+            </div>
+          </div>
+          <div v-show="activeElement.showTitle" class="panel-row">
+            <div class="panel-label">副标题颜色</div>
+            <div class="panel-value">{{ activeElement.titleSubColor }}</div>
+            <div>
+              <input
+                v-model="activeElement.titleSubColor"
+                type="color">
+            </div>
+          </div>
+          <div v-show="activeElement.showTitle" class="panel-row">
+            <div class="panel-label">副文本大小</div>
+            <div>
+              <input
+                v-model="activeElement.titleSubFontSize"
+                type="number"
+                min="0">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-item-new">
         <div @click="isShowTooltip = !isShowTooltip" class="panel-item-title">ToolTip设置<i :class="isShowTooltip ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
         <div v-show="isShowTooltip" class="panel-item-new-set">
           <div
@@ -285,7 +384,7 @@
             <div class="panel-label">轮播时间</div>
             <div>
               <input
-                v-model="activeElement.autoToolTipTime">
+                v-model="activeElement.autoToolTipTime"> ms
             </div>
           </div>
         </div>
@@ -313,6 +412,7 @@ export default {
       isShowLegend: true,
       isShowBarItem: true,
       isShowTooltip: true,
+      isShowTITLE: true,
       icon: [
         {
           name: '无',

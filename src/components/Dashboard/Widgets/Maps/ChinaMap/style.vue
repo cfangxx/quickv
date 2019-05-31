@@ -133,7 +133,7 @@
         <div class="panel-label">轮播时间</div>
         <div>
           <input
-            v-model="activeElement.autoToolTipTime">
+            v-model="activeElement.autoToolTipTime"> ms
         </div>
       </div>
     </div>

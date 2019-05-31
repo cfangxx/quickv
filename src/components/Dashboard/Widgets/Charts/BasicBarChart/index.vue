@@ -60,6 +60,7 @@ export default {
     xLineColor: '#666666', // X 轴线条颜色
     xName: '', // X 轴名称 (x 轴单位文本)
     yName: '', // Y 轴名称 (y 轴单位文本)
+    xRotate: 0, // X 轴文本旋转角度
     yLineColor: '#666666', // Y 轴线条颜色
     yInverse: false, // Y 轴翻转
     splitLineColor: '#3c4084', // y轴标线颜色
@@ -80,6 +81,7 @@ export default {
     seriseRadius2: 20, // 柱形图圆角
     seriseRadius3: 0, // 柱形图圆角
     seriseRadius4: 0, // 柱形图圆角
+    seriseRadiuses: [0, 0, 0, 0],
     lgArr: [{ // 设置渐变颜色数组
       color: '#ba3ba3',
       offset: 0
@@ -87,7 +89,7 @@ export default {
 
     gridTop: '70', // 图表位置（距顶部）
     gridLeft: '3%', // 图表位置（距左边）
-    gridRight: '3%', // 图表位置（距右边）
+    gridRight: '8%', // 图表位置（距右边）
     gridBottom: '3%', // 图表位置（距底部）
 
     autoToolTip: false, // 是否开启自动轮播
@@ -156,6 +158,9 @@ export default {
     }
   },
   watch: {
+    'val.seriseRadiuses': function (val) {
+      console.log(val, typeof this.val.seriseRadiuses)
+    },
     'val.autoToolTip': function (val) {
       this.drawBar(val ? this.val.autoToolTipTime : 0)
     },
@@ -184,7 +189,10 @@ export default {
     },
     xAxis () {
       return {
-        name: this.val.xName, // x 轴单位
+        name: this.val.xName, // x 轴单位x
+        nameTextStyle: {
+          color: this.val.xTextColor
+        },
         // nameLocation: 'end',
         show: this.val.showX, // 是否显示 X 轴
         nameGap: '6', // x 轴单位位置
@@ -203,6 +211,8 @@ export default {
           show: this.val.showXSplitLine // X 轴网格线
         },
         axisLabel: {
+          interval: 0, // 当x轴宽度不够时，设置每隔几项显示一项
+          rotate: this.val.xRotate, // x轴文本旋转角度
           textStyle: {
             color: this.val.xTextColor // X 轴文字颜色
           }
@@ -216,6 +226,9 @@ export default {
         show: this.val.showY, // 是否显示 Y 轴
         type: 'value',
         name: this.val.yName,
+        nameTextStyle: {
+          color: this.val.yTextColor
+        },
         scale: true,
         inverse: this.val.yInverse, // y 轴翻转
         // max: Math.max.apply(null, this.val.dataJSON.series),
@@ -276,7 +289,8 @@ export default {
           barWidth: this.val.seriseBarWidth, // 柱形图宽度
           itemStyle: {
             normal: {
-              barBorderRadius: [parseInt(this.val.seriseRadius1), parseInt(this.val.seriseRadius2), parseInt(this.val.seriseRadius3), parseInt(this.val.seriseRadius4)], // 柱形图圆角
+              barBorderRadius: [this.val.seriseRadiuses[0] || this.val.seriseRadiuses[0] + 1, this.val.seriseRadiuses[1] || this.val.seriseRadiuses[1] + 1, this.val.seriseRadiuses[2] || this.val.seriseRadiuses[2] + 1, this.val.seriseRadiuses[3] || this.val.seriseRadiuses[3] + 1], // 柱形图圆角
+              // barBorderRadius: this.val.seriseRadiuses || [0, 0, 0, 0], // 柱形图圆角
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, this.val.lgArr) // 柱体颜色/渐变色
             }
           },

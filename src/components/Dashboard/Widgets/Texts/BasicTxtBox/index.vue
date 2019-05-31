@@ -2,7 +2,7 @@
   <div
     class="txt"
     v-html="val.text"
-    contenteditable="true"
+    contenteditable="false"
     :style="{
       position: val.belong === 'page' ? 'absolute' : 'relative',
       left: val.belong === 'page' ? val.left / w * 100 + '%' : '0',

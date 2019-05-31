@@ -24,7 +24,7 @@
           </div>
         </div>
         <div class="item-box-bottom">
-          <h4>{{item.config.title}}</h4>
+          <h4 class="template-item-title">{{item.config.title}}</h4>
           <p>{{ item.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }} <span class="link-type" >{{ item.config.width + 'X' + item.config.height }}</span></p>
         </div>
       </div>
@@ -264,6 +264,13 @@ export default {
   }
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
+  .template-item-title{
+    display: block;
+    width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
 .box-card-component {
   width:250px;
   margin-left:8px;
