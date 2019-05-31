@@ -12,7 +12,7 @@
           v-for="layer in layers"
           :class="{'layer-active': layer === activeElement}"
           :key="layer.uuid"
-          @click="(e) => {activeLayer(e, layer)}">{{ getWidgetTitle(layer.type) }}</li>
+          @click="(e) => {activeLayer(e, layer)}">{{ layer.name }}</li>
       </ul>
     </div>
 
