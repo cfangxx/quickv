@@ -67,7 +67,7 @@ select {
 .pannel-setcolor-item-btn{
   width: 46px;
   height: 24px;
-  margin: 6px 8px;
+  margin: 4px 3px;
   border: none;
   background: #42b983;
   color: #fff;
@@ -156,4 +156,10 @@ input[type='color']{
 }
 input[type='radio']{
   vertical-align: middle;
+}
+.el-radio__label{
+  padding-left:5px;
+}
+.el-radio{
+  margin-right:10px;
 }

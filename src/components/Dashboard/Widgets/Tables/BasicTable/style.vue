@@ -169,22 +169,24 @@
             <div class="panel-label">样式</div>
             <div
               class="radioscont">
-              <label class="radiolabel">
-                <input
-                  v-model="activeElement.thNumType"
-                  type="radio"
-                  class="inpRadio"
-                  name="task"
-                  value="none">无样式
-              </label>
-              <label class="radiolabel">
-                <input
-                  v-model="activeElement.thNumType"
-                  type="radio"
-                  class="inpRadio"
-                  name="task"
-                  value="circle">圆形背景
-              </label>
+              <!--<label class="radiolabel">-->
+                <!--<input-->
+                  <!--v-model="activeElement.thNumType"-->
+                  <!--type="radio"-->
+                  <!--class="inpRadio"-->
+                  <!--name="task"-->
+                  <!--value="none">无样式-->
+              <!--</label>-->
+              <!--<label class="radiolabel">-->
+                <!--<input-->
+                  <!--v-model="activeElement.thNumType"-->
+                  <!--type="radio"-->
+                  <!--class="inpRadio"-->
+                  <!--name="task"-->
+                  <!--value="circle">圆形背景-->
+              <!--</label>-->
+              <el-radio label="none" v-model="activeElement.thNumType">无样式</el-radio>
+              <el-radio label="circle" v-model="activeElement.thNumType">圆形背景</el-radio>
             </div>
           </div>
           <div
@@ -246,37 +248,40 @@
           <div class="panel-row">
             <div class="panel-label">对齐方式</div>
             <div class="panel-setcolor">
+              <el-radio label="left" v-model="activeElement.tbAlign">居左</el-radio>
+              <el-radio label="center" v-model="activeElement.tbAlign">居中</el-radio>
+              <el-radio label="right" v-model="activeElement.tbAlign">居右</el-radio>
               <div class="panel-setcolor-item radioscont">
-                <div>
-                  <label class="radiolabel">
-                    <input
-                      v-model="activeElement.tbAlign"
-                      type="radio"
-                      class="inpRadio"
-                      name="task"
-                      value="left">居左
-                  </label>
-                </div>
-                <div>
-                  <label class="radiolabel">
-                    <input
-                      v-model="activeElement.tbAlign"
-                      type="radio"
-                      class="inpRadio"
-                      name="task"
-                      value="center">居中
-                  </label>
-                </div>
-                <div>
-                  <label class="radiolabel">
-                    <input
-                      v-model="activeElement.tbAlign"
-                      type="radio"
-                      class="inpRadio"
-                      name="task"
-                      value="right">居右
-                  </label>
-                </div>
+                <!--<div>-->
+                  <!--<label class="radiolabel">-->
+                    <!--<input-->
+                      <!--v-model="activeElement.tbAlign"-->
+                      <!--type="radio"-->
+                      <!--class="inpRadio"-->
+                      <!--name="task"-->
+                      <!--value="left">居左-->
+                  <!--</label>-->
+                <!--</div>-->
+                <!--<div>-->
+                  <!--<label class="radiolabel">-->
+                    <!--<input-->
+                      <!--v-model="activeElement.tbAlign"-->
+                      <!--type="radio"-->
+                      <!--class="inpRadio"-->
+                      <!--name="task"-->
+                      <!--value="center">居中-->
+                  <!--</label>-->
+                <!--</div>-->
+                <!--<div>-->
+                  <!--<label class="radiolabel">-->
+                    <!--<input-->
+                      <!--v-model="activeElement.tbAlign"-->
+                      <!--type="radio"-->
+                      <!--class="inpRadio"-->
+                      <!--name="task"-->
+                      <!--value="right">居右-->
+                  <!--</label>-->
+                <!--</div>-->
               </div>
             </div>
           </div>
