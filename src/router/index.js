@@ -79,7 +79,7 @@ export const constantRouterMap = [
     hidden: true
   },
   {
-    path: '/preview/:hash',
+    path: '/dashboard/:hash',
     component: () => import('@/views/dashboard/Preview'),
     hidden: true
   },

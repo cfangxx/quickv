@@ -26,6 +26,14 @@ export default {
       monacoEditor: null
     }
   },
+  watch: {
+    codes: {
+      handler: function () {
+        this.initEditor()
+      },
+      immediate: true
+    }
+  },
   mounted () {
     this.initEditor()
   },
@@ -49,6 +57,10 @@ export default {
         }
       })
 
+      // destroy
+      if (this.monacoEditor) {
+        this.monacoEditor.dispose()
+      }
       // create editor
       let that = this
       this.monacoEditor = monaco.editor.create(document.getElementById('json-editor'), {
