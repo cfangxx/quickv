@@ -57,10 +57,13 @@ export default {
   // 删除选中组件
   DELETE_WIDGET (state) {
     if (state.multiSelect) {
-      const widgets = state.widgets.filter(widget => {
-        return state.uuidList.indexOf(widget.uuid) < 0
+      state.multiSelectCols.forEach(uuid => {
+        for (let i = 0; i < state.widgets.length; i++) {
+          if (state.widgets[i].uuid === uuid) {
+            state.widgets.splice(i, 1)
+          }
+        }
       })
-      state.widgets = widgets
     } else {
       if (state.type === 'page') return
 
@@ -107,7 +110,7 @@ export default {
   // 组件多选
   MULTISELECT_WIDGET (state, payload) {
     state.multiSelect = true
-    state.uuidList = payload
+    state.multiSelectCols = payload
   },
 
   // 调整组件尺寸
@@ -209,7 +212,7 @@ export default {
       state.startX = payload.x
       state.startY = payload.y
 
-      state.uuidList.forEach(uuid => {
+      state.multiSelectCols.forEach(uuid => {
         let widget = state.widgets.find(w => w.uuid === uuid)
         const left = widget.left + Math.floor(dx * 100 / state.page.zoom)
         const top = widget.top + Math.floor(dy * 100 / state.page.zoom)

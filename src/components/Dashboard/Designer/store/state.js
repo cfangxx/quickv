@@ -5,8 +5,8 @@ export default {
 
   uuid: null, // 选中组件uuid
   counter: 0, // 容器副本命名时避免重名所用的计数器
-  uuidList: [], // 多选组件的uuid
   multiSelect: false, // 是否多选
+  multiSelectCols: [], // 多选组件的uuid
 
   originX: 0, // 选中组件的横向初始值
   originY: 0, // 选中组件的纵向初始值

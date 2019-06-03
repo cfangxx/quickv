@@ -264,7 +264,6 @@ export default {
   .vue-drag-select {
     position: relative;
     user-select: none;
-    overflow:hidden;
     width:100%;
     height:100%;
     overflow-y: visible;

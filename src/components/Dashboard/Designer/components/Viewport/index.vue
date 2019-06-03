@@ -192,7 +192,7 @@ export default {
   methods: {
     isSelected (uuid) {
       if (this.$vpd.state.multiSelect) {
-        return this.$vpd.state.uuidList.indexOf(uuid) > -1
+        return this.$vpd.state.multiSelectCols.indexOf(uuid) > -1
       } else {
         return this.$vpd.state.uuid === uuid
       }
@@ -215,7 +215,7 @@ export default {
         uuid = target.getAttribute('data-uuid') || curDiv.getAttribute('data-uuid')
 
         // 设置选中元素
-        if (this.$vpd.state.multiSelect && (this.$vpd.state.uuidList.indexOf(uuid) > -1)) {
+        if (this.$vpd.state.multiSelect && (this.$vpd.state.multiSelectCols.indexOf(uuid) > -1)) {
           this.initmovement(e)
         } else {
           this.$vpd.commit('SELECT_WIDGET', {
