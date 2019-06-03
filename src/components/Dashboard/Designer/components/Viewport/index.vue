@@ -10,6 +10,7 @@
       :zoom=zoom
       :content-layout="{left: 0, top: 0}"
       :is-scale-revise="true">
+
       <div
         :style="{
           backgroundColor: backgroundColor,
@@ -24,7 +25,7 @@
         id="viewport-screen"
         @dblclick="replaceImage">
 
-        <drag-select :minHeight="height" v-model="selectedList" ref="dragSelect">
+        <drag-select :zoom="zoom" :minHeight="height" v-model="selectedList" ref="dragSelect">
           <!-- 组件 -->
           <component
             v-for="val in widgetStore"
@@ -199,7 +200,6 @@ export default {
 
     handleSelection (e) {
       var target = e.target
-      // console.log(e)
       var type, uuid, curDiv
       if (target.tagName === 'CANVAS') {
         curDiv = target.parentNode.parentNode.parentNode
