@@ -30,8 +30,7 @@ export default {
     codes: {
       handler: function () {
         this.initEditor()
-      },
-      immediate: true
+      }
     }
   },
   mounted () {

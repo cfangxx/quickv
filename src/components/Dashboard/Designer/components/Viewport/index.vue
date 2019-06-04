@@ -59,12 +59,10 @@
 
         <!-- 尺寸控制器 -->
         <component v-bind:is="preview ? '' : 'size-control'"/>
-
-        <!-- <component v-bind:is="preview ? '' : 'drag-select'"/> -->
       </div>
 
-        <!-- 右键菜单 -->
-        <component v-bind:is="preview ? '' : 'context-menu'"/>
+      <!-- 右键菜单 -->
+      <component v-bind:is="preview ? '' : 'context-menu'"/>
     </ruler-tool>
   </div>
 </template>
