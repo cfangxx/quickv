@@ -22,35 +22,15 @@ export default {
   // 复制组件
   COPY_WIDGET (state, payload) {
     if (state.type !== 'page') {
-      var copy = Object.assign({}, JSON.parse(JSON.stringify(state.activeElement)), { top: state.top, uuid: generate('1234567890abcdef', 10) })
-
-      // 由于容器的名称必须是唯一的，故复制容器需作处理
-      if (state.activeElement.isContainer) {
-        var name = state.activeElement.name
-        if (name) {
-          // 设置容器副本的名称
-          var copyName = name.split('-')[0] + '-' + state.counter
-          copy.name = copyName
-
-          // 复制容器内的图片和文本
-          for (var i = 0, len = state.widgets.length; i < len; i++) {
-            if (state.widgets[i].belong === name) {
-              state.widgets.push(
-                Object.assign({}, state.widgets[i], { belong: copyName })
-              )
-            }
+      state.widgets.push(Object.assign({}, JSON.parse(JSON.stringify(state.activeElement)), { top: state.top, uuid: generate('1234567890abcdef', 10) }))
+    } else if (state.multiSelect) {
+      state.multiSelectCols.forEach(uuid => {
+        for (let i = 0; i < state.widgets.length; i++) {
+          if (state.widgets[i].uuid === uuid) {
+            state.widgets.push(Object.assign({}, JSON.parse(JSON.stringify(state.widgets[i])), { top: state.top, uuid: generate('1234567890abcdef', 10) }))
           }
-
-          state.counter += 1
         }
-      }
-
-      state.widgets.push(copy)
-    } else {
-      var sum = state.widgets.length
-      for (let i = 0; i < sum; i++) {
-        state.widgets.push(Object.assign({}, state.widgets[i], { top: state.top, uuid: generate('1234567890abcdef', 10) }))
-      }
+      })
     }
   },
 
