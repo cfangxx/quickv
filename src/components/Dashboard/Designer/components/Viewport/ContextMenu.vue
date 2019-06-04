@@ -89,8 +89,11 @@ export default {
       this.x = e.pageX
       this.y = e.pageY
 
-      this.show = true
-      this.layout()
+      // 选中组件时显示右键菜单
+      if (this.$vpd.state.type !== 'page' || this.$vpd.state.multiSelect) {
+        this.show = true
+        this.layout()
+      }
       e.preventDefault()
     },
     // 布局

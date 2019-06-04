@@ -21,13 +21,17 @@ export default {
 
   // 复制组件
   COPY_WIDGET (state, payload) {
+    function newWidget (origin) {
+      return Object.assign({}, JSON.parse(JSON.stringify(origin)), { top: origin.top + 50, left: origin.left + 50, uuid: generate('1234567890abcdef', 10) })
+    }
+
     if (state.type !== 'page') {
-      state.widgets.push(Object.assign({}, JSON.parse(JSON.stringify(state.activeElement)), { top: state.top, uuid: generate('1234567890abcdef', 10) }))
+      state.widgets.push(newWidget(state.activeElement))
     } else if (state.multiSelect) {
       state.multiSelectCols.forEach(uuid => {
         for (let i = 0; i < state.widgets.length; i++) {
           if (state.widgets[i].uuid === uuid) {
-            state.widgets.push(Object.assign({}, JSON.parse(JSON.stringify(state.widgets[i])), { top: state.top, uuid: generate('1234567890abcdef', 10) }))
+            state.widgets.push(newWidget(state.widgets[i]))
           }
         }
       })
