@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-wechat-title="title">
     <vue-page-designer
       :page="config"
       :widgets="widget"
@@ -7,16 +7,17 @@
       :upload-option="uploadOption"
       @save="handleSave"
       @quit="handleQuit"/>
+
     <el-dialog
       title="提示"
       :visible.sync="dialogVisible"
       width="300">
       <span>您的修改未保存！！！『直接退出』将不会保存您所做的修改。</span>
       <span slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button @click="toRouter">直接退出</el-button>
-      <el-button type="primary" @click="saveAndQuit">保存并退出</el-button>
-    </span>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="toRouter">直接退出</el-button>
+        <el-button type="primary" @click="saveAndQuit">保存并退出</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -39,7 +40,7 @@ export default {
       details: null,
       config: null,
       widget: null,
-
+      title: '',
       startConfig: null,
       startWidget: null,
       dialogVisible: false,
@@ -169,6 +170,8 @@ export default {
           if (response.data.config) {
             this.config = response.data.config
             this.widget = response.data.widget
+            this.title = this.config.title + ' - 大屏编辑'
+
             this.startConfig = JSON.stringify(response.data.config)
             this.startWidget = JSON.stringify(response.data.widget)
           }

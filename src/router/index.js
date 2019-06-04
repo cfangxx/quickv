@@ -19,6 +19,7 @@ export const constantRouterMap = [
   {
     path: '/login',
     component: () => import('@/views/Login'),
+    meta: { title: 'Cryia A Powerful and Accessible Data Visualization Tool' },
     hidden: true
   },
   {

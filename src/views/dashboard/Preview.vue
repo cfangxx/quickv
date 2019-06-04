@@ -1,7 +1,9 @@
 <template>
-  <vue-page-preview
-    :page="config"
-    :widgets="widget"/>
+  <div v-wechat-title="title">
+    <vue-page-preview
+      :page="config"
+      :widgets="widget"/>
+  </div>
 </template>
 
 <script>
@@ -14,7 +16,8 @@ export default {
   data () {
     return {
       config: null,
-      widget: []
+      widget: [],
+      title: ''
     }
   },
   computed: {
@@ -39,6 +42,7 @@ export default {
           if (response.data.config) {
             this.config = response.data.config
             this.widget = response.data.widget
+            this.title = this.config.title
           }
         }
       })

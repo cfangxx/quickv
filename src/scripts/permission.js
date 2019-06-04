@@ -19,6 +19,11 @@ const whiteList = ['/login', '/auth-redirect']
 router.beforeEach((to, from, next) => {
   NProgress.start()
 
+  if (to.meta.title) {
+    document.title = to.meta.title + ' - Cryia'
+    next()
+  }
+
   if (to.path.match(/^\/dashboard\/\w{32}$/)) {
     next()
     return

@@ -1,22 +1,21 @@
 import Vue from 'vue'
-
-import 'normalize.css/normalize.css'
+import vueWechatTitle from 'vue-wechat-title'
 
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+
+import 'normalize.css/normalize.css'
 import '@/styles/index.scss'
+import '@/scripts/permission' // permission control
+import '@/scripts/icon' // icon
+import '@/components/Dashboard/Widgets/libs' // chart libs
+import * as filters from '@/scripts/filters' // global filters
 
 import App from './App'
 import store from '@/store'
 import router from '@/router'
-import '@/scripts/permission' // permission control
 
-import '@/scripts/icon' // icon
-
-import '@/components/Dashboard/Widgets/libs' // chart libs
-
-import * as filters from '@/scripts/filters' // global filters
-
+Vue.use(vueWechatTitle)
 Vue.use(Element, { size: 'medium' }) // set element-ui default size
 
 // register global utility filters.
