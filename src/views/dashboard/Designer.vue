@@ -15,7 +15,7 @@
       <span>您的修改未保存！！！『直接退出』将不会保存您所做的修改。</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button @click="toRouter">直接退出</el-button>
+        <el-button @click="getBack">直接退出</el-button>
         <el-button type="primary" @click="saveAndQuit">保存并退出</el-button>
       </span>
     </el-dialog>
@@ -50,14 +50,15 @@ export default {
         url: process.env.BASE_API + '/upload/image/' + this.$route.params.hash
         // url: 'https://jsonplaceholder.typicode.com/photos'
       },
-      isTemplate: false
+      isTemplate: false,
+      pathFrom: '' // 退出时跳转到分组路由
     }
   },
-
   watch: {
     $route: {
       handler: function (route) {
         this.isTemplate = (route.query && route.query.redirect) !== undefined
+        this.pathFrom = route.query.from
       },
       immediate: true
     }
@@ -100,7 +101,7 @@ export default {
 
               if (config.isQuit) {
                 this.dialogVisible = false
-                this.toRouter()
+                this.getBack()
               }
             }
 
@@ -143,11 +144,12 @@ export default {
 
         this.dialogVisible = true
       } else {
-        this.toRouter()
+        this.getBack()
       }
     },
-    toRouter () {
-      this.$router.push({ path: '/' + (this.isTemplate ? 'template' : '') })
+    getBack () {
+      console.log(this.isTemplate)
+      this.$router.push({ path: '/' + (this.isTemplate ? 'template' : ('project/' + this.pathFrom)) })
     },
     saveAndQuit () {
       this.handleSave(this.dumpConfig)

@@ -1,8 +1,7 @@
 <template>
   <div class="app-container">
-
     <div class="template-list-cont">
-      <div class="item-box"  @click="handleCreate">
+      <div class="item-box" style="cursor: pointer" @click="handleCreate">
         <div class="item-box-top">
           <div class="item-box-top-img">
             <i class="el-icon-plus plus-icon"/>
@@ -53,7 +52,7 @@
 </template>
 
 <script>
-import { fetchList, createTemplate, deleteTemplate } from '@/api/template'
+import { fetchTemplateList, createTemplate, deleteTemplate } from '@/api/template'
 import waves from '@/directive/waves' // Waves directive
 // import { parseTime } from '@/scripts'
 
@@ -118,7 +117,7 @@ export default {
   methods: {
     getTemplates () {
       this.tplListLoading = true
-      fetchList().then(response => {
+      fetchTemplateList().then(response => {
         this.tplList = response.data.items
         this.total = response.data.total || 0
         this.tplListLoading = false
@@ -194,7 +193,7 @@ export default {
   }
   .item-box{
     width: 250px;
-    height:260px;
+    height:220px;
     margin: 0 20px 20px 0;
     box-sizing: border-box;
     border:1px solid #eee;
@@ -205,7 +204,7 @@ export default {
   }
   .item-box-top{
     width:100%;
-    height:180px;
+    height:150px;
     position: relative;
     border-bottom:1px solid #eee;
   }
@@ -244,8 +243,7 @@ export default {
     display: block;
   }
   .plus-icon{
-    font-size: 60px;
-    font-weight: bold;
+    font-size: 50px;
     margin-top:20%;
     color:#666;
   }
@@ -253,8 +251,8 @@ export default {
     padding: 0 10px;
   }
   .item-box-bottom h4{
-    font-size: 16px;
-    margin:16px 0 0 0;
+    font-size: 15px;
+    margin:15px 0 0 0;
     font-weight: normal;
   }
   .item-box-bottom p{

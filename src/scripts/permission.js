@@ -37,6 +37,8 @@ router.beforeEach((to, from, next) => {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetUserInfo').then(response => {
           const roles = response.data.roles
+          // console.log(store.getters.groupRouters)
+          // router.addRoutes(store.getters.groupRouters)
           store.dispatch('GenerateRoutes', { roles }).then(() => {
             router.addRoutes(store.getters.permissionRouters)
             next({ ...to, replace: true })

@@ -62,3 +62,10 @@ export function downloadDashboard (hash) {
     method: 'get'
   })
 }
+
+export function moveDashboard (hash, key) {
+  return request({
+    url: '/projects/' + key + '/dashborads/' + hash,
+    method: 'put'
+  })
+}

@@ -9,10 +9,28 @@ export function getUserInfo () {
   })
 }
 
-export function updataAccount (data) {
+export function updateAccount (data) {
   const id = getUserId()
   return request({
     url: '/user/' + id + '/account',
+    method: 'post',
+    data
+  })
+}
+
+export function deleteProject (data, key) {
+  const id = getUserId()
+  return request({
+    url: '/user/' + id + '/projects/' + key,
+    method: 'delete',
+    data
+  })
+}
+
+export function updateProject (data) {
+  const id = getUserId()
+  return request({
+    url: '/user/' + id + '/projects',
     method: 'post',
     data
   })

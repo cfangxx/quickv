@@ -39,31 +39,7 @@ export const constantRouterMap = [
   },
   {
     path: '',
-    component: Layout,
-    redirect: 'manage',
-    children: [
-      {
-        path: 'manage',
-        component: () => import('@/views/dashboard/Manage'),
-        name: 'manage',
-        meta: { title: '大屏管理', icon: 'dashboard', noCache: true, affix: true }
-      }
-    ]
-  },
-  {
-    path: '/project',
-    component: Layout,
-    meta: {
-      title: '我的大屏',
-      icon: 'chart'
-    },
-    children: [
-      {
-        path: ':group',
-        component: () => import('@/views/dashboard/Manage'),
-        meta: { title: '我的大屏', icon: 'dashboard', noCache: true, affix: true }
-      }
-    ],
+    redirect: 'project',
     hidden: true
   },
   {
@@ -124,8 +100,29 @@ export const permissionRouterMap = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
+export const userProjectRouterMap = [
+  {
+    path: '/project',
+    component: Layout,
+    name: 'project',
+    redirect: '/project/all',
+    meta: {
+      title: '我的大屏',
+      icon: 'chart'
+    },
+    children: [
+      {
+        path: ':group',
+        component: () => import('@/views/dashboard/Manage'),
+        meta: { title: '我的大屏', icon: 'dashboard', noCache: true, affix: true }
+      }
+    ],
+    hidden: true
+  }
+]
+
 export default new Router({
   mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
+  routes: constantRouterMap.concat(userProjectRouterMap)
 })

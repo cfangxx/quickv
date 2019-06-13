@@ -12,9 +12,11 @@ const getters = {
   avatar: state => state.user.avatar,
   name: state => state.user.name,
   roles: state => state.user.roles,
+  projects: state => state.user.projects,
 
   permissionRouters: state => state.permission.routers,
   sidebarRouters: state => state.permission.asyncRouters,
+  groupRouters: state => state.user.routers,
 
   errorLogs: state => state.errorLog.logs
 }

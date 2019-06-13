@@ -1,7 +1,7 @@
 import { loginByUsername, logout } from '@/api/login'
-import { getUserInfo, updataAccount } from '@/api/user'
-import { fetchList } from '@/api/dashboard'
+import { getUserInfo, updateAccount } from '@/api/user'
 import { setToken, removeToken, setUserId, removeUserId } from '@/scripts/auth'
+const generate = require('nanoid/generate')
 
 const user = {
   state: {
@@ -10,7 +10,9 @@ const user = {
     name: '',
     avatar: '',
     introduction: '',
-    roles: []
+    roles: [],
+    routers: [],
+    projects: {}
   },
 
   mutations: {
@@ -28,6 +30,12 @@ const user = {
     },
     SET_USER_ID: (state, id) => {
       state.id = id
+    },
+    SET_USER_PROJECTS: (state, projects) => {
+      state.projects = projects
+    },
+    SET_USER_ROUTERS: (state, routers) => {
+      state.routers = routers
     }
   },
 
@@ -50,33 +58,9 @@ const user = {
     // 获取用户信息
     GetUserInfo ({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getUserInfo().then(response => {
-          if (!response) {
-            reject(new Error('Verification failed, please login again.'))
-          }
-
-          const user = response.data
-          if (user.roles && user.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', user.roles)
-          } else {
-            reject(new Error('getInfo: roles must be a non-null array!'))
-          }
-
-          commit('SET_NAME', user.username)
-          commit('SET_AVATAR', user.avatar)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
-
-    // 获取用户大屏列表, 添加路由
-    GetUserDashboardList ({ commit, state }, query) {
-      return new Promise((resolve, reject) => {
-        const routers = [
+        const projectRouters = [
           {
-            path: '/preview',
+            path: '/project',
             name: 'Dashboard',
             meta: {
               title: '我的大屏',
@@ -93,24 +77,38 @@ const user = {
                 path: 'unbank',
                 component: () => import('@/views/dashboard/Manage'),
                 name: 'unbank',
-                meta: { title: '未分组', icon: 'excel', noCache: true, affix: true }
+                meta: { title: '未分组', icon: 'folder', noCache: true, affix: true }
               }
             ]
           }
         ]
-        fetchList(query).then(response => {
-          const list = response.data
-          if (list && list.total > 0) {
-            list.items.forEach(item => {
-              routers[0].children.push({
-                path: item.hash,
-                component: () => import('@/views/dashboard/Preview'),
-                name: item.hash,
-                meta: { title: item.config.title }
-              })
+
+        getUserInfo().then(response => {
+          if (!response) {
+            reject(new Error('Verification failed, please login again.'))
+          }
+
+          const user = response.data
+          if (user.roles && user.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+            commit('SET_ROLES', user.roles)
+          } else {
+            reject(new Error('getInfo: roles must be a non-null array!'))
+          }
+
+          const projects = user.projects || {}
+          for (let key in projects) {
+            projectRouters[0].children.push({
+              path: key,
+              component: () => import('@/views/dashboard/Manage'),
+              name: projects[key],
+              meta: { title: projects[key] }
             })
           }
 
+          commit('SET_USER_ROUTERS', projectRouters)
+          commit('SET_USER_PROJECTS', projects)
+          commit('SET_NAME', user.username)
+          commit('SET_AVATAR', user.avatar)
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -118,6 +116,25 @@ const user = {
       })
     },
 
+    addProject ({ commit, state }, projectName) {
+      let projects = Object.assign(state.projects)
+      projects[generate('1234567890abcdef', 6)] = projectName
+
+      commit('SET_USER_PROJECTS', projects)
+    },
+
+    renameProject ({ commit, state }, payload) {
+      const projects = Object.assign(state.projects, payload)
+
+      commit('SET_USER_PROJECTS', projects)
+    },
+
+    deleteProject ({ commit, state }, projectKey) {
+      let projects = Object.assign(state.projects)
+      delete projects[projectKey]
+
+      commit('SET_USER_PROJECTS', projects)
+    },
     // 第三方验证登录
     // LoginByThirdparty({ commit, state }, code) {
     //   return new Promise((resolve, reject) => {
@@ -149,7 +166,7 @@ const user = {
 
     UpdateAccount ({ commit }, account) {
       return new Promise(resolve => {
-        updataAccount(account).then(response => {
+        updateAccount(account).then(response => {
           resolve(response)
         })
       })
