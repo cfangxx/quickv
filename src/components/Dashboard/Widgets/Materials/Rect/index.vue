@@ -9,8 +9,8 @@
       top: val.top / h * 100 + '%',
       zIndex: val.z,
       backgroundImage: 'url(' + val.backPic + ')',
-      background: val.bgType == 'bgColor' ? val.bgColor : (val.bgType == 'bgGradientcolor' ? '-webkit-linear-gradient(' + val.bgGradientdir1 + ',' + val.bgGradientcolor1 + ',' + val.bgGradientcolor2 + ')' : val.bgType === 'bgNone' ? '' : 'url(' + val.backPic + ')') ,
-      borderStyle: 'solid',
+      background: val.bgType == 'bgColor' ? val.bgColor : (val.bgType == 'bgGradientcolor' ? '-webkit-linear-gradient(' + val.bgGradientdir1 + ',' + val.bgGradientcolor1 + ',' + val.bgGradientcolor2 + ')' : val.bgType === 'bgNone' ? '' : 'url(' + val.backPic + ') 0px 0px / 100% 100%') ,
+      borderStyle: val.borderStyle,
       borderRadius: val.radius + 'px',
       borderColor: val.borderColor,
       borderWidth: val.borderWidth + 'px',
@@ -31,7 +31,7 @@ const WIDGET_NAME = 'braidRect'
 export default {
   name: WIDGET_NAME,
   group: 'material',
-  icon: require('./icon/thumb-container.png'),
+  icon: require('./icon/thumb-rect.png'),
   title: '矩形',
   panel: stylec,
   setting: {
@@ -63,6 +63,9 @@ export default {
     align: 'flex-start',
     belong: 'page',
     animationName: '',
+
+    borderStyle: 'solid',
+
     bgGradientcolor1: '#ffffff',
     bgGradientcolor2: '#333333',
     bgGradientdir1: 'left'

@@ -157,23 +157,19 @@ export default {
         'columns': [
           {
             'id': 'area',
-            'name': '区域',
-            'textAlign': 'center'
+            'name': '区域'
           },
           {
             'id': 'lastMonth',
-            'name': '上月业绩',
-            'textAlign': 'center'
+            'name': '上月业绩'
           },
           {
             'id': 'thisMonth',
-            'name': '本月业绩',
-            'textAlign': 'center'
+            'name': '本月业绩'
           },
           {
             'id': 'diff',
-            'name': '增长业绩',
-            'textAlign': 'center'
+            'name': '增长业绩'
           }
         ],
         'rows': [

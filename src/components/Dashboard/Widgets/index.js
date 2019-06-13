@@ -1,6 +1,7 @@
 // charts
 import BasicBarChart from './Charts/BasicBarChart'
 import AreaLineChart from './Charts/AreaLineChart'
+import LinesAreaChart from './Charts/LinesAreaChart'
 import PolarBarChart from './Charts/PolarBarChart'
 import BasicPieChart from './Charts/BasicPieChart'
 
@@ -30,6 +31,7 @@ export default {
   // chatrs
   [BasicBarChart.name]: BasicBarChart,
   [AreaLineChart.name]: AreaLineChart,
+  [LinesAreaChart.name]: LinesAreaChart,
   [PolarBarChart.name]: PolarBarChart,
   [BasicPieChart.name]: BasicPieChart,
 

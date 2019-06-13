@@ -21,6 +21,7 @@
             <option value="sans-serif">sans-serif</option>
             <option value="Microsoft YaHei">微软雅黑</option>
             <option value="Microsoft JhengHei">微软正黑体</option>
+            <option value="ZZGF">造字工房朗宋常规体</option>
             <option value="SimHei">黑体</option>
             <option value="Hiragino Sans GB">Hiragino Sans GB</option>
             <option value="SimSun">宋体</option>
@@ -38,10 +39,6 @@
             v-model="activeElement.height"
             type="number">
         </div>
-        <!--<div class="panel-value">{{ activeElement.lineHeight }}</div>-->
-        <!--<div class="panel-slider-wrap">-->
-        <!--<vpd-slider :max="5" :min="1" v-model="activeElement.lineHeight" />-->
-        <!--</div>-->
       </div>
       <div class="panel-row" flex>
         <div class="panel-label">字号</div>
@@ -50,10 +47,14 @@
             v-model="activeElement.fontSize"
             type="number">
         </div>
-        <!--<div class="panel-value">{{ activeElement.fontSize }}px</div>-->
-        <!--<div class="panel-slider-wrap">-->
-        <!--<vpd-slider :step="1" :max="200" :min=".85" v-model="activeElement.fontSize" />-->
-        <!--</div>-->
+      </div>
+      <div class="panel-row" flex>
+        <div class="panel-label">字间距</div>
+        <div>
+          <input
+            v-model="activeElement.fontSpacing"
+            type="number">
+        </div>
       </div>
       <div class="panel-row" flex>
         <div class="panel-label">颜色</div>

@@ -29,7 +29,7 @@ export default {
   watch: {
     codes: {
       handler: function () {
-        this.initEditor()
+        // this.initEditor()
       }
     }
   },

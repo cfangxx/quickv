@@ -13,6 +13,7 @@
       lineHeight: val.height + 'px',
       fontSize: val.fontSize + 'px',
       fontFamily: val.fontFamily,
+      letterSpacing: val.fontSpacing + 'px',
       color: val.color,
       textAlign: val.textAlign,
       fontWeight: val.fontWeight ? 'bold': 'normal'
@@ -48,6 +49,7 @@ export default {
     fontSize: 20,
     fontFamily: 'Microsoft YaHei',
     fontWeight: false,
+    fontSpacing: 0,
     color: '#000000',
     textAlign: 'center',
     text: '文本',

@@ -27,6 +27,7 @@
 
 <script>
 import Vue from 'vue'
+import './style/font/font.css'
 
 import Navbar from './components/Navbar'
 import Toolbar from './components/Toolbar'

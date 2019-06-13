@@ -48,7 +48,7 @@
       <basic-settings :activeElement="activeElement"/>
       <div class="panel-item-new">
         <div @click="isShowHead = !isShowHead" class="panel-item-title">表头<i :class="isShowHead ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
-        <div v-show="isShowHead" class="panel-item-new-set">
+        <div v-show="isShowHead" class="pane l-item-new-set">
           <div
             class="panel-row"
             flex>
@@ -62,28 +62,37 @@
               </label>
             </div>
           </div>
-          <div
-            v-show="activeElement.showTh"
-            class="panel-row">
+          <div class="panel-row" v-show="activeElement.showTh">
             <div class="panel-label">文本颜色</div>
-            <div class="panel-value">{{ activeElement.thColor }}</div>
-            <div class="panel-value">
-              <input
+            <div class="panel-colormsg">{{ activeElement.thColor }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
                 v-model="activeElement.thColor"
-                type="color" >
+                show-alpha
+                size="small"/>
             </div>
           </div>
-          <div
-            v-show="activeElement.showTh"
-            class="panel-row">
-            <div class="panel-label">背景颜色</div>
-            <div class="panel-value">{{ activeElement.thBgColor }}</div>
-            <div class="panel-value">
-              <input
+          <div class="panel-row" v-show="activeElement.showTh">
+            <div class="panel-label">背景色</div>
+            <div class="panel-colormsg">{{ activeElement.thBgColor }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
                 v-model="activeElement.thBgColor"
-                type="color" >
+                show-alpha
+                size="small"/>
             </div>
           </div>
+          <!--<div-->
+            <!--v-show="activeElement.showTh"-->
+            <!--class="panel-row">-->
+            <!--<div class="panel-label">背景颜色</div>-->
+            <!--<div class="panel-value">{{ activeElement.thBgColor }}</div>-->
+            <!--<div class="panel-value">-->
+              <!--<input-->
+                <!--v-model="activeElement.thBgColor"-->
+                <!--type="color" >-->
+            <!--</div>-->
+          <!--</div>-->
           <div
             v-show="activeElement.showTh"
             class="panel-row">
