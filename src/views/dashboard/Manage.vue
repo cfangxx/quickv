@@ -184,7 +184,7 @@ export default {
         limit: 10,
         title: undefined,
         status: undefined,
-        project: this.$route.params.group || 'all'
+        project: this.$route.name || 'all'
       },
       publishTypeOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
@@ -201,10 +201,10 @@ export default {
       return this.$store.state.user.projects
     },
     group () {
-      if (this.$route.params.group === 'all' || this.$route.params.group === 'ungrouped') {
+      if (this.$route.name === 'all' || this.$route.name === 'ungrouped') {
         return ''
       } else {
-        return this.$route.params.group
+        return this.$route.name
       }
     }
   },
@@ -318,7 +318,6 @@ export default {
       this.downloadLoading = true
       downloadDashboard(hash).then(response => {
         if (response.code === 0) {
-          console.log(response)
           window.location = process.env.BASE_API + '/' + response.data
         }
       })
@@ -336,7 +335,7 @@ export default {
       })
     },
     handleDesign (hash) {
-      this.$router.push('/edit/dashboard/' + hash + '?from=' + (this.$route.params.group || 'all'))
+      this.$router.push('/edit/dashboard/' + hash + '?from=' + (this.$route.name || 'all'))
     },
     handlePreview (hash) {
       const routeUrl = this.$router.resolve({

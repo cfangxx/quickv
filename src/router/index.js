@@ -39,7 +39,7 @@ export const constantRouterMap = [
   },
   {
     path: '',
-    redirect: 'project',
+    redirect: '/project/all',
     hidden: true
   },
   {
@@ -100,29 +100,8 @@ export const permissionRouterMap = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-export const userProjectRouterMap = [
-  {
-    path: '/project',
-    component: Layout,
-    name: 'project',
-    redirect: '/project/all',
-    meta: {
-      title: '我的大屏',
-      icon: 'chart'
-    },
-    children: [
-      {
-        path: ':group',
-        component: () => import('@/views/dashboard/Manage'),
-        meta: { title: '我的大屏', icon: 'dashboard', noCache: true, affix: true }
-      }
-    ],
-    hidden: true
-  }
-]
-
 export default new Router({
   mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap.concat(userProjectRouterMap)
+  routes: constantRouterMap
 })

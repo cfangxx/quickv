@@ -1,3 +1,4 @@
+import router from '@/router'
 import { loginByUsername, logout } from '@/api/login'
 import { getUserInfo, updateAccount } from '@/api/user'
 import { setToken, removeToken, setUserId, removeUserId } from '@/scripts/auth'
@@ -61,7 +62,8 @@ const user = {
         const projectRouters = [
           {
             path: '/project',
-            name: 'Dashboard',
+            component: () => import('@/views/public/Layout'),
+            name: 'project',
             meta: {
               title: '我的大屏',
               icon: 'list'
@@ -71,13 +73,13 @@ const user = {
                 path: 'all',
                 component: () => import('@/views/dashboard/Manage'),
                 name: 'all',
-                meta: { title: '全部大屏', icon: 'excel', noCache: true, affix: true }
+                meta: { title: '全部大屏' }
               },
               {
-                path: 'unbank',
+                path: 'ungrouped',
                 component: () => import('@/views/dashboard/Manage'),
-                name: 'unbank',
-                meta: { title: '未分组', icon: 'folder', noCache: true, affix: true }
+                name: 'ungrouped',
+                meta: { title: '未分组' }
               }
             ]
           }
@@ -100,7 +102,7 @@ const user = {
             projectRouters[0].children.push({
               path: key,
               component: () => import('@/views/dashboard/Manage'),
-              name: projects[key],
+              name: key,
               meta: { title: projects[key] }
             })
           }
@@ -118,9 +120,31 @@ const user = {
 
     addProject ({ commit, state }, projectName) {
       let projects = Object.assign(state.projects)
-      projects[generate('1234567890abcdef', 6)] = projectName
+      let key = generate('1234567890abcdef', 6)
+      projects[key] = projectName
 
       commit('SET_USER_PROJECTS', projects)
+
+      const newProjectRouters = [
+        {
+          path: '/project',
+          component: () => import('@/views/public/Layout'),
+          name: 'project',
+          meta: {
+            title: '我的大屏',
+            icon: 'list'
+          },
+          children: [
+            {
+              path: key,
+              component: () => import('@/views/dashboard/Manage'),
+              name: key,
+              meta: { title: projectName }
+            }
+          ]
+        }
+      ]
+      router.addRoutes(newProjectRouters)
     },
 
     renameProject ({ commit, state }, payload) {

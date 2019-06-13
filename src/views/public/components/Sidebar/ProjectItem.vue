@@ -1,10 +1,9 @@
 <template>
   <div class="menu-wrapper">
 
-    <el-submenu :index="resolvePath('/project')">
+    <el-submenu ref="subMenu" :index="resolvePath('/project')">
       <template slot="title">
-        <i class="el-icon-s-unfold"></i>
-        <span>我的大屏</span>
+        <item :icon="'list'" :title="'我的大屏'" />
       </template>
 
       <app-link :to="resolvePath('./all')">
@@ -20,20 +19,6 @@
           <span class="menu-item" slot="title">{{ '未分组' }}</span>
         </el-menu-item>
       </app-link>
-
-      <!-- <app-link v-for="(group, path) in projects" :key="path" :to="resolvePath('./' + path)">
-        <el-menu-item :index="resolvePath('./' + path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <i class="el-icon-folder"></i>
-          <template v-if="projectKey == path">
-            <el-input v-focus="projectKey == path" v-model="projectName" class="edit-input" @blur="handleRename" size="small"/>
-          </template>
-          <span v-else>{{ group }}</span>
-          <div class="action-icon">
-            <i class="el-icon-edit-outline" @click="projectKey = path; projectName = group"></i>
-            <i class="el-icon-delete" @click="handleDelete(group, path)"></i>
-          </div>
-        </el-menu-item>
-      </app-link> -->
 
       <el-menu-item v-for="(group, path) in projects" :key="path" :index="resolvePath('./' + path)" :class="{'submenu-title-noDropdown':!isNest}">
         <app-link :to="resolvePath('./' + path)">
@@ -64,6 +49,7 @@
 <script>
 import path from 'path'
 import AppLink from './Link'
+import Item from './Item'
 import FixiOSBug from './FixiOSBug'
 
 import { isExternal } from '@/scripts/validate'
@@ -71,7 +57,7 @@ import { updateProject, deleteProject } from '@/api/user'
 
 export default {
   name: 'ProjectItem',
-  components: { AppLink },
+  components: { AppLink, Item },
   mixins: [FixiOSBug],
   directives: {
     focus: {
