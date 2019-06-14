@@ -89,6 +89,9 @@ export default {
     }
   },
   computed: {
+    visitedViews () {
+      return this.$store.state.tagsView.visitedViews
+    },
     projects () {
       return this.$store.state.user.projects
     }
@@ -108,6 +111,13 @@ export default {
       }).then(() => {
         this.$store.dispatch('deleteProject', key)
         deleteProject({ projects: this.projects }, key)
+
+        // 删除tagview
+        this.visitedViews.forEach(v => {
+          if (v.name === key) {
+            this.$store.dispatch('delView', v)
+          }
+        })
 
         this.$message({
           type: 'success',
@@ -134,6 +144,9 @@ export default {
         this.$store.dispatch('renameProject', obj)
         updateProject({ projects: this.projects })
         this.$router.push(this.resolvePath('./' + this.projectKey))
+
+        // 修改tagview
+        this.$store.dispatch('updateVistedViewTitle', { name: this.projectKey, title: this.projectName })
       }
       this.projectKey = ''
     }

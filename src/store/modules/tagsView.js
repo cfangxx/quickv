@@ -68,8 +68,15 @@ const tagsView = {
           break
         }
       }
-    }
+    },
 
+    UPDATE_VISITED_VIEW_TITLE: (state, view) => {
+      for (let v of state.visitedViews) {
+        if (v.name === view.name) {
+          v.title = view.title
+        }
+      }
+    }
   },
   actions: {
     addView ({ dispatch }, view) {
@@ -154,7 +161,12 @@ const tagsView = {
 
     updateVisitedView ({ commit }, view) {
       commit('UPDATE_VISITED_VIEW', view)
+    },
+
+    updateVistedViewTitle ({ commit }, view) {
+      commit('UPDATE_VISITED_VIEW_TITLE', view)
     }
+
   }
 }
 
