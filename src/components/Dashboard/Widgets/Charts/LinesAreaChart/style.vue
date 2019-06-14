@@ -226,7 +226,7 @@
         <div @click="isShowSet = !isShowSet" class="panel-item-title">系列配置<i :class="isShowSet ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
         <div v-show="isShowSet" class="panel-item-new-set">
 
-          <el-tabs class="panel-tab-mini" v-model="editableTabsValue" editable @edit="handleTabsEdit" @tab-click="handleClick">
+          <el-tabs class="panel-tab-mini" v-model="editableTabsValue" @edit="handleTabsEdit" @tab-click="handleClick">
             <el-tab-pane
               :key="item.name"
               v-for="item in editableTabs"
@@ -353,6 +353,162 @@
           </label>
         </div>
       </div>
+      <div class="panel-item-new">
+        <div @click="isShowLegend = !isShowLegend" class="panel-item-title">图例设置<i :class="isShowLegend ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowLegend" class="panel-item-new-set">
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示图例</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.legendShow"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row">
+            <div class="panel-label">宽度</div>
+            <div>
+              <input v-model="activeElement.legendWidth">
+            </div>
+          </div>
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row">
+            <div class="panel-label">文字大小</div>
+            <div>
+              <input
+                v-model="activeElement.legendFontSize"
+                type="number" min="8">
+            </div>
+          </div>
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row">
+            <div class="panel-label">文字颜色</div>
+            <div class="panel-value">{{ activeElement.legendTextColor }}</div>
+            <div>
+              <input
+                v-model="activeElement.legendTextColor"
+                type="color">
+            </div>
+          </div>
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row"
+            flex>
+            <div class="panel-label">对齐</div>
+            <div class="panel-value">
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.legendPositionX"
+                  type="radio"
+                  class="inpRadio"
+                  name="x"
+                  value="left">居左
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.legendPositionX"
+                  type="radio"
+                  class="inpRadio"
+                  name="x"
+                  value="center">居中
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.legendPositionX"
+                  type="radio"
+                  class="inpRadio"
+                  name="x"
+                  value="right">居右
+              </label>
+            </div>
+          </div>
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row"
+            flex>
+            <div class="panel-label"></div>
+            <div class="panel-value">
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.legendPositionY"
+                  type="radio"
+                  class="inpRadio"
+                  name="y"
+                  value="top">居上
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.legendPositionY"
+                  type="radio"
+                  class="inpRadio"
+                  name="y"
+                  value="center">居中
+              </label>
+              <label class="radiolabel">
+                <input
+                  v-model="activeElement.legendPositionY"
+                  type="radio"
+                  class="inpRadio"
+                  name="y"
+                  value="bottom">居下
+              </label>
+            </div>
+          </div>
+          <div>
+            <div
+              v-show="activeElement.legendShow"
+              class="panel-row">
+              <div class="panel-label">图例图标</div>
+              <div class="panel-value">
+                <select v-model="activeElement.legendIcon">
+                  <!--<option>{{activeElement.legendIcon}}</option>-->
+                  <option
+                    v-for="(val, index) in icon"
+                    :key="index" :value="val.value">{{ val.name }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row">
+            <div class="panel-label">图标宽度</div>
+            <div>
+              <input
+                v-model="activeElement.legendIconWidth"
+                type="number" min="1">
+            </div>
+          </div>
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row">
+            <div class="panel-label">图标高度</div>
+            <div>
+              <input
+                v-model="activeElement.legendIconHeight"
+                type="number" min="1">
+            </div>
+          </div>
+          <div
+            v-show="activeElement.legendShow"
+            class="panel-row">
+            <div class="panel-label">图标间距</div>
+            <div>
+              <input
+                v-model="activeElement.legendIconGap"
+                type="number" min="0">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -374,6 +530,7 @@ export default {
       isShowY: false,
       isShowLine: false,
       isShowSet: true,
+      isShowLegend: true,
       icon: [
         {
           name: '无',
@@ -402,24 +559,20 @@ export default {
         }
       ],
 
-      editableTabsValue: '0',
-      editableTabs: [{
-        title: 'Tab1',
-        name: '0'
-      }, {
-        title: 'Tab2',
-        name: '1'
-      }, {
-        title: 'Tab3',
-        name: '2'
-      }]
+      editableTabsValue: '0'
     }
   },
   computed: {
-    editableTabs1 () {
-      let data = this.activeElement.staticData[this.activeElement.keyPrimary][this.activeElement.keyTarget][this.activeElement.keyYAxis]
-      console.log(data.length)
-      return data
+    editableTabs () {
+      let data = this.activeElement.dataLength
+      let tabs = new Array(data)
+      for (let i = 0; i < data; i++) {
+        tabs[i] = {
+          title: 'Tab' + (i + 1),
+          name: '' + i
+        }
+      }
+      return tabs
     }
   },
   methods: {
@@ -476,14 +629,3 @@ export default {
   }
 }
 </script>
-<style>
-  .panel-tab-mini .el-tabs__item{
-    height:34px;
-    line-height: 34px;
-    padding: 0 10px;
-    font-size: 12px;
-  }
-  .panel-tab-mini .el-tabs__nav-wrap{
-    margin-left:15px;
-  }
-</style>

@@ -49,7 +49,7 @@ export default {
     belong: 'page',
     animationName: '',
 
-    chartTitle: '销量', // 图表标题
+    chartTitle: '', // 图表标题
     textStyleColor: '#666666', // 文本颜色
     itemStyleColor: '#42b983', // 柱状图颜色
     xyturn: false, // xy轴翻转
@@ -108,6 +108,18 @@ export default {
     gridRight: '8%', // 图表位置（距右边）
     gridBottom: '3%', // 图表位置（距底部）
 
+    legendShow: true, // 显示图例
+    legendWidth: '60%', // 图例宽度
+    legendHeight: '100', // 图例高度
+    legendPositionX: 'center', // 图例位置（X 轴）
+    legendPositionY: 'top', // 图例位置（Y 轴）
+    legendFontSize: 12, // 图例文字大小
+    legendTextColor: '#000000', // 图例文字颜色
+    legendIcon: 'roundRect', // 图例 Icon 如 circle, rect, line, roundRect, triangle, diamond, pin, none
+    legendIconWidth: 20, // 图例 Icon 宽度
+    legendIconHeight: 10, // 图例 Icon 高度
+    legendIconGap: 10, // 图例 Icon 间距
+
     seriesLineWidth: [2, 2, 2], // 折线宽度
     seriesSymbol: ['none', 'none', 'none'], // 拐点图形
     seriesSymbolSize: [5, 5, 5], // 拐点大小
@@ -164,26 +176,6 @@ export default {
       dynamicData: {}
     }
   },
-  watch: {
-    'dataSeries.length' () {
-      const orign = this.dynamicData[this.val.keyPrimary][this.val.keyTarget][this.val.keyYAxis]
-      let datalen = orign.length
-      if (datalen > this.val.lgArr.length) {
-        let params = {
-          property: 'lgArr',
-          data: [{
-            color: '#42b983',
-            offset: 0
-          }, {
-            color: '#4255ff',
-            offset: 1
-          }]
-        }
-        this.$vpd.commit('ADD_COLOR', params)
-      }
-      return orign.length
-    }
-  },
   computed: {
     categories () {
       if (this.dynamicData[this.val.keyPrimary] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget][this.val.keyXAxis]) {
@@ -195,6 +187,49 @@ export default {
     dataSeries () {
       if (this.dynamicData[this.val.keyPrimary] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget][this.val.keyYAxis]) {
         const orign = this.dynamicData[this.val.keyPrimary][this.val.keyTarget][this.val.keyYAxis]
+        let datalen = orign.length
+        if (datalen > this.val.lgArr.length) {
+          let params = {
+            property: 'lgArr',
+            data: [{
+              color: datalen === 3 ? '#f94f2b' : '#42b983',
+              offset: 0
+            }, {
+              color: datalen === 3 ? '#882c8f' : '#4255ff',
+              offset: 1
+            }]
+          }
+          let param = [
+            {
+              name: 'seriesLineWidth',
+              value: 2
+            },
+            {
+              name: 'seriesSymbol',
+              value: 'none'
+            },
+            {
+              name: 'seriesSymbolSize',
+              value: 5
+            },
+            {
+              name: 'isSmooth',
+              value: true
+            }
+          ]
+          this.$vpd.commit('UPDATE_DATAS_ADD', param)
+          this.$vpd.commit('ADD_COLOR', params)
+        } else if (datalen < this.val.lgArr.length) {
+          let paramDel = {
+            name: ['seriesLineWidth', 'seriesSymbol', 'seriesSymbolSize', 'isSmooth', 'lgArr'],
+            value: datalen
+          }
+          this.$vpd.commit('UPDATE_DATAS_DEL', paramDel)
+        }
+        this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', {
+          name: 'dataLength',
+          value: datalen
+        })
         return orign.map((item, i) => {
           return {
             type: 'line',
@@ -315,6 +350,22 @@ export default {
         color: this.val.lgArr.map((item, i) => {
           return item[0].color
         }),
+        legend: {
+          show: this.val.legendShow, // 显示图例
+          x: this.val.legendPositionX,
+          y: this.val.legendPositionY,
+          width: this.val.legendWidth,
+          // height: this.val.lengendHeight,
+          icon: this.val.legendIcon, // 图例图标
+          itemWidth: parseInt(this.val.legendIconWidth), // 图里图标宽度
+          itemHeight: parseInt(this.val.legendIconHeight), // 图里图标高度
+          itemGap: parseInt(this.val.legendIconGap), // 图里图标间距
+          textStyle: {
+            color: this.val.legendTextColor,
+            fontSize: this.val.legendFontSize
+          },
+          data: this.legend
+        },
         tooltip: {
           show: this.val.showTooltip, // 是否显示提示框
           trigger: 'axis',
@@ -324,10 +375,6 @@ export default {
               backgroundColor: '#6a7985'
             }
           }
-        },
-        legend: {
-          show: false,
-          data: this.legend
         },
         grid: {
           top: this.val.gridTop, // 上边距

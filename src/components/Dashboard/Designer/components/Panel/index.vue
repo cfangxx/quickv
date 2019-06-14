@@ -210,6 +210,7 @@ export default {
     height: 40px;
     line-height: 40px;
     padding: 0 12px;
+    font-size:14px;
     background-color: #f5f7fa;
     border-bottom: 1px solid #e6eaf1;
     cursor: pointer;

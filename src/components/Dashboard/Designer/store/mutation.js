@@ -317,6 +317,22 @@ export default {
     state.activeElement[payload.name] = payload.value
   },
 
+  // 更新多条数据图表(添加数据)
+  UPDATE_DATAS_ADD (state, payload) {
+    for (let i in payload) {
+      let name = payload[i].name
+      state.activeElement[name].push(payload[i].value)
+    }
+  },
+  // 更新多条数据图表(删除数据)
+  UPDATE_DATAS_DEL (state, payload) {
+    let names = payload.name
+    for (let i = 0; i < names.length; i++) {
+      let prop = names[i]
+      state.activeElement[prop] = state.activeElement[prop].slice(0, payload.value)
+    }
+  },
+
   // 图表删除颜色
   DELETE_COLOR (state, payload) {
     state.activeElement[payload.property].splice(payload.data.index, 1)

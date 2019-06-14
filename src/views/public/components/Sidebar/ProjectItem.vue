@@ -163,3 +163,18 @@ export default {
   display: inline-block;
 }
 </style>
+<style scoped>
+  .action-icon .el-icon-edit-outline{
+    width:14px;
+  }
+  .el-menu-item.submenu-title-noDropdown{
+    padding-left:20px!important;
+  }
+  .el-menu-item.submenu-title-noDropdown .menu-item{
+    display: inline-block;
+    width:70px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+</style>

@@ -2,7 +2,7 @@
 @import "variables";
 
 @import "../../../../../node_modules/spectre.css/src/mixins";
-@import "../../../../../node_modules/spectre.css/src/base";
+//@import "../../../../../node_modules/spectre.css/src/base";
 @import "../../../../../node_modules/spectre.css/src/utilities";
 
 // Layout
@@ -93,6 +93,7 @@ select {
 }
 .radioscont label{
   font-weight: normal;
+  font-size:15px;
 }
 
 .btn-small {
@@ -171,4 +172,26 @@ input[type='radio']{
 .panel-colorpick{
   display:flex;
   align-items: center;
+}
+.list-container .tool-item .tool-item__name{
+  font-size:12px;
+}
+.panel-wrap .tab .tab-item a{
+  font-size:14px;
+}
+
+.panel-tab-mini .el-tabs__item{
+  height:34px;
+  line-height: 34px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+.panel-tab-mini .el-tabs__nav-wrap{
+  margin-left:15px;
+}
+.panel-tab-mini .el-tabs__new-tab{
+  display: none;
+  width:20px;
+  height:20px;
+  margin:10px 0 0 6px;
 }
