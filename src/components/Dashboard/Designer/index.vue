@@ -193,7 +193,7 @@ export default {
 
 .control-panel {
   background: #fff;
-  user-select: none;
+  /*user-select: none;*/
   &.column {
     flex: none;
     width: 400px;

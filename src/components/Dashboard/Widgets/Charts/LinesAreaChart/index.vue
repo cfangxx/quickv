@@ -120,6 +120,7 @@ export default {
     legendIconHeight: 10, // 图例 Icon 高度
     legendIconGap: 10, // 图例 Icon 间距
 
+    seriesColorType: ['Color', 'Color', 'Color'], // 系列配置颜色选项（纯色/渐变）
     seriesLineWidth: [2, 2, 2], // 折线宽度
     seriesSymbol: ['none', 'none', 'none'], // 拐点图形
     seriesSymbolSize: [5, 5, 5], // 拐点大小
@@ -128,7 +129,7 @@ export default {
 
     legend: [],
 
-    dataAPI: 'https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/quickv/api/demo', // API拉取地址
+    dataAPI: 'https://www.easy-mock.com/mock/5c7ce20ccdc04f0e04185d9b/example/mock_copy_1560491079589/charts', // API拉取地址
     dataAutoRefresh: false, // 是否自动刷新
     dataOrigin: 'local', // local 本地 api 远程接口
     dataRefreshTime: 5, // 自动刷新间隔（秒）

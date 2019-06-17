@@ -29,7 +29,7 @@ export default {
   name: WIDGET_NAME,
   group: 'chart',
   icon: require('./icon/thumb-barchart.png'),
-  title: '柱状图',
+  title: '基础柱状图',
   panel: stylec,
   setting: {
     type: WIDGET_NAME,
@@ -45,7 +45,7 @@ export default {
     top: 400,
     z: 0,
     color: '#555555',
-    name: '柱状图', // 组件名称, 可自定义
+    name: '基础柱状图', // 组件名称, 可自定义
     desc: '基础柱状图', // 描述, 可自定义
     belong: 'page',
     animationName: '',

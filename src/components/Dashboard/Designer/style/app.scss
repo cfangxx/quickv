@@ -145,6 +145,9 @@ input, input[type='number'],input[type='text'], optgroup, select {
   padding: 0;
   outline: none;
 }
+.panel-wrap .panel-row .el-button{
+  padding:0 8px;
+}
 textarea{
   font-size:13px;
   padding: 0 0 0 5px;
@@ -194,4 +197,7 @@ input[type='radio']{
   width:20px;
   height:20px;
   margin:10px 0 0 6px;
+}
+.radiowrap{
+  font-size:14px;
 }
