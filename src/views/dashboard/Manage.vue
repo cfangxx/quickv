@@ -34,10 +34,10 @@
           <div v-show="scope.row.publish.status === 'published'">
             <el-link type="primary" :href="scope.row.publish.hash | pubUrlFilter" target="_blank">{{ scope.row.publish.hash | pubUrlFilter }}</el-link>
             <el-tooltip effect="dark" :content="'复制'" placement="bottom">
-              <el-button size="mini" type="success" icon="el-icon-document-copy" @click="handleCopy(scope.row.publish.hash, $event)" circle></el-button>
+              <el-button size="mini" type="primary" plain icon="el-icon-document-copy" @click="handleCopy(scope.row.publish.hash, $event)" circle></el-button>
             </el-tooltip>
             <el-tooltip effect="dark" :content="'下载'" placement="bottom">
-              <el-button size="mini" type="primary" icon="el-icon-download" @click="handleDownload(scope.row.publish.hash)" circle></el-button>
+              <el-button size="mini" type="primary" plain icon="el-icon-download" @click="handleDownload(scope.row.publish.hash)" circle></el-button>
             </el-tooltip>
           </div>
         </template>
@@ -82,13 +82,13 @@
       </el-table-column>
       <el-table-column :label="'操作'" align="center" width="400" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handlePreview(scope.row.hash)">{{ '预览' }}</el-button>
-          <el-button size="mini" type="success" @click="handleDesign(scope.row.hash)">{{ '编辑' }}</el-button>
-          <el-button size="mini" type="info" @click="handleClone(scope.row.hash, scope.row.config.title)">{{ '克隆' }}</el-button>
+          <el-button size="mini" type="primary" plain @click="handlePreview(scope.row.hash)">{{ '预览' }}</el-button>
+          <el-button size="mini" type="primary" plain @click="handleDesign(scope.row.hash)">{{ '编辑' }}</el-button>
+          <el-button size="mini" type="primary" plain @click="handleClone(scope.row.hash, scope.row.config.title)">{{ '克隆' }}</el-button>
           <!-- 移动分组 -->
           <div style="display:inline-block; padding-left:10px">
             <el-dropdown trigger="click" placement="bottom" @command="handleMove">
-              <el-button size="mini" type="warning">{{ '移动' }}</el-button>
+              <el-button size="mini" type="primary" plain>{{ '移动' }}</el-button>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item
                   v-for="(project, key) in projects"
@@ -107,7 +107,7 @@
                 <el-button size="mini" type="text" @click="scope._self.$refs[`popover-${scope.$index}`].doClose()">{{ '取消' }}</el-button>
                 <el-button size="mini" type="primary" @click="scope._self.$refs[`popover-${scope.$index}`].doClose() === handleDelete(scope.row)">{{ '确定' }}</el-button>
               </div>
-              <el-button size="mini" type="danger" slot="reference">{{ '删除' }}</el-button>
+              <el-button size="mini" type="primary" plain slot="reference">{{ '删除' }}</el-button>
             </el-popover>
           </div>
         </template>
