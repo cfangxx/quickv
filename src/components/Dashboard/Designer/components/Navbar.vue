@@ -95,7 +95,7 @@ export default {
 <style lang="scss">
   @import '../style/_variables.scss';
   .header {
-    background-color: #24292e;
+    background-color: #1B5CBF;
     padding: 12px 0;
   }
   .navbar1 {

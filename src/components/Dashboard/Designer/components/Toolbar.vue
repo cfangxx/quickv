@@ -102,7 +102,7 @@ export default {
     font-size: 20px;
     text-align: center;
     color:#aab2bd;
-    background-color: #232d3c;
+    background-color: #143f82;
     margin-left: -3px;
     box-sizing: border-box;
   }
