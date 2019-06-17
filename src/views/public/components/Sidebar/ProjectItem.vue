@@ -3,7 +3,7 @@
 
     <el-submenu ref="subMenu" :index="resolvePath('/project')">
       <template slot="title">
-        <item :icon="'list'" :title="'我的大屏'" />
+        <item :icon="'list'" :title="'大屏管理'" />
       </template>
 
       <app-link :to="resolvePath('./all')">

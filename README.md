@@ -1,4 +1,4 @@
-# Cryia
+# QuickV
 
 > A Powerful and Accessible Data Visualization Tool
 

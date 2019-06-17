@@ -20,7 +20,7 @@ router.beforeEach((to, from, next) => {
   NProgress.start()
 
   if (to.meta.title) {
-    document.title = to.meta.title + ' - Cryia'
+    document.title = to.meta.title + ' - QuickV'
     next()
   }
 

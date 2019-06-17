@@ -82,7 +82,7 @@ export default {
     autoToolTip: false, // 是否开启自动轮播
     autoToolTipTime: 5000, // 自动轮播时间
 
-    dataAPI: 'https://easy-mock.com/mock/5cc6c0a89edd7844f38df463/cryia/api/salevolume', // API拉取地址
+    dataAPI: 'https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/quickv/api/demo', // API拉取地址
     dataAutoRefresh: false, // 是否自动刷新
     dataOrigin: 'local', // local 本地 api 远程接口
     dataRefreshTime: 5, // 自动刷新间隔（秒）

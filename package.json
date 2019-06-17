@@ -1,7 +1,6 @@
 {
-  "name": "Cryia",
+  "name": "QuickV",
   "version": "0.0.1",
-  "description": "A Powerful and Accessible Data Visualization Tool",
   "author": "K.T.Cooperation rom@kunteng.org.cn",
   "private": true,
   "scripts": {

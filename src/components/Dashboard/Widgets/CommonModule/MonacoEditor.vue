@@ -42,7 +42,7 @@ export default {
   methods: {
     initEditor () {
       // custom theme
-      monaco.editor.defineTheme('cryia', {
+      monaco.editor.defineTheme('quickv', {
         base: 'vs',
         inherit: true,
         rules: [{ background: 'EDF9FA' }],
@@ -65,7 +65,7 @@ export default {
       this.monacoEditor = monaco.editor.create(document.getElementById('json-editor'), {
         value: that.codes,
         language: that.language,
-        theme: 'cryia',
+        theme: 'quickv',
         lineNumbers: 'off',
         contextmenu: false,
         minimap: { enabled: false },
