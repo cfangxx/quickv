@@ -131,7 +131,7 @@ export default {
         }
         .btn-text {
           line-height: 16px;
-          color: #ccc;
+          color: #f1f1f1;
         }
       }
       .btn-item__list {
@@ -184,7 +184,7 @@ export default {
         }
       }
       &:hover {
-        background-color:rgb(88, 88, 88);
+        background-color:#0939a5;
         border-radius:2px;
       }
     }

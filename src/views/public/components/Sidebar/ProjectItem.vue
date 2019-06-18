@@ -176,4 +176,10 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+  .el-menu-item i{
+    color: #f7f7f8;
+  }
+  .el-menu-item.is-active i{
+    color: rgb(109, 221, 255);
+  }
 </style>

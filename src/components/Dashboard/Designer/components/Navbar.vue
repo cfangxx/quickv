@@ -14,11 +14,11 @@
           @click="undo"><vpd-icon name="undo" /> 撤销
         </a>
         <a
-          class="btn btn-link tooltip tooltip-bottom"
+          class="btn btn-link"
           @click="save"><vpd-icon name="save" /> 保存
         </a>
         <a
-          class="btn btn-link tooltip tooltip-bottom"
+          class="btn btn-link"
           @click="quit"><vpd-icon name="quit" /> 退出
         </a>
       </section>
@@ -105,11 +105,13 @@ export default {
       }
     }
     .btn.btn-link {
-      color: $gray-color;
+      /*color: $gray-color;*/
+      color: #f1f1f1;
       margin-right: 15px;
     }
     .btn.btn-link:hover {
-      color: $light-color;
+      /*color: $light-color;*/
+      color: #ccc;
     }
     .logo {
       font-size: 20px;
@@ -178,7 +180,7 @@ export default {
     line-height: 60px;
   }
   .logo a{
-    color:#bcc3ce;
+    color:#f1f1f1;
   }
   .icon-item {
     font-size: 25px;

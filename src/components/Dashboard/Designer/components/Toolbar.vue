@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[isCollapse?'big-panel':'']"
-    class="menu-bar-new toolbar-container toolbar-ctrl-panel"
+    class="menu-bar-new toolbar-container toolbar-ctrl-panel big-panel"
     @mouseenter="enter()"
     @mouseleave="leave()">
     <div class="min-banner">组件管理</div>
