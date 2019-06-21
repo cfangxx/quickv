@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
         <h3 class="title">
-          {{ '系统登录' }}
+          {{ '系统登陆' }}
         </h3>
       </div>
 
@@ -168,7 +168,7 @@ export default {
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  $bg:#1B5CBF;;
+  $bg:#2d3a4b;
   $dark_gray:#889aa4;
   $light_gray:#eee;
 

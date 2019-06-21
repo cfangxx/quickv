@@ -26,7 +26,15 @@
       </el-table-column>
       <el-table-column :label="'大屏名称'" min-width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.config.title }}</span>
+
+          <el-popover placement="bottom" width="300" height="168" trigger="hover">
+            <el-image style="height:100%" :src="'http://192.168.159.2:8848' + scope.row.imgUrl">
+              <div slot="placeholder" class="image-slot">
+                <span class="dot">加载中...</span>
+              </div>
+            </el-image>
+            <el-button size="mini" type="text" slot="reference" plain>{{ scope.row.config.title }}</el-button>
+          </el-popover>
         </template>
       </el-table-column>
       <el-table-column :label="'分享链接'" min-width="250px">
@@ -82,7 +90,7 @@
       </el-table-column>
       <el-table-column :label="'操作'" align="center" width="400" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" plain @click="handlePreview(scope.row.hash)">{{ '预览' }}</el-button>
+          <el-button size="mini" type="primary" slot="reference" plain @click="handlePreview(scope.row.hash)">{{ '预览' }}</el-button>
           <el-button size="mini" type="primary" plain @click="handleDesign(scope.row.hash)">{{ '编辑' }}</el-button>
           <el-button size="mini" type="primary" plain @click="handleClone(scope.row.hash, scope.row.config.title)">{{ '克隆' }}</el-button>
           <!-- 移动分组 -->

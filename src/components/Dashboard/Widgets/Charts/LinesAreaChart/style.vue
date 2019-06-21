@@ -235,29 +235,7 @@
               size="mini"
             >
               <div>
-                <div class="panel-row" style="display: none">
-                  <div class="panel-label">配置颜色</div>
-                  <div class="panel-value">
-                    <select v-model="activeElement.seriesColorType[editableTabsValue]">
-                      <option value="Color">纯色</option>
-                      <option value="Gradientcolor">渐变</option>
-                    </select>
-                  </div>
-                </div>
-                <div
-                  class="panel-row"
-                  v-for="(item,index) in activeElement.lgArr[editableTabsValue]"
-                  :key="index">
-                  <div class="panel-label">{{index === 0 ? '配置颜色' : ''}}</div>
-                  <div class="panel-colormsg">{{ item.color }}</div>
-                  <div class="panel-colorpick">
-                    <el-color-picker
-                      v-model="item.color"
-                      show-alpha
-                      size="small"/>
-                  </div>
-                </div>
-                <div class="panel-row" style="display: none">
+                <div class="panel-row">
                   <div class="panel-label">配置颜色</div>
                   <div class="panel-setcolor">
                     <div
@@ -270,7 +248,6 @@
                           v-model="item.color"
                           type="color">
                         <input
-                          style="display: none"
                           v-if="activeElement.lgArr[editableTabsValue].length > 1"
                           v-model="item.offset"
                           type="number"

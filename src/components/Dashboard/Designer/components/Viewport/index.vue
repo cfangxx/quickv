@@ -1,7 +1,7 @@
 <template>
   <div
     id="viewport"
-    class="holder"
+    class="holder viewport-scroll"
     :style="preview ? screenSize : {}">
     <ruler-tool
       :ruler-toggle=!preview
@@ -287,5 +287,19 @@ export default {
 .screen {
   /*margin: 25px auto;*/
   transform-origin: left top;
+}
+.viewport-scroll::-webkit-scrollbar {/*滚动条整体样式*/
+  width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+  height: 10px;
+}
+.viewport-scroll::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+  border-radius: 10px;
+  /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);*/
+  background: #999999;
+}
+.viewport-scroll::-webkit-scrollbar-track {/*滚动条里面轨道*/
+  /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);*/
+  border-radius: 10px;
+  background: #e8e8e8;
 }
 </style>

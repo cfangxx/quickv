@@ -14,6 +14,7 @@
         <div class="panel-label">描述</div>
         <div>
           <textarea
+            class="panel-textarea"
             v-model.number="activeElement.desc"/>
         </div>
       </div>

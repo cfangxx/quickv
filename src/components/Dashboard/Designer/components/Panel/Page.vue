@@ -19,6 +19,7 @@
       <div class="panel-label">大屏简介</div>
       <div class="panel-value">
         <textarea
+          class="panel-textarea"
           v-model="activeElement.about">
         </textarea>
       </div>

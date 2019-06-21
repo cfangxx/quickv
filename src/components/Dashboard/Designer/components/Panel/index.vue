@@ -147,7 +147,7 @@ export default {
   }
   .panel-row {
     display: flex;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 36px;
   }
   .panel-row .svg-icon {
@@ -220,5 +220,9 @@ export default {
   }
   .panel-title-arrow{
     float: right;line-height: 40px
+  }
+  .panel-textarea{
+    width: 159px;
+    height:100px;
   }
 </style>

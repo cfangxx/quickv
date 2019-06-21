@@ -1,16 +1,16 @@
 <template>
   <div
     :class="[isCollapse?'big-panel':'']"
-    class="menu-bar-new toolbar-container toolbar-ctrl-panel big-panel"
+    class="menu-bar-new toolbar-container toolbar-ctrl-panel"
     @mouseenter="enter()"
     @mouseleave="leave()">
     <div class="min-banner">组件管理</div>
-    <div>
+    <div class="left-panel-cont">
       <p class="toolbar-title">已加组件</p>
       <ul class="layer-list-new">
         <li
           v-for="layer in layers"
-          :class="{'layer-active': layer === activeElement}"
+          :class="{'layer-active': isSelected(layer.uuid)}"
           :key="layer.uuid"
           @click="(e) => {activeLayer(e, layer)}">{{ layer.name }}</li>
       </ul>
@@ -65,6 +65,13 @@ export default {
     },
     leave () {
       this.isCollapse = false
+    },
+    isSelected (uuid) {
+      if (this.$vpd.state.multiSelect) {
+        return this.$vpd.state.multiSelectCols.indexOf(uuid) > -1
+      } else {
+        return this.$vpd.state.uuid === uuid
+      }
     }
   }
 }
@@ -101,7 +108,7 @@ export default {
     padding: 20px 10px 0;
     font-size: 20px;
     text-align: center;
-    color:#aab2bd;
+    color:#f1f1f1;
     background-color: #143f82;
     margin-left: -3px;
     box-sizing: border-box;
@@ -113,7 +120,7 @@ export default {
     width: 120px;
   }
   .toolbar-title{
-    background-color: #ddd;
+    background-color: #eee;
     height:50px;
     line-height: 50px;
     margin:0;
@@ -131,11 +138,33 @@ export default {
     height:40px;
     line-height: 40px;
     box-sizing: border-box;
-    border:1px solid #e8e8e8;
+    border-bottom:1px solid #e8e8e8;
     cursor: pointer;
   }
   .layer-list-new li:hover{
-    /*background-color: #eee;*/
-    border:1px solid #2c3e50;
+    background-color: #47aff3;
+    color:#fff;
+  }
+  .layer-active{
+    background-color: #47aff3;
+    color:#fff;
+  }
+  .left-panel-cont{
+    overflow-y: auto;
+    height: 100%;
+  }
+  .left-panel-cont::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+  }
+  .left-panel-cont::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 10px;
+    /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);*/
+    background: #999999;
+  }
+  .left-panel-cont::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);*/
+    border-radius: 10px;
+    background: #e8e8e8;
   }
 </style>
