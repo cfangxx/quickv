@@ -222,7 +222,7 @@ export default {
     float: right;line-height: 40px
   }
   .panel-textarea{
-    width: 159px;
+    width: 175px;
     height:100px;
   }
 </style>

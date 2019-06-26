@@ -65,9 +65,9 @@
           class="panel-preview pic-updata-btn"
           @click="addPic">
           {{ (activeElement.backPic == '' || activeElement.backPic == 'url()') ? '点击上传' : '重新上传'}}
-          <vpd-icon
-            v-show="!activeElement.backPic"
-            name="plus"/>
+          <!--<vpd-icon-->
+            <!--v-show="!activeElement.backPic"-->
+            <!--name="plus"/>-->
         </div>
         <button
           v-show="activeElement.backPic !== '' && activeElement.backPic !== 'url()'"

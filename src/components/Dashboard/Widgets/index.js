@@ -19,6 +19,7 @@ import ChinaScatterMap from './Maps/ChinaScatterMap'
 import Picture from './Materials/Picture'
 import Button from './Materials/Button'
 import Rect from './Materials/Rect'
+import Iframe from './Materials/Iframe'
 
 // tables
 import BasicTable from './Tables/BasicTable'
@@ -49,6 +50,7 @@ export default {
   [Picture.name]: Picture,
   [Button.name]: Button,
   [Rect.name]: Rect,
+  [Iframe.name]: Iframe,
 
   // tables
   [BasicTable.name]: BasicTable,
