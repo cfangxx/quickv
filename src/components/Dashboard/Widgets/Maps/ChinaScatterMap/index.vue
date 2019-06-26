@@ -63,7 +63,7 @@ export default {
     mapEmphasisAreaColor: '#222222', // 高亮区域颜色
     autoToolTip: false, // 是否开启自动轮播
     autoToolTipTime: 5000, // 自动轮播时间
-    autoToolTipTimer: null,
+    autoToolTipTimer: 0,
 
     dataAPI: 'https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/chartMap', // API拉取地址
     dataAutoRefresh: false, // 是否自动刷新
