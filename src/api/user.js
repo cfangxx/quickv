@@ -22,7 +22,7 @@ export function deleteProject (data, key) {
   const id = getUserId()
   return request({
     url: '/user/' + id + '/projects/' + key,
-    method: 'delete',
+    method: 'post',
     data
   })
 }
