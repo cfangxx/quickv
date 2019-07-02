@@ -23,6 +23,37 @@
                 type="text">
             </div>
           </div>
+          <div
+            class="panel-row"
+            flex>
+            <div class="panel-label">显示标线</div>
+            <div class="panel-value">
+              <label class="form-switch">
+                <input
+                  v-model="activeElement.showLabel"
+                  type="checkbox" >
+                <i class="form-icon"/>
+              </label>
+            </div>
+          </div>
+          <div class="panel-row" v-show="activeElement.showLabel">
+            <div class="panel-label">标线长度</div>
+            <div>
+              <input
+                v-model.number="activeElement.labelLineLength"
+                type="number">
+            </div>
+          </div>
+          <div class="panel-row"  v-show="activeElement.showLabel">
+            <div class="panel-label">标线颜色</div>
+            <div class="panel-colormsg">{{ activeElement.labelLineColor }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
+                v-model="activeElement.labelLineColor"
+                show-alpha
+                size="small"/>
+            </div>
+          </div>
           <div class="panel-row">
             <div class="panel-label">配置颜色</div>
             <div class="panel-setcolor">

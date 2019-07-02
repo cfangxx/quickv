@@ -74,7 +74,10 @@ export default {
     legendIconHeight: 10, // 图例 Icon 高度
     legendIconGap: 10, // 图例 Icon 间距
 
-    seriesRadius: ['40%', '60%'], // 圆环大小
+    seriesRadius: ['18%', '60%'], // 圆环大小
+    showLabel: true, // 显示标线
+    labelLineColor: '#eeeeee', // 标线颜色
+    labelLineLength: 3, // 标线长度
 
     colorArr: ['#fc8700', '#ff00c0', '#f33a00', '#2cbdff', '#0000ff', '#25da29', '#f1f10e', '#07ecf8', '#af28d7'],
 
@@ -216,7 +219,8 @@ export default {
           name: '销量',
           type: 'pie',
           radius: this.val.seriesRadius,
-          center: ['50%', '50%'],
+          roseType: 'area',
+          center: ['50%', '40%'],
           avoidLabelOverlap: true,
           hoverAnimation: true, // 是否开启 hover 在扇区上的放大动画效果
           silent: false, // 图形是否不响应和触发鼠标事件
@@ -234,11 +238,11 @@ export default {
           },
           label: {
             normal: {
-              show: false,
-              position: 'center'
-              // formatter: function (params) {
-              // return params.name + ': ' + params.value
-              // }
+              show: this.val.showLabel,
+              // position: 'center'
+              formatter: function (params) {
+                return params.name + ': ' + params.value
+              }
             },
             emphasis: {
               show: true,
@@ -250,7 +254,10 @@ export default {
           },
           labelLine: {
             normal: {
-              show: true
+              length: this.val.labelLineLength,
+              lineStyle: {
+                color: this.val.labelLineColor
+              }
             }
           },
           data: this.dataSeries

@@ -353,162 +353,10 @@
           </label>
         </div>
       </div>
-      <div class="panel-item-new">
-        <div @click="isShowLegend = !isShowLegend" class="panel-item-title">图例设置<i :class="isShowLegend ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
-        <div v-show="isShowLegend" class="panel-item-new-set">
-          <div
-            class="panel-row"
-            flex>
-            <div class="panel-label">显示图例</div>
-            <div class="panel-value">
-              <label class="form-switch">
-                <input
-                  v-model="activeElement.legendShow"
-                  type="checkbox" >
-                <i class="form-icon"/>
-              </label>
-            </div>
-          </div>
-          <div
-            v-show="activeElement.legendShow"
-            class="panel-row">
-            <div class="panel-label">宽度</div>
-            <div>
-              <input v-model="activeElement.legendWidth">
-            </div>
-          </div>
-          <div
-            v-show="activeElement.legendShow"
-            class="panel-row">
-            <div class="panel-label">文字大小</div>
-            <div>
-              <input
-                v-model="activeElement.legendFontSize"
-                type="number" min="8">
-            </div>
-          </div>
-          <div
-            v-show="activeElement.legendShow"
-            class="panel-row">
-            <div class="panel-label">文字颜色</div>
-            <div class="panel-value">{{ activeElement.legendTextColor }}</div>
-            <div>
-              <input
-                v-model="activeElement.legendTextColor"
-                type="color">
-            </div>
-          </div>
-          <div
-            v-show="activeElement.legendShow"
-            class="panel-row"
-            flex>
-            <div class="panel-label">对齐</div>
-            <div class="panel-value">
-              <label class="radiolabel">
-                <input
-                  v-model="activeElement.legendPositionX"
-                  type="radio"
-                  class="inpRadio"
-                  name="x"
-                  value="left">居左
-              </label>
-              <label class="radiolabel">
-                <input
-                  v-model="activeElement.legendPositionX"
-                  type="radio"
-                  class="inpRadio"
-                  name="x"
-                  value="center">居中
-              </label>
-              <label class="radiolabel">
-                <input
-                  v-model="activeElement.legendPositionX"
-                  type="radio"
-                  class="inpRadio"
-                  name="x"
-                  value="right">居右
-              </label>
-            </div>
-          </div>
-          <div
-            v-show="activeElement.legendShow"
-            class="panel-row"
-            flex>
-            <div class="panel-label"></div>
-            <div class="panel-value">
-              <label class="radiolabel">
-                <input
-                  v-model="activeElement.legendPositionY"
-                  type="radio"
-                  class="inpRadio"
-                  name="y"
-                  value="top">居上
-              </label>
-              <label class="radiolabel">
-                <input
-                  v-model="activeElement.legendPositionY"
-                  type="radio"
-                  class="inpRadio"
-                  name="y"
-                  value="center">居中
-              </label>
-              <label class="radiolabel">
-                <input
-                  v-model="activeElement.legendPositionY"
-                  type="radio"
-                  class="inpRadio"
-                  name="y"
-                  value="bottom">居下
-              </label>
-            </div>
-          </div>
-          <div>
-            <div
-              v-show="activeElement.legendShow"
-              class="panel-row">
-              <div class="panel-label">图例图标</div>
-              <div class="panel-value">
-                <select v-model="activeElement.legendIcon">
-                  <!--<option>{{activeElement.legendIcon}}</option>-->
-                  <option
-                    v-for="(val, index) in icon"
-                    :key="index" :value="val.value">{{ val.name }}</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div
-            v-show="activeElement.legendShow"
-            class="panel-row">
-            <div class="panel-label">图标宽度</div>
-            <div>
-              <input
-                v-model="activeElement.legendIconWidth"
-                type="number" min="1">
-            </div>
-          </div>
-          <div
-            v-show="activeElement.legendShow"
-            class="panel-row">
-            <div class="panel-label">图标高度</div>
-            <div>
-              <input
-                v-model="activeElement.legendIconHeight"
-                type="number" min="1">
-            </div>
-          </div>
-          <div
-            v-show="activeElement.legendShow"
-            class="panel-row">
-            <div class="panel-label">图标间距</div>
-            <div>
-              <input
-                v-model="activeElement.legendIconGap"
-                type="number" min="0">
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <!--图例设置-->
+      <common-settings :activeElement="activeElement" />
+
     </div>
   </div>
 </template>
@@ -516,12 +364,14 @@
 <script>
 import DataSettings from '../../CommonModule/DataSettings'
 import BasicSettings from '../../CommonModule/BasicSettings'
+import CommonSettings from '../../CommonModule/CommonSettings'
 
 export default {
   name: 'LinesAreaChartStyle',
   components: {
     DataSettings,
-    BasicSettings
+    BasicSettings,
+    CommonSettings
   },
   props: ['activeElement', 'tab'],
   data () {
@@ -530,34 +380,6 @@ export default {
       isShowY: false,
       isShowLine: false,
       isShowSet: true,
-      isShowLegend: true,
-      icon: [
-        {
-          name: '无',
-          value: 'none'
-        }, {
-          name: '圆形',
-          value: 'circle'
-        }, {
-          name: '矩形',
-          value: 'rectangle'
-        }, {
-          name: '三角形',
-          value: 'triangle'
-        }, {
-          name: '空心圆',
-          value: 'emptyCircle'
-        }, {
-          name: '菱形',
-          value: 'diamond'
-        }, {
-          name: '标注',
-          value: 'pin'
-        }, {
-          name: '箭头',
-          value: 'arrow'
-        }
-      ],
 
       editableTabsValue: '0'
     }

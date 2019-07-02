@@ -28,7 +28,7 @@
         <template slot-scope="scope">
 
           <el-popover placement="bottom" width="300" height="168" trigger="hover">
-            <el-image style="height:100%" :src="url + scope.row.imgUrl">
+            <el-image style="height:100%" :src="url + scope.row.imgUrl + '?t=' + scope.row.config.timestamp">
               <div slot="placeholder" class="image-slot">
                 <span class="dot">加载中...</span>
               </div>
@@ -183,6 +183,7 @@ export default {
   data () {
     return {
       url: process.env.BASE_API,
+      time: new Date(),
       delPopover: false,
       tableKey: 0,
       list: null,
@@ -350,7 +351,6 @@ export default {
       const routeUrl = this.$router.resolve({
         path: '/preview/' + hash
       })
-
       window.open(routeUrl.href, '_blank')
     },
     handleMove (param) {

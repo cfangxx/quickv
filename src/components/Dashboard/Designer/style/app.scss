@@ -170,7 +170,7 @@ input[type='radio']{
 .panel-colormsg{
   display: flex;
   align-items: center;
-  min-width: 120px;
+  min-width: 135px;
 }
 .panel-colorpick{
   display:flex;
@@ -200,4 +200,7 @@ input[type='radio']{
 }
 .radiowrap{
   font-size:14px;
+}
+.panel-radio-cont .el-radio__label{
+  font-size:12px;
 }

@@ -2,7 +2,7 @@
   <header class="header">
     <div class="navbar1 container grid-xl">
       <section class="logo navbar-cont">
-        <a>QuickV</a>
+        <a class="edit-navbar-logo"><img src="../../../../assets/uugai-w.png" alt=""></a>
       </section>
       <section class="navbar-cont nav-middle">
         <widget-box :zoom="zoom"/>
@@ -95,7 +95,9 @@ export default {
 <style lang="scss">
   @import '../style/_variables.scss';
   .header {
-    background-color: #1B5CBF;
+    /*background-color: #1B5CBF;*/
+    background-color: #0543b0;
+    /*background: linear-gradient(0deg, #0543b0 30%, #237eef 100%);;*/
     padding: 12px 0;
   }
   .navbar1 {
@@ -191,4 +193,9 @@ export default {
     display: block;
     font-size: 12px;
   }
+  .edit-navbar-logo img{
+    height:50px;
+    padding-top:16px;
+  }
+
 </style>
