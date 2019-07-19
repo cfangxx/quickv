@@ -308,7 +308,7 @@
                 class="radiusInp">
             </div>
           </div>
-          <div class="panel-row">
+          <div class="panel-row" style="display: none">
             <div class="panel-label">配置颜色</div>
             <div class="panel-setcolor">
               <div
@@ -338,6 +338,21 @@
                   class="pannel-setcolor-item-btn"
                   @click="delLGColor(index)">删除</button>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-item-new">
+        <div @click="isShowColor = !isShowColor" class="panel-item-title">配置颜色<i :class="isShowColor ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowColor" class="panel-item-new-set">
+          <div class="panel-row">
+            <div class="panel-label">配置颜色</div>
+            <div class="panel-colormsg">{{ activeElement.seriesColors[0] }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
+                v-model="activeElement.seriesColors[0]"
+                show-alpha
+                size="small"/>
             </div>
           </div>
         </div>
@@ -424,6 +439,7 @@ export default {
       isShowY: true,
       isShowBar: true,
       isShowBarItem: true,
+      isShowColor: true,
       isShowTooltip: true
     }
   },

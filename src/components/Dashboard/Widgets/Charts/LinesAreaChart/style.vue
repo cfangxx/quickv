@@ -235,7 +235,18 @@
               size="mini"
             >
               <div>
+
                 <div class="panel-row">
+                  <div class="panel-label">配置颜色</div>
+                  <div class="panel-colormsg">{{ activeElement.seriesColors[editableTabsValue] }}</div>
+                  <div class="panel-colorpick">
+                    <el-color-picker
+                      v-model="activeElement.seriesColors[editableTabsValue]"
+                      show-alpha
+                      size="small"/>
+                  </div>
+                </div>
+                <div class="panel-row" style="display: none;">
                   <div class="panel-label">配置颜色</div>
                   <div class="panel-setcolor">
                     <div
@@ -380,6 +391,36 @@ export default {
       isShowY: false,
       isShowLine: false,
       isShowSet: true,
+      icon: [
+        {
+          name: '无',
+          value: 'none'
+        }, {
+          name: '圆形',
+          value: 'circle'
+        }, {
+          name: '矩形',
+          value: 'rectangle'
+        }, {
+          name: '圆角矩形',
+          value: 'roundRect'
+        }, {
+          name: '三角形',
+          value: 'triangle'
+        }, {
+          name: '空心圆',
+          value: 'emptyCircle'
+        }, {
+          name: '菱形',
+          value: 'diamond'
+        }, {
+          name: '标注',
+          value: 'pin'
+        }, {
+          name: '箭头',
+          value: 'arrow'
+        }
+      ],
 
       editableTabsValue: '0'
     }

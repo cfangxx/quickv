@@ -3,7 +3,8 @@ const generate = require('nanoid/generate')
 export default {
   // 添加组件
   ADD_WIDGET (state, { data: data = null, item }) {
-    let def = { top: state.top, uuid: generate('1234567890abcdef', 10) }
+    // let def = { top: state.top, uuid: generate('1234567890abcdef', 10) }
+    let def = { uuid: generate('1234567890abcdef', 10) }
     let setting = JSON.parse(JSON.stringify(item.setting))
 
     if (setting.isContainer) {
@@ -261,6 +262,11 @@ export default {
     state.activeElement.bgColor = payload[0].val
   },
 
+  // 修改页面主题颜色
+  UPDATE_PAGE_COLOR_THEME (state, payload) {
+    state.page.colors = payload
+  },
+
   // 添加动画
   ADD_ANIMATION (state) {
     state.animation.push({
@@ -336,6 +342,7 @@ export default {
   // 图表删除颜色
   DELETE_COLOR (state, payload) {
     state.activeElement[payload.property].splice(payload.data.index, 1)
+    console.log(state.activeElement.seriesColors)
   },
 
   UPDATE_LINKAGE (state, { uuid, value }) {

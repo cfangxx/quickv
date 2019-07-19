@@ -63,6 +63,7 @@ select {
 }
 .panel-setcolor-item{
   display: flex;
+  height:36px;
 }
 .pannel-setcolor-item-btn{
   width: 46px;
@@ -170,7 +171,7 @@ input[type='radio']{
 .panel-colormsg{
   display: flex;
   align-items: center;
-  min-width: 135px;
+  min-width: 143px;
 }
 .panel-colorpick{
   display:flex;
@@ -203,4 +204,12 @@ input[type='radio']{
 }
 .panel-radio-cont .el-radio__label{
   font-size:12px;
+}
+.panel-color-cont{
+  width:140px;
+}
+.panel-color-icon{
+  font-size:16px;
+  line-height: 33px;
+  cursor: pointer;
 }

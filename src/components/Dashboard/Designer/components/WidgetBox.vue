@@ -144,12 +144,14 @@ export default {
 
         .list-container {
           z-index: 22;
-          border: 1px solid #ccc;
+          border: 1px solid #2e343c;
           border-radius: 4px;
           box-shadow: 0 2px 6px rgba(0,0,0,.1);
           padding: 4px;
-          background-color: #fff;
-          color: #58666e;
+          background-color: #27343e;
+          /*background-color: #fff;*/
+          /*color: #58666e;*/
+          color: #bcc9d4;
           max-height: 380px;
           min-height: 100px;
           overflow-y: auto;
@@ -159,6 +161,7 @@ export default {
             li {
               float: left;
               margin: 0 5px 4px;
+              padding-bottom: 8px;
               .tool-item {
                 display: inline-block;
                 width: 79px;
@@ -176,8 +179,10 @@ export default {
                 }
               }
               &:hover {
-                background-color:rgb(240, 240, 240);
+                /*background-color:rgb(240, 240, 240);*/
                 border-radius:2px;
+                background-color: #1d262e;
+                color: #00baff;
               }
             }
           }

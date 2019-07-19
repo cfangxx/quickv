@@ -16,11 +16,12 @@
           </div>
           <div class="panel-row">
             <div class="panel-label">标题颜色</div>
-            <div class="panel-value">{{ activeElement.titleColor }}</div>
-            <div>
-              <input
+            <div class="panel-colormsg">{{ activeElement.titleColor }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
                 v-model="activeElement.titleColor"
-                type="color">
+                show-alpha
+                size="small"/>
             </div>
           </div>
           <div class="panel-row">
@@ -70,10 +71,10 @@
               <div>
                 <div class="panel-row">
                   <div class="panel-label">配置颜色</div>
-                  <div class="panel-colormsg">{{ activeElement.lgArr[editableTabsValue] }}</div>
+                  <div class="panel-colormsg">{{ activeElement.seriesColors[editableTabsValue] }}</div>
                   <div class="panel-colorpick">
                     <el-color-picker
-                      v-model="activeElement.lgArr[editableTabsValue]"
+                      v-model="activeElement.seriesColors[editableTabsValue]"
                       show-alpha
                       size="small"/>
                   </div>

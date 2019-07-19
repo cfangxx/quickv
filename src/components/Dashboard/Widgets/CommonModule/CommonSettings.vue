@@ -34,7 +34,7 @@
             type="number" min="8">
         </div>
       </div>
-      <div class="panel-row">
+      <div class="panel-row" v-show="activeElement.legendShow">
         <div class="panel-label">文字颜色</div>
         <div class="panel-colormsg">{{ activeElement.legendTextColor }}</div>
         <div class="panel-colorpick">
@@ -128,7 +128,7 @@ export default {
   props: ['activeElement'],
   data () {
     return {
-      isShowLegend: true,
+      isShowLegend: false,
       icon: [
         {
           name: '无',

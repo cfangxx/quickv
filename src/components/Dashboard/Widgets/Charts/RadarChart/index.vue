@@ -38,10 +38,10 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    width: 500,
-    height: 550,
-    left: 200,
-    top: 200,
+    width: 300,
+    height: 350,
+    left: 100,
+    top: 50,
     z: 0,
     color: '#555555',
     name: '雷达图', // 组件名称, 可自定义
@@ -55,12 +55,12 @@ export default {
     lgArr: ['rgba(39, 214, 227, 1)', 'rgba(70, 227, 39, 1)', 'rgba(239, 249, 43, 1)'],
 
     legendShow: true, // 显示图例
-    legendWidth: '60%', // 图例宽度
+    legendWidth: '80%', // 图例宽度
     legendHeight: '100', // 图例高度
     legendPositionX: 'center', // 图例位置（X 轴）
     legendPositionY: 'top', // 图例位置（Y 轴）
     legendFontSize: 12, // 图例文字大小
-    legendTextColor: '#000000', // 图例文字颜色
+    legendTextColor: '#f7f7f7', // 图例文字颜色
     legendIcon: 'roundRect', // 图例 Icon 如 circle, rect, line, roundRect, triangle, diamond, pin, none
     legendIconWidth: 20, // 图例 Icon 宽度
     legendIconHeight: 10, // 图例 Icon 高度
@@ -71,6 +71,7 @@ export default {
     seriesLineColor: 'rgba(255, 255, 255, 0.6)',
     seriesLineWidth: [2, 2, 2], // 折线宽度
     showTooltip: false, // 是否显示提示框
+    seriesColors: [],
 
     legend: [],
 
@@ -129,6 +130,16 @@ export default {
       dynamicData: {}
     }
   },
+  mounted () {
+    if (this.$vpd.state.uuid === this.val.uuid) {
+      let colors = this.$vpd.state.page.colors.value.slice(0, this.legend.length)
+      let param = {
+        name: 'seriesColors',
+        value: colors
+      }
+      this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
+    }
+  },
   computed: {
     categories () {
       if (this.dynamicData[this.val.keyPrimary] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget][this.val.keyXAxis]) {
@@ -142,10 +153,10 @@ export default {
         const orign = this.dynamicData[this.val.keyPrimary][this.val.keyTarget][this.val.keyYAxis]
         if (this.$vpd.state.uuid === this.val.uuid) {
           let datalen = orign.length
-          if (datalen > this.val.lgArr.length) {
+          if (datalen > this.val.seriesColors.length) {
             let param = [
               {
-                name: 'lgArr',
+                name: 'seriesColors',
                 value: '#f94f2b'
               },
               {
@@ -154,9 +165,9 @@ export default {
               }
             ]
             this.$vpd.commit('UPDATE_DATAS_ADD', param)
-          } else if (datalen < this.val.lgArr.length) {
+          } else if (datalen < this.val.seriesColors.length) {
             let paramDel = {
-              name: ['seriesLineWidth', 'lgArr'],
+              name: ['seriesLineWidth', 'seriesColors'],
               value: datalen
             }
             this.$vpd.commit('UPDATE_DATAS_DEL', paramDel)
@@ -176,14 +187,14 @@ export default {
                   lineStyle: {
                     width: this.val.seriesLineWidth[i], // 折线宽度
                     type: 'solid', // 折线样式
-                    color: this.val.lgArr[i] // 折线颜色
+                    color: this.val.seriesColors[i] // 折线颜色
                   }
                 }
               },
               areaStyle: {
                 show: false,
                 normal: {
-                  color: this.val.lgArr[i] // 折线区域渐变色
+                  color: this.val.seriesColors[i] // 折线区域渐变色
                 }
               },
               name: item.name,
@@ -215,7 +226,7 @@ export default {
             color: this.val.titleColor
           }
         },
-        color: this.val.lgArr,
+        color: this.val.seriesColors,
         legend: {
           show: this.val.legendShow, // 显示图例
           x: this.val.legendPositionX,
@@ -271,46 +282,6 @@ export default {
         xAxis: this.val.axisReverse ? this.yAxis : this.xAxis,
         yAxis: this.val.axisReverse ? this.xAxis : this.yAxis,
         series: this.dataSeries
-        // series: [
-        //   {
-        //     type: 'radar',
-        //     data: [
-        //       {
-        //         value: [4500, 3400, 2800, 5100, 2200, 2000],
-        //         name: 'DATA',
-        //         itemStyle: {
-        //           normal: {
-        //             color: 'rgba(5, 128, 242, 0.5)'
-        //           }
-        //         },
-        //         areaStyle: {
-        //           normal: {
-        //             color: '#37A2DA'
-        //           }
-        //         }
-        //       }
-        //     ]
-        //   },
-        //   {
-        //     type: 'radar',
-        //     data: [
-        //       {
-        //         value: [3000, 2300, 1090, 2000, 1000, 1500],
-        //         name: 'test',
-        //         itemStyle: {
-        //           normal: {
-        //             color: 'rgba(5, 128, 242, 0.5)'
-        //           }
-        //         },
-        //         areaStyle: {
-        //           normal: {
-        //             color: '#9ff031'
-        //           }
-        //         }
-        //       }
-        //     ]
-        //   }
-        // ]
       }
     }
   }

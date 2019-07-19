@@ -77,24 +77,29 @@
       <div
         class="radioscont">
         <label class="radiolabel">
-          <input
-            v-model="activeElement.dataOrigin"
-            type="radio"
-            class="inpRadio"
-            name="task"
-            value="api">API拉取
+          <!--<input-->
+            <!--v-model="activeElement.dataOrigin"-->
+            <!--type="radio"-->
+            <!--class="inpRadio"-->
+            <!--name="task"-->
+            <!--value="api">API拉取-->
+          <el-radio label="api" v-model="activeElement.dataOrigin" size="mini">API拉取</el-radio>
         </label>
         <label class="radiolabel">
-          <input
-            v-model="activeElement.dataOrigin"
-            type="radio"
-            class="inpRadio"
-            name="task"
-            value="local">静态JSON
+          <!--<input-->
+            <!--v-model="activeElement.dataOrigin"-->
+            <!--type="radio"-->
+            <!--class="inpRadio"-->
+            <!--name="task"-->
+            <!--value="local">静态JSON-->
+          <el-radio label="local" v-model="activeElement.dataOrigin" size="mini">静态JSON</el-radio>
+        </label>
+        <label class="radiolabel">
+          <el-radio label="csv" v-model="activeElement.dataOrigin" size="mini">本地数据</el-radio>
         </label>
       </div>
       <div class="radiowrap">
-        <div v-if="dataOrigin == 'api'">
+        <div class="data-radio-cont" v-if="dataOrigin == 'api'">
           <textarea
             v-model="activeElement.dataAPI"
             cols="30"
@@ -131,11 +136,28 @@
           </div>
           <p class="api-p">数据的自动刷新在非编辑模式下有效，最小刷新间隔为10秒<span style="color:red">未完成</span></p>
         </div>
-        <div v-if="dataOrigin == 'local'">
+        <div class="data-radio-cont" v-if="dataOrigin == 'local'">
           <json-editor
             :codes="localData"
             @onCodeChange="changeJsonCode" />
           <!-- <button class="btn-small" @click="refreshMonaco">刷新数据</button> -->
+        </div>
+        <div v-if="dataOrigin == 'csv'">
+          <div class="panel-row">
+            <div class="panel-label">数据表</div>
+            <div>
+              <select class="panel-csv-sel" v-model="activeElement.csvType" @change="changeCsvType($event)">
+                <option
+                  v-for="item in materialList"
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.title">{{ item.name }}</option>
+              </select>
+            </div>
+          </div>
+          <div>
+
+          </div>
         </div>
       </div>
     </div>
@@ -145,7 +167,7 @@
 
 <script>
 import JsonEditor from './MonacoEditor'
-
+import axios from 'axios'
 import vpd from '@/components/Dashboard/Designer/mixins/vpd'
 
 export default {
@@ -155,9 +177,19 @@ export default {
   },
   mixins: [vpd],
   props: ['activeElement'],
+  data () {
+    return {
+      materialList: [],
+      header: []
+    }
+  },
   computed: {
     dataOrigin () {
       return this.activeElement.dataOrigin
+    },
+    csvType () {
+      console.log(this.activeElement.csvType)
+      return this.activeElement.csvType
     },
     localData () {
       return JSON.stringify(this.activeElement.staticData, null, 2)
@@ -167,6 +199,9 @@ export default {
         val => val.linkEnable && val.linkIsMain && { uuid: val.uuid, name: val.name }
       )
     }
+  },
+  mounted () {
+    this.getMaterialList()
   },
   methods: {
     changeJsonCode (value, event) {
@@ -178,6 +213,29 @@ export default {
         value: e.target.value
       }
       this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
+    },
+
+    getMaterialList () {
+      axios({
+        type: 'get',
+        url: 'https://easy-mock.com/mock/5c7ce20ccdc04f0e04185d9b/example/material'
+      }).then(res => {
+        this.materialList = res.data.data.items
+      })
+    },
+    changeCsvType (e) {
+      // console.log(this.activeElement.csvType)
+      // console.log(e.target.value)
+      let csvId = e.target.value
+      this.getCsvHeader(csvId)
+    },
+    getCsvHeader (csvId) {
+      axios({
+        type: 'get',
+        url: 'https://easy-mock.com/mock/5c7ce20ccdc04f0e04185d9b/example/csv/header'
+      }).then(res => {
+        this.header = res.data.data.header
+      })
     }
   }
 }
@@ -188,5 +246,19 @@ export default {
   }
   .panel-wrap .api-btn{
     padding:0 6px;
+  }
+  .el-radio__label{
+    font-size:13px;
+  }
+</style>
+<style scoped>
+  .data-group{
+    padding:0;
+  }
+  .data-radio-cont,.data-group .radioscont{
+    padding: 0 15px;
+  }
+  .panel-csv-sel{
+    width: 170px
   }
 </style>

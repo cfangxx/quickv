@@ -16,11 +16,12 @@
           </div>
           <div class="panel-row">
             <div class="panel-label">标题颜色</div>
-            <div class="panel-value">{{ activeElement.titleColor }}</div>
-            <div>
-              <input
+            <div class="panel-value panel-value-color-1">{{ activeElement.titleColor }}</div>
+            <div class="panel-value panel-value-color-2">
+              <el-color-picker
                 v-model="activeElement.titleColor"
-                type="color">
+                show-alpha
+                size="mini"/>
             </div>
           </div>
           <div class="panel-row">

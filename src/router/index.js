@@ -97,6 +97,75 @@ export const permissionRouterMap = [
       }
     ]
   },
+  {
+    path: '/material',
+    component: Layout,
+    meta: {
+      title: 'material',
+      icon: 'excel',
+      roles: ['admin'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'index',
+        force: true,
+        component: () => import('@/views/dashboard/Material.vue'),
+        name: 'MaterialCsv',
+        meta: {
+          title: '数据管理',
+          roles: ['admin'], // or you can only set roles in sub nav
+          noCache: true,
+          affix: true
+        }
+      }
+    ]
+  },
+  {
+    path: '/bi',
+    component: Layout,
+    meta: {
+      title: 'BI',
+      icon: 'example',
+      roles: ['admin'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: '',
+        force: true,
+        component: () => import('@/views/dashboard/Todo.vue'),
+        name: 'BI',
+        meta: {
+          title: 'BI分析',
+          roles: ['admin'], // or you can only set roles in sub nav
+          noCache: true,
+          affix: false
+        }
+      }
+    ]
+  },
+  {
+    path: '/subpolicy',
+    component: Layout,
+    meta: {
+      title: 'subpolicy',
+      icon: 'star',
+      roles: ['admin'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: '',
+        force: true,
+        component: () => import('@/views/dashboard/Todo.vue'),
+        name: 'SubPolicy',
+        meta: {
+          title: '辅助决策',
+          roles: ['admin'], // or you can only set roles in sub nav
+          noCache: true,
+          affix: false
+        }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

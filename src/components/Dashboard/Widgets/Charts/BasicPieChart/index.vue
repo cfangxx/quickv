@@ -28,8 +28,8 @@ const WIDGET_NAME = 'BasicPieChart'
 export default {
   name: WIDGET_NAME,
   group: 'chart',
-  icon: require('./icon/thumb-piechart.png'),
-  title: '饼状图',
+  icon: require('./icon/thumb-pieareachart.png'),
+  title: '玫瑰图',
   panel: stylec,
   setting: {
     type: WIDGET_NAME,
@@ -39,14 +39,14 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    width: 400,
-    height: 450,
-    left: 400,
-    top: 400,
+    width: 300,
+    height: 350,
+    left: 100,
+    top: 50,
     z: 0,
     color: '#555555',
-    name: '饼状图', // 组件名称, 可自定义
-    desc: '基础饼状图', // 描述, 可自定义
+    name: '玫瑰图', // 组件名称, 可自定义
+    desc: '南丁格尔玫瑰图', // 描述, 可自定义
     belong: 'page',
     animationName: '',
 
@@ -63,12 +63,12 @@ export default {
     titleSubFontSize: 12, // 副标题文本字号
 
     legendShow: true, // 显示图例
-    legendWidth: '60%', // 图例宽度
+    legendWidth: '80%', // 图例宽度
     legendHeight: '100', // 图例高度
     legendPositionX: 'center', // 图例位置（X 轴）
     legendPositionY: 'bottom', // 图例位置（Y 轴）
     legendFontSize: 12, // 图例文字大小
-    legendTextColor: '#000000', // 图例文字颜色
+    legendTextColor: '#f7f7f7', // 图例文字颜色
     legendIcon: 'roundRect', // 图例 Icon 如 circle, rect, line, roundRect, triangle, diamond, pin, none
     legendIconWidth: 20, // 图例 Icon 宽度
     legendIconHeight: 10, // 图例 Icon 高度
@@ -78,6 +78,8 @@ export default {
     showLabel: true, // 显示标线
     labelLineColor: '#eeeeee', // 标线颜色
     labelLineLength: 3, // 标线长度
+    toPie: false, // 是否转为普通饼图
+    seriesColors: [],
 
     colorArr: ['#fc8700', '#ff00c0', '#f33a00', '#2cbdff', '#0000ff', '#25da29', '#f1f10e', '#07ecf8', '#af28d7'],
 
@@ -98,8 +100,8 @@ export default {
 
     keyPrimary: 'data',
     keyTarget: 'statistics', // 响应数据对应的字段名
-    keyXAxis: 'name', // 从该字段取x轴数据
-    keyYAxis: 'value', // 从该字段取y轴数据
+    keyXAxis: 'x', // 从该字段取x轴数据
+    keyYAxis: 'y', // 从该字段取y轴数据
 
     staticData: {
       'code': 0,
@@ -107,32 +109,32 @@ export default {
         'year': 2019,
         'statistics': [
           {
-            'value': 33801,
-            'name': 'Samsung'
+            'y': 33801,
+            'x': 'Samsung'
           },
           {
-            'value': 63395,
-            'name': 'iPhone'
+            'y': 63395,
+            'x': 'iPhone'
           },
           {
-            'value': 89297,
-            'name': 'HUAWEI'
+            'y': 89297,
+            'x': 'HUAWEI'
           },
           {
-            'value': 76689,
-            'name': 'VIVO'
+            'y': 76689,
+            'x': 'VIVO'
           },
           {
-            'value': 32219,
-            'name': 'OPPO'
+            'y': 32219,
+            'x': 'OPPO'
           },
           {
-            'value': 98748,
-            'name': 'MI'
+            'y': 98748,
+            'x': 'MI'
           },
           {
-            'value': 18290,
-            'name': 'Meizu'
+            'y': 18290,
+            'x': 'Meizu'
           }
         ]
       }
@@ -214,12 +216,12 @@ export default {
           },
           data: this.categories
         },
-        color: this.val.colorArr,
+        color: this.val.seriesColors,
         series: [{
           name: '销量',
           type: 'pie',
           radius: this.val.seriesRadius,
-          roseType: 'area',
+          roseType: this.val.toPie ? '' : 'area',
           center: ['50%', '40%'],
           avoidLabelOverlap: true,
           hoverAnimation: true, // 是否开启 hover 在扇区上的放大动画效果
@@ -268,6 +270,14 @@ export default {
   mounted () {
     if (this.val.autoToolTip) {
       this.drawBar(this.val.autoToolTipTime)
+    }
+    if (this.$vpd.state.uuid === this.val.uuid) {
+      let colors = this.$vpd.state.page.colors.value.slice(0, this.categories.length)
+      let param = {
+        name: 'seriesColors',
+        value: colors
+      }
+      this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
     }
   },
   methods: {

@@ -33,7 +33,7 @@
                 <span class="dot">加载中...</span>
               </div>
             </el-image>
-            <el-button size="mini" type="text" slot="reference" plain>{{ scope.row.config.title }}</el-button>
+            <el-button size="mini" type="text" slot="reference" plain  @click="handlePreview(scope.row.hash)">{{ scope.row.config.title }}</el-button>
           </el-popover>
         </template>
       </el-table-column>

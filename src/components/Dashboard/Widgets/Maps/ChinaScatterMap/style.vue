@@ -16,11 +16,12 @@
           </div>
           <div class="panel-row">
             <div class="panel-label">标题颜色</div>
-            <div class="panel-value">{{ activeElement.titleColor }}</div>
-            <div>
-              <input
+            <div class="panel-value panel-value-color-1">{{ activeElement.titleColor }}</div>
+            <div class="panel-value panel-value-color-2">
+              <el-color-picker
                 v-model="activeElement.titleColor"
-                type="color">
+                show-alpha
+                size="mini"/>
             </div>
           </div>
           <div class="panel-row">
@@ -35,40 +36,44 @@
           </div>
           <div class="panel-row">
             <div class="panel-label">边框颜色</div>
-            <div class="panel-value panel-value-color-1">{{ activeElement.mapBorderColor }}</div>
+            <!--<div class="panel-value panel-value-color-1">{{ activeElement.mapBorderColor }}</div>-->
+            <div class="panel-value panel-value-color-1">{{ activeElement.seriesColors[1] }}</div>
             <div class="panel-value panel-value-color-2">
               <el-color-picker
-                v-model="activeElement.mapBorderColor"
+                v-model="activeElement.seriesColors[1]"
                 show-alpha
                 size="mini"/>
             </div>
           </div>
           <div class="panel-row">
             <div class="panel-label">配置颜色</div>
-            <div class="panel-value panel-value-color-1">{{ activeElement.mapAreaColor }}</div>
+            <!--<div class="panel-value panel-value-color-1">{{ activeElement.mapAreaColor }}</div>-->
+            <div class="panel-value panel-value-color-1">{{ activeElement.seriesColors[0] }}</div>
             <div class="panel-value panel-value-color-2">
               <el-color-picker
-                v-model="activeElement.mapAreaColor"
+                v-model="activeElement.seriesColors[0]"
                 show-alpha
                 size="mini"/>
             </div>
           </div>
           <div class="panel-row">
             <div class="panel-label">高亮颜色</div>
-            <div class="panel-value panel-value-color-1">{{ activeElement.mapEmphasisAreaColor }}</div>
+            <!--<div class="panel-value panel-value-color-1">{{ activeElement.mapEmphasisAreaColor }}</div>-->
+            <div class="panel-value panel-value-color-1">{{ activeElement.seriesColors[2] }}</div>
             <div class="panel-value panel-value-color-2">
               <el-color-picker
-                v-model="activeElement.mapEmphasisAreaColor"
+                v-model="activeElement.seriesColors[2]"
                 show-alpha
                 size="mini"/>
             </div>
           </div>
           <div class="panel-row">
           <div class="panel-label">散点颜色</div>
-          <div class="panel-value panel-value-color-1">{{ activeElement.mapEffectScatterColor }}</div>
+          <!--<div class="panel-value panel-value-color-1">{{ activeElement.mapEffectScatterColor }}</div>-->
+          <div class="panel-value panel-value-color-1">{{ activeElement.seriesColors[3] }}</div>
           <div class="panel-value panel-value-color-2">
             <el-color-picker
-              v-model="activeElement.mapEffectScatterColor"
+              v-model="activeElement.seriesColors[3]"
               show-alpha
               size="mini"/>
           </div>

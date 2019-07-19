@@ -2,7 +2,9 @@
   <header class="header">
     <div class="navbar1 container grid-xl">
       <section class="logo navbar-cont">
-        <a class="edit-navbar-logo"><img src="../../../../assets/uugai-w.png" alt=""></a>
+        <a class="edit-navbar-logo">
+          <img src="../../../../assets/uugai-w.png" alt="">
+        </a>
       </section>
       <section class="navbar-cont nav-middle">
         <widget-box :zoom="zoom"/>

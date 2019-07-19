@@ -22,12 +22,13 @@ export default {
   activeElement: {}, // 选中对象，要么是组件，要么是页面
   linkage: {}, // 联动数据
   page: {
+    colors: { name: '配色1', value: ['#8378ea', '#96bfff', '#37a2da', '#32c5e9', '#67e0e3', '#9fe6b8', '#ffdb5c', '#ff9f7f', '#fb7293', '#e062ae', '#e690d1', '#e7bcf3', '#9d96f4'] },
     page: true,
     title: '数据可视化大屏', // 页面 title
     about: '', // 简介
     width: 1920, // 画布宽度
     height: 1080, // 画布高度
-    backgroundColor: '#ffffff', // 背景色
+    backgroundColor: '#000000', // 背景色
     backPic: '', // 背景图片
     zoom: 100, // 画布缩放百分比
     timestamp: new Date().getTime() // 修改日期

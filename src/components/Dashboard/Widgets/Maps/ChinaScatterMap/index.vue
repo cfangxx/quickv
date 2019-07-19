@@ -42,10 +42,10 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    width: 500,
-    height: 400,
-    left: 50,
-    top: 50,
+    width: 400,
+    height: 260,
+    left: 100,
+    top: 20,
     z: 0,
     color: '#555555',
     name: '分布散点图', // 组件名称, 可自定义
@@ -56,8 +56,9 @@ export default {
     chartTitle: '', // 图表标题
     titleColor: '#666666', // 标题颜色
 
+    seriesColors: ['#1ccada', '#d2f4f8'],
     mapAreaColor: '#333333', // 地图区域颜色
-    mapEffectScatterColor: '#f4e925', // 散点颜色
+    mapEffectScatterColor: 'rgba(2, 21, 132, 1)', // 散点颜色
     bgMapColor: '', // 地图背景颜色
     mapBorderColor: '#000000', // 地图地域边框颜色
     mapEmphasisAreaColor: '#222222', // 高亮区域颜色
@@ -299,11 +300,14 @@ export default {
           roam: false,
           itemStyle: {
             normal: {
-              areaColor: this.val.mapAreaColor,
-              borderColor: this.val.mapBorderColor // 地图地域边框颜色
+              // areaColor: this.val.mapAreaColor,
+              areaColor: this.val.seriesColors[0],
+              borderColor: this.val.seriesColors[1] // 地图地域边框颜色
+              // borderColor: this.val.mapBorderColor // 地图地域边框颜色
             },
             emphasis: {
-              areaColor: this.val.mapEmphasisAreaColor
+              // areaColor: this.val.mapEmphasisAreaColor // 高亮
+              areaColor: this.val.seriesColors[2] // 高亮
             }
           }
         },
@@ -332,7 +336,8 @@ export default {
           },
           itemStyle: {
             normal: {
-              color: this.val.mapEffectScatterColor, // 散点颜色
+              // color: this.val.mapEffectScatterColor, // 散点颜色
+              color: this.val.seriesColors[3], // 散点颜色
               shadowBlur: 10,
               shadowColor: this.val.mapEffectScatterColor
             }
@@ -353,6 +358,14 @@ export default {
   mounted () {
     if (this.val.autoToolTip) {
       this.drawBar(this.val.autoToolTipTime)
+    }
+    if (this.$vpd.state.uuid === this.val.uuid) {
+      let colors = this.$vpd.state.page.colors.value.slice(0, 4)
+      let param = {
+        name: 'seriesColors',
+        value: colors
+      }
+      this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
     }
   },
   methods: {

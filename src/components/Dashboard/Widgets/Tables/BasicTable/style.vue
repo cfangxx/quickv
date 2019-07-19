@@ -1,49 +1,6 @@
 <template>
   <div>
     <div v-show="tab === 1">
-      <div style="display: none" class="panel-item-new">
-        <!--<div class="panel-item-title">基础参数</div>-->
-        <div class="panel-row">
-          <div class="panel-label">宽度</div>
-          <div>
-            <input
-              v-model="activeElement.width"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">高度</div>
-          <div>
-            <input
-              v-model="activeElement.height"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">横坐标</div>
-          <div>
-            <input
-              v-model="activeElement.left"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">纵坐标</div>
-          <div>
-            <input
-              v-model="activeElement.top"
-              type="number">
-          </div>
-        </div>
-        <div class="panel-row">
-          <div class="panel-label">层级</div>
-          <div>
-            <input
-              v-model="activeElement.z"
-              type="number">
-          </div>
-        </div>
-      </div>
       <!-- 基础设置 -->
       <basic-settings :activeElement="activeElement"/>
       <div class="panel-item-new">
@@ -82,17 +39,6 @@
                 size="small"/>
             </div>
           </div>
-          <!--<div-->
-            <!--v-show="activeElement.showTh"-->
-            <!--class="panel-row">-->
-            <!--<div class="panel-label">背景颜色</div>-->
-            <!--<div class="panel-value">{{ activeElement.thBgColor }}</div>-->
-            <!--<div class="panel-value">-->
-              <!--<input-->
-                <!--v-model="activeElement.thBgColor"-->
-                <!--type="color" >-->
-            <!--</div>-->
-          <!--</div>-->
           <div
             v-show="activeElement.showTh"
             class="panel-row">
@@ -118,9 +64,7 @@
       <div class="panel-item-new">
         <div @click="isShowNum = !isShowNum" class="panel-item-title">序号<i :class="isShowNum ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
         <div v-show="isShowNum" class="panel-item-new-set">
-          <div
-            class="panel-row"
-            flex>
+          <div class="panel-row" flex>
             <div class="panel-label">显示序号</div>
             <div class="panel-value">
               <label class="form-switch">
@@ -131,9 +75,7 @@
               </label>
             </div>
           </div>
-          <div
-            v-show="activeElement.showNum"
-            class="panel-row">
+          <div v-show="activeElement.showNum" class="panel-row">
             <div class="panel-label">序号文字</div>
             <div class="panel-value">
               <input
@@ -141,9 +83,7 @@
                 type="text" >
             </div>
           </div>
-          <div
-            v-show="activeElement.showNum"
-            class="panel-row">
+          <div v-show="activeElement.showNum" class="panel-row">
             <div class="panel-label">序号大小</div>
             <div class="panel-value">
               <input
@@ -151,9 +91,7 @@
                 type="number" >
             </div>
           </div>
-          <div
-            v-show="activeElement.showNum"
-            class="panel-row">
+          <div v-show="activeElement.showNum" class="panel-row">
             <div class="panel-label">文本大小</div>
             <div class="panel-value">
               <input
@@ -161,69 +99,72 @@
                 type="number" >
             </div>
           </div>
-          <div
-            v-show="activeElement.showNum"
-            class="panel-row">
+          <div class="panel-row" v-show="activeElement.showNum">
             <div class="panel-label">文本颜色</div>
-            <div class="panel-value">{{ activeElement.thNumColor }}</div>
-            <div class="panel-value">
-              <input
+            <div class="panel-colormsg">{{ activeElement.thNumColor }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
                 v-model="activeElement.thNumColor"
-                type="color" >
+                show-alpha
+                size="small"/>
             </div>
           </div>
-          <div
-            v-show="activeElement.showNum"
-            class="panel-row">
+          <div v-show="activeElement.showNum" class="panel-row">
             <div class="panel-label">样式</div>
-            <div
-              class="radioscont">
-              <!--<label class="radiolabel">-->
-                <!--<input-->
-                  <!--v-model="activeElement.thNumType"-->
-                  <!--type="radio"-->
-                  <!--class="inpRadio"-->
-                  <!--name="task"-->
-                  <!--value="none">无样式-->
-              <!--</label>-->
-              <!--<label class="radiolabel">-->
-                <!--<input-->
-                  <!--v-model="activeElement.thNumType"-->
-                  <!--type="radio"-->
-                  <!--class="inpRadio"-->
-                  <!--name="task"-->
-                  <!--value="circle">圆形背景-->
-              <!--</label>-->
-              <el-radio label="none" v-model="activeElement.thNumType">无样式</el-radio>
-              <el-radio label="circle" v-model="activeElement.thNumType">圆形背景</el-radio>
+            <div class="panel-value">
+              <el-radio-group class="panel-radio-cont" v-model="activeElement.thNumType" size="small">
+                <el-radio label="none">无样式</el-radio>
+                <el-radio label="circle">圆形背景</el-radio>
+              </el-radio-group>
             </div>
           </div>
-          <div
-          v-show="activeElement.showNum && activeElement.thNumType === 'circle'"
-          class="panel-row">
-          <div class="panel-label">配置颜色</div>
-          <div class="panel-setcolor">
-            <div
-              v-for="(item,index) in activeElement.thNumBg"
-              :key="index"
-              class="panel-setcolor-item">
-              <div class="panel-value-new">{{ item }}</div>
-              <div>
-                <input
-                  v-model="activeElement.thNumBg[index]"
-                  type="color">
+          <div class="panel-row" v-show="activeElement.showNum && activeElement.thNumType === 'circle'">
+            <div class="panel-label">配置颜色</div>
+            <div class="panel-setcolor">
+              <div
+                v-for="(value, index) in activeElement.seriesColors"
+                :key="index"
+                :data-val="value"
+                :data-ind="index"
+                class="panel-setcolor-item">
+                <div class="panel-value-new panel-color-cont">{{ value }}</div>
+                <div>
+                  <el-color-picker
+                    v-model="activeElement.seriesColors[index]"
+                    show-alpha
+                    size="small"/>
+                </div>
+                <el-tooltip class="item" effect="dark" :content="index == 0 ? '添加' : '删除'" placement="top-end">
+                  <i v-if="index == 0" class="panel-color-icon el-icon-plus" @click="addthNumBgColor"></i>
+                  <i v-else class="panel-color-icon el-icon-close" @click="delthNumBgColor(index)"></i>
+                </el-tooltip>
               </div>
-              <button
-                v-if="index == 0"
-                class="pannel-setcolor-item-btn"
-                @click="addthNumBgColor">添加</button>
-              <button
-                v-else
-                class="pannel-setcolor-item-btn"
-                @click="delthNumBgColor(index)">删除</button>
             </div>
           </div>
-        </div>
+          <div style="display: none" class="panel-row">
+            <div class="panel-label">配置颜色</div>
+            <div class="panel-setcolor">
+              <div
+                v-for="(item,index) in activeElement.thNumBg"
+                :key="index"
+                class="panel-setcolor-item">
+                <div class="panel-value-new">{{ item }}</div>
+                <div>
+                  <input
+                    v-model="activeElement.thNumBg[index]"
+                    type="color">
+                </div>
+                <button
+                  v-if="index == 0"
+                  class="pannel-setcolor-item-btn"
+                  @click="addthNumBgColor">添加</button>
+                <button
+                  v-else
+                  class="pannel-setcolor-item-btn"
+                  @click="delthNumBgColor(index)">删除</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="panel-item-new">
@@ -247,50 +188,23 @@
           </div>
           <div class="panel-row">
             <div class="panel-label">文本颜色</div>
-            <div class="panel-value">{{ activeElement.tbColor }}</div>
-            <div class="panel-value">
-              <input
+            <div class="panel-colormsg">{{ activeElement.tbColor }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
                 v-model="activeElement.tbColor"
-                type="color" >
+                show-alpha
+                size="small"/>
             </div>
           </div>
           <div class="panel-row">
             <div class="panel-label">对齐方式</div>
-            <div class="panel-setcolor">
-              <el-radio label="left" v-model="activeElement.tbAlign">居左</el-radio>
-              <el-radio label="center" v-model="activeElement.tbAlign">居中</el-radio>
-              <el-radio label="right" v-model="activeElement.tbAlign">居右</el-radio>
+            <div class="panel-value">
+              <el-radio-group class="panel-radio-cont" v-model="activeElement.tbAlign" size="small">
+                <el-radio label="left">居左</el-radio>
+                <el-radio label="center">居中</el-radio>
+                <el-radio label="right">居右</el-radio>
+              </el-radio-group>
               <div class="panel-setcolor-item radioscont">
-                <!--<div>-->
-                  <!--<label class="radiolabel">-->
-                    <!--<input-->
-                      <!--v-model="activeElement.tbAlign"-->
-                      <!--type="radio"-->
-                      <!--class="inpRadio"-->
-                      <!--name="task"-->
-                      <!--value="left">居左-->
-                  <!--</label>-->
-                <!--</div>-->
-                <!--<div>-->
-                  <!--<label class="radiolabel">-->
-                    <!--<input-->
-                      <!--v-model="activeElement.tbAlign"-->
-                      <!--type="radio"-->
-                      <!--class="inpRadio"-->
-                      <!--name="task"-->
-                      <!--value="center">居中-->
-                  <!--</label>-->
-                <!--</div>-->
-                <!--<div>-->
-                  <!--<label class="radiolabel">-->
-                    <!--<input-->
-                      <!--v-model="activeElement.tbAlign"-->
-                      <!--type="radio"-->
-                      <!--class="inpRadio"-->
-                      <!--name="task"-->
-                      <!--value="right">居右-->
-                  <!--</label>-->
-                <!--</div>-->
               </div>
             </div>
           </div>
@@ -304,20 +218,20 @@
             </div>
           </div>
           <div class="panel-row">
-          <div class="panel-label">边的颜色</div>
-          <div class="panel-value">{{ activeElement.borderColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.borderColor"
-              type="color" >
+            <div class="panel-label">边的颜色</div>
+            <div class="panel-colormsg">{{ activeElement.borderColor }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
+                v-model="activeElement.borderColor"
+                show-alpha
+                size="small"/>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
     <div v-show="tab === 2">
       <div class="panel-item-new">
-        <!--<div class="panel-item-title">数据</div>-->
         <div class="data-group">
           <div
             class="radioscont"
@@ -430,14 +344,14 @@ export default {
   methods: {
     addthNumBgColor () {
       let params = {
-        property: 'thNumBg',
+        property: 'seriesColors',
         data: '#0000ff'
       }
       this.$vpd.commit('ADD_COLOR', params)
     },
     delthNumBgColor (index) {
       let params = {
-        property: 'thNumBg',
+        property: 'seriesColors',
         data: {
           index: index
         }

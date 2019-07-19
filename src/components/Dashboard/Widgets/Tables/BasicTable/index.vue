@@ -71,7 +71,7 @@
             fontSize: val.thNumFontSize + 'px',
             lineHeight: val.thNumWidth + 'px',
             borderRadius: val.thNumWidth / 2 + 'px',
-            backgroundColor: val.thNumType === 'none' ? '' : (val.thNumBg[index] || val.thNumBg[val.thNumBg.length-1])
+            backgroundColor: val.thNumType === 'none' ? '' : (val.seriesColors[index] || val.seriesColors[val.seriesColors.length-1])
           }">{{index + 1}}</span>
         </div>
         <div
@@ -108,10 +108,10 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    width: 550,
-    height: 300,
-    left: 400,
-    top: 400,
+    width: 450,
+    height: 260,
+    left: 100,
+    top: 20,
     z: 0,
     name: '表格', // 组件名称, 可自定义
     desc: '', // 描述, 可自定义
@@ -123,30 +123,32 @@ export default {
     backPic: '',
     backPicUrl: '',
     radius: 0,
-    borderColor: '#000000',
+    borderColor: '#2c213d',
     borderWidth: 0,
     dir: 'row',
     justify: 'flex-start',
     align: 'flex-start',
     fontSize: '14px',
 
+    seriesColors: [],
+
     showTh: true, // 是否显示表头
     thHeight: 40, // 表头高度
-    thFontSize: 14, // 表头文本大小
+    thFontSize: 12, // 表头文本大小
     thBgColor: '#eeeeee', // 表头背景色
-    thColor: '#333333', // 表头文本颜色
+    thColor: '#f7f7f7', // 表头文本颜色
 
     showNum: true, // 是否添加序号
     thNumText: '序号', // 序号显示文字
     thNumColor: '#ffffff', // 序号文本颜色
-    thNumFontSize: 14, // 序号文本字体大小
+    thNumFontSize: 12, // 序号文本字体大小
     thNumWidth: 36, // 序号圆大小
     thNumType: 'circle', // 序号样式 none:无样式，circle: 圆形
     thNumBg: ['#42b983', '#c03639', '#2196f3'], // 序号背景色
 
-    tbColor: '#999999', // 表格文本颜色
-    tbFontSize: 14, // 表格文本字体大小
-    tbAlign: 'center', // 表格对齐方式
+    tbColor: '#f7f7f7', // 表格文本颜色
+    tbFontSize: 12, // 表格文本字体大小
+    tbAlign: 'left', // 表格对齐方式
     tbBorderRgiht: '',
     tbPercent: '1, 1, 1, 1', // 个列比例
     dataLength: 4, // 表格行数
@@ -223,6 +225,17 @@ export default {
   data () {
     return {
       color: ''
+    }
+  },
+  mounted () {
+    if (this.$vpd.state.uuid === this.val.uuid) {
+      let colors = this.$vpd.state.page.colors.value.slice(0, this.val.dataLength)
+      let param = {
+        name: 'seriesColors',
+        value: colors
+      }
+      this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
+      this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', { name: 'thBgColor', value: colors[0] })
     }
   }
 }

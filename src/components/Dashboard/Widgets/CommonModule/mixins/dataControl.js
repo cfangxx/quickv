@@ -3,7 +3,8 @@ import axios from 'axios'
 export default {
   data () {
     return {
-      timer: null
+      timer: null,
+      materialList: null
     }
   },
   computed: {
@@ -72,6 +73,9 @@ export default {
         })
       }
 
+      if (this.val.dataOrigin === 'csv') {
+        this.dynamicData = this.val.staticData
+      }
       this.clearTimer()
       if (this.val.dataAutoRefresh) {
         let _this = this

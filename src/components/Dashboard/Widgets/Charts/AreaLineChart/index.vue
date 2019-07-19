@@ -20,7 +20,7 @@
 
 <script>
 import stylec from './style.vue'
-import echarts from 'echarts/lib/echarts'
+// import echarts from 'echarts/lib/echarts'
 import dataControl from '../../CommonModule/mixins/dataControl'
 
 const WIDGET_NAME = 'AreaLineChart'
@@ -38,10 +38,10 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    width: 700,
-    height: 350,
-    left: 400,
-    top: 400,
+    width: 430,
+    height: 200,
+    left: 200,
+    top: 50,
     z: 0,
     color: '#555555',
     name: '折线区域图', // 组件名称, 可自定义
@@ -49,24 +49,24 @@ export default {
     belong: 'page',
     animationName: '',
 
-    chartTitle: '销量', // 图表标题
-    textStyleColor: '#666666', // 文本颜色
+    chartTitle: '', // 图表标题
+    textStyleColor: '#b7b7b7', // 文本颜色
     itemStyleColor: '#42b983', // 柱状图颜色
     xyturn: false, // xy轴翻转
-    titleColor: '#666666', // 标题颜色
-    xTextColor: '#666666', // X 轴文字颜色
-    yTextColor: '#666666', // Y 轴文字颜色
-    xLineColor: '#666666', // X 轴线条颜色
-    yLineColor: '#666666', // Y 轴线条颜色
+    titleColor: '#b7b7b7', // 标题颜色
+    xTextColor: '#b7b7b7', // X 轴文字颜色
+    yTextColor: '#b7b7b7', // Y 轴文字颜色
+    xLineColor: '#b7b7b7', // X 轴线条颜色
+    yLineColor: '#b7b7b7', // Y 轴线条颜色
     xName: '', // x 轴名称（单位文本）
     yName: '', // x 轴名称（单位文本）
     xRotate: 0, // x 轴文本旋转角度
-    splitLineColor: '#3c4084', // y轴标线颜色
+    splitLineColor: '#2c213d', // y轴标线颜色
     showXaxisTick: false, // 是否显示 X 轴刻度线
     showYTick: false, // 是否显示 Y 轴刻度线
     showXLine: true, // 是否显示 X 轴轴线
-    showYLine: false, // 是否显示Y 轴轴线
-    showYSplitLine: true, // 是否显示Y 轴网格线
+    showYLine: true, // 是否显示Y 轴轴线
+    showYSplitLine: false, // 是否显示Y 轴网格线
     showXSplitLine: false, // 是否显示X 轴网格线
     showX: true, // 是否显示 X 轴
     showY: true, // 是否显示 Y 轴
@@ -80,7 +80,7 @@ export default {
     }],
     xyArr: ['xAxis', 'yAxis'],
 
-    gridTop: '70', // 图表位置（距顶部）
+    gridTop: '20', // 图表位置（距顶部）
     gridLeft: '3%', // 图表位置（距左边）
     gridRight: '8%', // 图表位置（距右边）
     gridBottom: '3%', // 图表位置（距底部）
@@ -90,8 +90,10 @@ export default {
     seriesSymbolSize: 5, // 拐点大小
     isSmooth: true, // 折线是否平滑
     showTooltip: false, // 是否显示提示框
+    seriesColors: [],
 
-    dataAPI: 'https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/quickv/api/demo', // API拉取地址
+    // dataAPI: 'https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/quickv/api/demo', // API拉取地址
+    dataAPI: 'https://easy-mock.com/mock/5c7ce20ccdc04f0e04185d9b/example/quickv/api/demo', // API拉取地址
     dataAutoRefresh: false, // 是否自动刷新
     dataOrigin: 'local', // local 本地 api 远程接口
     dataRefreshTime: 5, // 自动刷新间隔（秒）
@@ -104,45 +106,44 @@ export default {
 
     keyPrimary: 'data',
     keyTarget: 'statistics', // 响应数据对应的字段名
-    keyXAxis: 'vendor', // 从该字段取x轴数据
-    keyYAxis: 'sales', // 从该字段取y轴数据
+    keyXAxis: 'x', // 从该字段取x轴数据
+    keyYAxis: 'y', // 从该字段取y轴数据
 
     staticData: {
       'code': 0,
       'data': {
-        'year': 2019,
         'statistics': [
           {
-            'vendor': 'Samsung',
-            'sales': 33801
+            'x': 'Samsung',
+            'y': 33801
           },
           {
-            'vendor': 'iPhone',
-            'sales': 63395
+            'x': 'iPhone',
+            'y': 63395
           },
           {
-            'vendor': 'HUAWEI',
-            'sales': 89297
+            'x': 'HUAWEI',
+            'y': 89297
           },
           {
-            'vendor': 'VIVO',
-            'sales': 76689
+            'x': 'VIVO',
+            'y': 76689
           },
           {
-            'vendor': 'OPPO',
-            'sales': 32219
+            'x': 'OPPO',
+            'y': 32219
           },
           {
-            'vendor': 'MI',
-            'sales': 98748
+            'x': 'MI',
+            'y': 98748
           },
           {
-            'vendor': 'Meizu',
-            'sales': 18290
+            'x': 'Meizu',
+            'y': 18290
           },
           {
-            'vendor': '8848',
-            'sales': 66282
+            'x': '8848',
+            'y': 66282
           }
         ]
       }
@@ -252,6 +253,7 @@ export default {
             color: this.val.titleColor
           }
         },
+        color: this.val.seriesColors,
         tooltip: {
           show: this.val.showTooltip, // 是否显示提示框
           trigger: 'axis',
@@ -285,20 +287,32 @@ export default {
               lineStyle: {
                 width: this.val.seriesLineWidth, // 折线宽度
                 type: 'solid', // 折线样式
-                color: this.val.lgArr[0].color // 折线颜色
+                // color: this.val.lgArr[0].color // 折线颜色
+                color: this.val.seriesColors[0] // 折线颜色
               }
             }
           },
           areaStyle: {
             show: false,
             normal: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, this.val.lgArr) // 折线区域渐变色
+              // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, this.val.lgArr) // 折线区域渐变色
+              color: this.val.seriesColors[0] // 折线区域渐变色
             }
           },
           // data: this.val.dataJSON.data.series
           data: this.dataSeries
         }]
       }
+    }
+  },
+  mounted () {
+    if (this.$vpd.state.uuid === this.val.uuid) {
+      let colors = this.$vpd.state.page.colors.value.slice(0, 1)
+      let param = {
+        name: 'seriesColors',
+        value: colors
+      }
+      this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
     }
   }
 }

@@ -225,7 +225,7 @@
       <div class="panel-item-new">
         <div @click="isShowSet = !isShowSet" class="panel-item-title">相关配置<i :class="isShowSet ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
         <div v-show="isShowSet" class="panel-item-new-set">
-          <div class="panel-row">
+          <div style="display:none;" class="panel-row">
             <div class="panel-label">配置颜色</div>
             <div class="panel-setcolor">
               <div
@@ -305,6 +305,21 @@
         </div>
         </div>
       </div>
+      <div class="panel-item-new">
+        <div @click="isShowColor = !isShowColor" class="panel-item-title">配置颜色<i :class="isShowColor ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowColor" class="panel-item-new-set">
+          <div class="panel-row">
+            <div class="panel-label">配置颜色</div>
+            <div class="panel-colormsg">{{ activeElement.seriesColors[0] }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
+                v-model="activeElement.seriesColors[0]"
+                show-alpha
+                size="small"/>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 数据源设置 -->
@@ -359,6 +374,7 @@ export default {
       isShowX: true,
       isShowY: true,
       isShowLine: true,
+      isShowColor: true,
       isShowSet: true,
       icon: [
         {

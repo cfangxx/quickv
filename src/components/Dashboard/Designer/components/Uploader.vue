@@ -89,7 +89,7 @@ export default {
       if (this.uploadOption.url) {
         var data = new FormData()
         files.forEach(file => data.append('file', file))
-
+        console.log(files)
         return fetch(this.uploadOption.url, {
           method: 'POST',
           body: data

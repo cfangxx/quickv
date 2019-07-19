@@ -20,7 +20,7 @@
 
 <script>
 import stylec from './style.vue'
-import echarts from 'echarts/lib/echarts'
+// import echarts from 'echarts/lib/echarts'
 import dataControl from '../../CommonModule/mixins/dataControl'
 
 const WIDGET_NAME = 'LinesAreaChart'
@@ -38,10 +38,10 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    width: 700,
-    height: 350,
-    left: 400,
-    top: 400,
+    width: 440,
+    height: 250,
+    left: 200,
+    top: 50,
     z: 0,
     color: '#555555',
     name: '折线堆叠图', // 组件名称, 可自定义
@@ -50,18 +50,18 @@ export default {
     animationName: '',
 
     chartTitle: '', // 图表标题
-    textStyleColor: '#666666', // 文本颜色
+    textStyleColor: '#f7f7f7', // 文本颜色
     itemStyleColor: '#42b983', // 柱状图颜色
     xyturn: false, // xy轴翻转
-    titleColor: '#666666', // 标题颜色
-    xTextColor: '#666666', // X 轴文字颜色
-    yTextColor: '#666666', // Y 轴文字颜色
-    xLineColor: '#666666', // X 轴线条颜色
-    yLineColor: '#666666', // Y 轴线条颜色
+    titleColor: '#f7f7f7', // 标题颜色
+    xTextColor: '#f7f7f7', // X 轴文字颜色
+    yTextColor: '#f7f7f7', // Y 轴文字颜色
+    xLineColor: '#f7f7f7', // X 轴线条颜色
+    yLineColor: '#f7f7f7', // Y 轴线条颜色
     xName: '', // x 轴名称（单位文本）
     yName: '', // x 轴名称（单位文本）
     xRotate: 0, // x 轴文本旋转角度
-    splitLineColor: '#3c4084', // y轴标线颜色
+    splitLineColor: '#2c213d', // y轴标线颜色
     showXaxisTick: false, // 是否显示 X 轴刻度线
     showYTick: false, // 是否显示 Y 轴刻度线
     showXLine: true, // 是否显示 X 轴轴线
@@ -114,7 +114,7 @@ export default {
     legendPositionX: 'center', // 图例位置（X 轴）
     legendPositionY: 'top', // 图例位置（Y 轴）
     legendFontSize: 12, // 图例文字大小
-    legendTextColor: '#000000', // 图例文字颜色
+    legendTextColor: '#f7f7f7', // 图例文字颜色
     legendIcon: 'roundRect', // 图例 Icon 如 circle, rect, line, roundRect, triangle, diamond, pin, none
     legendIconWidth: 20, // 图例 Icon 宽度
     legendIconHeight: 10, // 图例 Icon 高度
@@ -125,6 +125,7 @@ export default {
     seriesSymbolSize: [5, 5, 5], // 拐点大小
     isSmooth: [true, true, true], // 折线是否平滑
     showTooltip: false, // 是否显示提示框
+    seriesColors: [],
 
     legend: [],
 
@@ -242,7 +243,8 @@ export default {
                 lineStyle: {
                   width: this.val.seriesLineWidth[i], // 折线宽度
                   type: 'solid', // 折线样式
-                  color: this.val.lgArr[i][0].color // 折线颜色
+                  // color: this.val.lgArr[i][0].color // 折线颜色
+                  color: this.val.seriesColors[i] // 折线颜色
                 }
               }
             },
@@ -252,7 +254,8 @@ export default {
             areaStyle: {
               show: false,
               normal: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, this.val.lgArr[i]) // 折线区域渐变色
+                // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, this.val.lgArr[i]) // 折线区域渐变色
+                color: this.val.seriesColors[i] // 折线区域渐变色
               }
             },
             data: item.data
@@ -351,9 +354,10 @@ export default {
             color: this.val.titleColor
           }
         },
-        color: this.val.lgArr.map((item, i) => {
-          return item[0].color
-        }),
+        // color: this.val.lgArr.map((item, i) => {
+        //   return item[0].color
+        // }),
+        color: this.val.seriesColors,
         legend: {
           show: this.val.legendShow, // 显示图例
           x: this.val.legendPositionX,
@@ -391,6 +395,16 @@ export default {
         yAxis: this.val.axisReverse ? this.xAxis : this.yAxis,
         series: this.dataSeries
       }
+    }
+  },
+  mounted () {
+    if (this.$vpd.state.uuid === this.val.uuid) {
+      let colors = this.$vpd.state.page.colors.value.slice(0, this.legend.length)
+      let param = {
+        name: 'seriesColors',
+        value: colors
+      }
+      this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
     }
   }
 }

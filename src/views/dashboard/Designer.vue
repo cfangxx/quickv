@@ -137,6 +137,7 @@ export default {
     handleQuit (config) {
       let configStr = JSON.stringify(config.page)
       let widgetStr = JSON.stringify(config.widgets)
+      // console.log(this.startConfig, configStr)
       if (configStr !== this.startConfig || widgetStr !== this.startWidget) {
         // console.log('已修改')
         this.dumpConfig = { ...config }
@@ -148,7 +149,7 @@ export default {
       }
     },
     getBack () {
-      console.log(this.isTemplate)
+      // console.log(this.isTemplate)
       this.$router.push({ path: '/' + (this.isTemplate ? 'template' : ('project/' + this.pathFrom)) })
     },
     saveAndQuit () {
