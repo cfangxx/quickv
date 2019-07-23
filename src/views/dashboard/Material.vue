@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input :placeholder="'数据表名称 表头名称'" v-model="listQuery.title" clearable style="width: 200px;" class="filter-item" @keyup.enter.native="handleSearch"/>
+      <el-input :placeholder="'数据表名称'" v-model="listQuery.title" clearable style="width: 200px;" class="filter-item" @keyup.enter.native="handleSearch"/>
 
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{ '搜索' }}</el-button>
       <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".csv" @change="handleClick">
@@ -18,20 +18,20 @@
       <el-table-column :label="'序号'" type="index" align="center" width="60" />
       <el-table-column :label="'数据表名称'" min-width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span>{{ scope.row.fileName }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="'表头'" min-width="250px">
         <template slot-scope="scope">
-          <span>{{ scope.row.title.join('， ') }}</span>
+          <span>{{ showTitle(scope.row.title) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="'操作'" align="center" class-name="small-padding fixed-width" width="260px">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary"  @click="handle(scope.row.id)">{{ '查看' }}</el-button>
-          <el-button size="mini" type="success" >{{ '更新' }}</el-button>
-          <!--<el-button size="mini" type="danger" plain>{{ '删除' }}</el-button>-->
-          <div style="display:inline-block;padding-left:10px;">
+          <el-button size="mini" type="primary"  @click="handleView(scope.row.hash)">{{ '查看' }}</el-button>
+          <input ref="update" class="excel-upload-input" type="file" accept=".csv" @change="handleUpdateCsv">
+          <el-button size="mini" type="success" @click="updateCsv(scope.row.hash)">{{ '更新' }}</el-button>
+          <div style="display:inline-block;padding-left:6px;">
             <el-popover
               placement="top"
               width="160" :ref="`popover-${scope.$index}`">
@@ -48,10 +48,10 @@
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getMaterialList" />
-    <el-dialog title="新建表格" :visible.sync="dialogTableVisible" width="70%">
+    <el-dialog title="新建表格" :visible.sync="dialogTableVisible" width="50%">
       <el-form :model="excelData" :rules="rules" ref="excelData" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="表格名称" prop="filename">
-          <el-input class="dialog-inp-filename" v-model="excelData.filename"></el-input>
+        <el-form-item label="表格名称" prop="fileName">
+          <el-input class="dialog-inp-fileName" v-model="excelData.fileName"></el-input>
         </el-form-item>
       </el-form>
       <table class="material-table">
@@ -82,34 +82,26 @@
         <el-button type="primary" @click="saveCreate('excelData')">保 存</el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="dialogUnnormalVisible">
+    <el-dialog :visible.sync="dialogViewVisible">
       <table class="material-table">
         <thead>
         <th
-          v-for="(head, key) in unNormalData.data[0]"
+          v-for="(head, key) in viewData.data[0]"
           :data-head="key"
           :key="key">
-          <span>{{ key }} <a> {{ getUnHeaderType(key) }}</a></span>
-          <el-select size="mini" class="material-sel" :value="setHeaderType(key)" @change="changeProp(key,$event)"  placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+          <a>{{ key }} <span class="mt-head-span">（{{ getUnHeaderType(key) }}）</span></a>
         </th>
         </thead>
         <tbody>
-        <tr v-for="(items, index) in unNormalData.data" :key="index">
+        <tr v-for="(items, index) in viewData.data" :key="index">
           <td v-for="(key,i) in items" :key="i">
-            <span :style="{color: key[0]} == 'true' ? '' : 'red'">{{ key[1] }}</span>
+            <span :style="{color: key[0] == 'true' ? '' : 'red'}">{{ key[1] }}</span>
           </td>
         </tr>
         </tbody>
       </table>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogUnnormalVisible = false">关 闭</el-button>
+        <el-button @click="dialogViewVisible = false">关 闭</el-button>
       </div>
     </el-dialog>
   </div>
@@ -117,7 +109,7 @@
 
 <script>
 // import XLSX from 'xlsx'
-import { fetchMaterialList, getTableItem, uploadCsv, createType, deleteMaterial } from '@/api/material'
+import { fetchMaterialList, getView, uploadCsv, createType, deleteMaterial, updateCsv } from '@/api/material'
 import Pagination from '@/components/Pagination'
 export default {
   components: { Pagination },
@@ -131,26 +123,27 @@ export default {
         page: 1,
         limit: 10,
         title: undefined,
-        status: undefined,
-        project: this.$route.name || 'all'
+        status: undefined
+        // project: this.$route.name || 'all'
+        // project: 'all'
       },
       excelData: {
         hash: '',
-        filename: '',
+        fileName: '',
         title: [],
         data: []
       },
       showData: [],
       rules: {
-        filename: [
+        fileName: [
           { required: true, message: '请输入表格名称', trigger: 'blur' }
         ]
       },
       originalTableData: null,
       dialogTableVisible: false,
-      dialogUnnormalVisible: false,
-      unNormalData: {
-        filename: '',
+      dialogViewVisible: false,
+      viewData: {
+        fileName: '',
         title: [],
         data: []
       },
@@ -159,27 +152,57 @@ export default {
         { value: 'date', label: '日期' },
         { value: 'number', label: '数字' },
         { value: 'position', label: '位置' }
-      ]
+      ],
+      curUpdateHash: ''
 
     }
   },
   computed: {
 
   },
+  watch: {
+    'dialogTableVisible': function () {
+      if (!this.dialogTableVisible) {
+        this.$refs['excel-upload-input'].value = ''
+      }
+    }
+  },
   created () {
     this.getMaterialList()
   },
   methods: {
-    getMaterialList () {
+    getMaterialList () { // 获取列表
       this.listLoading = true
       fetchMaterialList(this.listQuery).then(response => {
         this.materialDataList = response.data.items
+        this.total = response.data.total || 0
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
       })
     },
-    handleDelete: function (row) {
+    showTitle (data) {
+      let arr = data.map(item => {
+        return item.title
+      })
+      return arr.join('，')
+    },
+    updateCsv (hash) { // 点击更新
+      this.curUpdateHash = hash
+      this.$refs['update'].click()
+    },
+    handleUpdateCsv (e) { // 更新数据表
+      const files = e.target.files
+      const rawFile = files[0] // only use files[0]
+      if (!rawFile) return
+
+      let fileFormData = new FormData()
+      fileFormData.append('file', rawFile)
+      updateCsv(fileFormData, this.curUpdateHash).then(res => {
+        console.log(res)
+      })
+    },
+    handleDelete: function (row) { // 删除数据表
       deleteMaterial(row.hash).then(response => {
         this.$notify({
           title: '成功',
@@ -187,21 +210,15 @@ export default {
           type: 'success',
           duration: 2000
         })
-        const index = this.list.indexOf(row)
-        this.list.splice(index, 1)
-        this.getList()
+        this.getMaterialList()
       })
     },
-    handle (id) {
-      getTableItem().then(res => {
-        // console.log(res)
-        this.excelDataId = id
-        this.excelData.title = res.data.header
-        let result = this.filterData(res.data.results)
-        this.excelData.data = result
-        this.dialogTableVisible = true
+    handleView (hash) { // 查看数据表数据
+      getView(hash).then(res => {
+        this.reqView(res.data)
       })
     },
+
     filterData (data) { // 筛选
       let newData = data.filter((item, i) => {
         let isTrue = [] // 将每行各个数据的判断存到该数组
@@ -262,6 +279,7 @@ export default {
         return false
       }
     },
+
     changeProp (val, e) {
       this.excelData.title.map(item => {
         if (item.title === val) {
@@ -275,32 +293,60 @@ export default {
       })
       return this.excelData.title[titleIndex].titleType
     },
+    reqView (data) {
+      this.viewData.fileName = data.fileName
+      this.viewData.title = data.title
+      this.viewData.data = data.data
+      this.dialogViewVisible = true
+      this.dialogTableVisible = false
+    },
     saveCreate (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let params = {
-            filename: this.excelData.filename,
+            fileName: this.excelData.fileName,
             title: this.excelData.title,
             hash: this.excelData.hash
           }
           createType(params).then(res => {
-            if (res.code === 0) {
+            if (res.statusCode === 1000) { // 表格名称重复
+              this.$notify({
+                title: '失败',
+                message: '表格名称重复，请修改',
+                type: 'warning',
+                duration: 2000
+              })
+            } else if (res.statusCode === 1001) { // 表格数据异常
               let data = res.data
-              this.unNormalData.filename = data.fileName
-              this.unNormalData.title = data.title
-              this.unNormalData.data = data.data
-              this.dialogUnnormalVisible = true
+              this.reqView(data)
+              // this.viewData.fileName = data.fileName
+              // this.viewData.title = data.title
+              // this.viewData.data = data.data
+              // this.dialogViewVisible = true
+              // this.dialogTableVisible = false
+            } else {
+              this.$notify({
+                title: '成功',
+                message: '上传成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.getMaterialList()
+              this.dialogTableVisible = false
             }
           })
         }
       })
     },
     getUnHeaderType (key) {
-      console.log(key)
-      let titleType = this.unNormalData.title.filter(item => {
+      let index = this.viewData.title.filter(item => {
         return item.title === key
       })
-      return titleType[0].titleType
+      let type = index[0].titleType
+      let str = this.options.filter(i => {
+        return i.value === type
+      })
+      return str[0].label
     },
     handleSearch () {
       this.listQuery.page = 1
@@ -318,13 +364,14 @@ export default {
       fileFormData.append('file', rawFile)
       uploadCsv(fileFormData).then(res => {
         let data = res.data
-        this.excelData.filename = data.fileName
+        this.excelData.fileName = data.fileName
         this.excelData.title = data.title
         this.excelData.data = data.data
         this.excelData.hash = data.hash
         this.showData = data.data.length >= 5 ? data.data.slice(0, 5) : data.data
         this.dialogTableVisible = true
       })
+      this.$refs['excel-upload-input'].value = ''
     }
 
   }
@@ -386,7 +433,11 @@ export default {
   .material-sel .el-input__inner{
     padding: 0 0 0 6px;
   }
-  .dialog-inp-filename{
+  .dialog-inp-fileName{
     width:200px;
+  }
+  .mt-head-span{
+    font-size:14px;
+    color:#aaa;
   }
 </style>

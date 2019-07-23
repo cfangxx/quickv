@@ -2,20 +2,20 @@ import request from '@/scripts/request'
 
 export function fetchMaterialList (query) {
   return request({
-    // url: '/material',
-    url: 'https://easy-mock.com/mock/5c7ce20ccdc04f0e04185d9b/example/material',
+    url: '/material/list',
+    // url: 'https://easy-mock.com/mock/5c7ce20ccdc04f0e04185d9b/example/material',
     method: 'get',
     params: query
   })
 }
-export function getTableItem (id) {
+export function getView (hash) { // 查看
   return request({
-    url: 'https://easy-mock.com/mock/5c7ce20ccdc04f0e04185d9b/example/getTable',
+    url: '/material/' + hash + '/view',
     method: 'get'
   })
 }
 
-export function uploadCsv (filedata) {
+export function uploadCsv (filedata) { // 上传
   return request({
     headers: { 'Content-Type': 'multipart/form-data' },
     url: '/material/csv',
@@ -24,8 +24,16 @@ export function uploadCsv (filedata) {
   })
 }
 
-export function createType (param) {
-  console.log(param)
+export function updateCsv (filedata, hash) { // 更新数据表
+  return request({
+    headers: { 'Content-Type': 'multipart/form-data' },
+    url: '/material/' + hash + '/update',
+    method: 'post',
+    data: filedata
+  })
+}
+
+export function createType (param) { // 保存csv类型
   return request({
     url: '/material/' + param.hash + '/save',
     method: 'post',
@@ -43,7 +51,7 @@ export function createTemplate (data) {
 
 export function deleteMaterial (hash) {
   return request({
-    url: '/material/' + hash,
+    url: '/material/' + hash + '/delete',
     method: 'delete'
   })
 }
