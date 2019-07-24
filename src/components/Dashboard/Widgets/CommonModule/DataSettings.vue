@@ -146,16 +146,40 @@
           <div class="panel-row">
             <div class="panel-label">数据表</div>
             <div>
-              <select class="panel-csv-sel" v-model="activeElement.csvType" @change="changeCsvType($event)">
-                <option
+              <el-select class="panel-csv-sel" v-model="activeElement.csvHash" placeholder="请选择" @change="changeCsvType()">
+                <el-option
                   v-for="item in materialList"
                   :key="item.id"
-                  :value="item.id"
-                  :label="item.title">{{ item.name }}</option>
-              </select>
+                  :label="item.name"
+                  :value="item.id">
+                  {{ item.name }}
+                </el-option>
+              </el-select>
             </div>
           </div>
-          <div>
+          <div class="panel-csv-table-cont" v-if="header.length">
+            <table class="panel-csv-table" width="100%">
+              <thead>
+              <th> </th>
+              <th>分组标签</th>
+              <th>取值标签</th>
+              </thead>
+              <tbody>
+              <tr
+                v-for="(item, index) in header"
+                :key="index">
+                <td>{{item.value}}</td>
+                <td class="panel-csv-td">
+                  <el-radio v-model="activeElement.series" :label="item.value">{{''}}</el-radio>
+                </td>
+                <td class="panel-csv-td">
+                  <el-radio v-model="activeElement.num" :label="item.value" :disabled="item.prop !== 'number'">{{''}}</el-radio>
+                  <!--<input type="radio" name="num" :disabled="item.prop !== 'number'">-->
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <el-button type="success" style="padding:10px 20px;width:100%;">提 交</el-button>
           </div>
         </div>
       </div>
@@ -179,16 +203,18 @@ export default {
   data () {
     return {
       materialList: [],
-      header: []
+      header: [],
+      series: '',
+      num: ''
     }
   },
   computed: {
     dataOrigin () {
       return this.activeElement.dataOrigin
     },
-    csvType () {
-      console.log(this.activeElement.csvType)
-      return this.activeElement.csvType
+    csvHash () {
+      console.log(this.activeElement.csvHash)
+      return this.activeElement.csvHash
     },
     localData () {
       return JSON.stringify(this.activeElement.staticData, null, 2)
@@ -222,10 +248,9 @@ export default {
         this.materialList = res.data.data.items
       })
     },
-    changeCsvType (e) {
-      // console.log(this.activeElement.csvType)
-      // console.log(e.target.value)
-      let csvId = e.target.value
+    changeCsvType (id) {
+      // console.log(this.activeElement.csvHash)
+      let csvId = this.activeElement.csvHash
       this.getCsvHeader(csvId)
     },
     getCsvHeader (csvId) {
@@ -259,5 +284,26 @@ export default {
   }
   .panel-csv-sel{
     width: 170px
+  }
+  .el-select-dropdown__item.selected{
+    border:none
+  }
+  .panel-csv-table-cont{
+    padding:10px 20px;
+    font-size:13px;
+    color:#606266;
+  }
+  .panel-csv-table{
+    margin-bottom:10px;
+  }
+  .panel-csv-table th{
+    height:42px;
+  }
+  .panel-csv-td{
+    text-align: center;
+    height: 36px;
+  }
+  .form-input:focus, input:focus[type="text"], input:focus[type="date"], textarea:focus{
+    box-shadow: none;
   }
 </style>

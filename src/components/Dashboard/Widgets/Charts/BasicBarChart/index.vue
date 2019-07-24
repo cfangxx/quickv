@@ -113,7 +113,9 @@ export default {
     keyXAxis: 'x', // 从该字段取x轴数据
     keyYAxis: 'y', // 从该字段取y轴数据
 
-    csvType: '',
+    csvHash: '', // 选择的 csv 数据hash值 (通过该值获取表头信息)
+    series: '', // 分组标签
+    num: '', // 取值标签 (堆叠图为数组)
 
     staticData: {
       'code': 0,

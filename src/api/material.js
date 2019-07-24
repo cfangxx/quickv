@@ -1,6 +1,6 @@
 import request from '@/scripts/request'
 
-export function fetchMaterialList (query) {
+export function fetchMaterialList (query) { // 获取数据表列表
   return request({
     url: '/material/list',
     // url: 'https://easy-mock.com/mock/5c7ce20ccdc04f0e04185d9b/example/material',

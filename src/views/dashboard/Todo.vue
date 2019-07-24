@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-container">
     <h4>敬请期待</h4>
   </div>
 </template>

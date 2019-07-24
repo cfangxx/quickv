@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input :placeholder="'数据表名称'" v-model="listQuery.title" clearable style="width: 200px;" class="filter-item" @keyup.enter.native="handleSearch"/>
+      <el-input :placeholder="'数据表名称'" v-model="listQuery.fileName" clearable style="width: 200px;" class="filter-item" @keyup.enter.native="handleSearch"/>
 
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{ '搜索' }}</el-button>
       <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".csv" @change="handleClick">
@@ -31,7 +31,7 @@
           <el-button size="mini" type="primary"  @click="handleView(scope.row.hash)">{{ '查看' }}</el-button>
           <input ref="update" class="excel-upload-input" type="file" accept=".csv" @change="handleUpdateCsv">
           <el-button size="mini" type="success" @click="updateCsv(scope.row.hash)">{{ '更新' }}</el-button>
-          <div style="display:inline-block;padding-left:6px;">
+          <div style="display:inline-block;">
             <el-popover
               placement="top"
               width="160" :ref="`popover-${scope.$index}`">
@@ -122,7 +122,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        title: undefined,
+        fileName: undefined,
         status: undefined
         // project: this.$route.name || 'all'
         // project: 'all'
@@ -176,9 +176,7 @@ export default {
       fetchMaterialList(this.listQuery).then(response => {
         this.materialDataList = response.data.items
         this.total = response.data.total || 0
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
+        this.listLoading = false
       })
     },
     showTitle (data) {
@@ -199,7 +197,12 @@ export default {
       let fileFormData = new FormData()
       fileFormData.append('file', rawFile)
       updateCsv(fileFormData, this.curUpdateHash).then(res => {
-        console.log(res)
+        this.$notify({
+          title: '成功',
+          message: '更新成功',
+          type: 'success',
+          duration: 2000
+        })
       })
     },
     handleDelete: function (row) { // 删除数据表
@@ -319,11 +322,6 @@ export default {
             } else if (res.statusCode === 1001) { // 表格数据异常
               let data = res.data
               this.reqView(data)
-              // this.viewData.fileName = data.fileName
-              // this.viewData.title = data.title
-              // this.viewData.data = data.data
-              // this.dialogViewVisible = true
-              // this.dialogTableVisible = false
             } else {
               this.$notify({
                 title: '成功',
@@ -350,7 +348,7 @@ export default {
     },
     handleSearch () {
       this.listQuery.page = 1
-      this.getList()
+      this.getMaterialList()
     },
     handleUpload () {
       this.$refs['excel-upload-input'].click()
