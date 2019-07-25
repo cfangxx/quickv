@@ -37,7 +37,7 @@
         flex: val.showNum ? 1 : 0
         }">{{val.thNumText}}</div>
       <div
-        v-for="(item, index) in val.dataJSON.data.columns"
+        v-for="(item, index) in dynamicData.data.columns"
         :key="item.id"
         class="table-th"
         :style="{
@@ -46,9 +46,10 @@
           background: val.thBgColor,
           display: val.showTh ? 'flex' : 'none',
           flex: val.tbPercent.split(',')[index],
-          borderRight: index === val.dataJSON.data.columns.length-1 ? '' : val.tbBorderRgiht
+          borderRight: index === dynamicData.data.columns.length-1 ? '' : val.tbBorderRgiht
         }"><span>{{item.name}}</span></div>
     </div>
+
     <!-- 表身 -->
     <div
       :style="{
@@ -57,7 +58,7 @@
       class="table-body">
       <!-- 表内容块 -->
       <div
-        v-for="(item, index) in val.dataJSON.data.rows.slice(0, val.dataLength)"
+        v-for="(item, index) in dynamicData.data.rows.slice(0, val.dataLength)"
         :key="item.id"
         class="table-tr" >
         <div
@@ -82,7 +83,7 @@
           fontSize: val.tbFontSize + 'px',
           flex: val.tbPercent.split(',')[index],
           textAlign: val.tbAlign,
-          borderRight: value === val.dataJSON.data.columns.length-1 ? '' : val.tbBorderRgiht
+          borderRight: value === dynamicData.data.columns.length-1 ? '' : val.tbBorderRgiht
           }"
           class="table-td"><span>{{item[key]}}</span></div>
       </div>
@@ -92,6 +93,7 @@
 
 <script>
 import stylec from './style.vue'
+import dataControl from '../../CommonModule/mixins/dataControl'
 const WIDGET_NAME = 'BasicTable'
 
 export default {
@@ -142,7 +144,7 @@ export default {
     thNumText: '序号', // 序号显示文字
     thNumColor: '#ffffff', // 序号文本颜色
     thNumFontSize: 12, // 序号文本字体大小
-    thNumWidth: 36, // 序号圆大小
+    thNumWidth: 30, // 序号圆大小
     thNumType: 'circle', // 序号样式 none:无样式，circle: 圆形
     thNumBg: ['#42b983', '#c03639', '#2196f3'], // 序号背景色
 
@@ -152,7 +154,24 @@ export default {
     tbBorderRgiht: '',
     tbPercent: '1, 1, 1, 1', // 个列比例
     dataLength: 4, // 表格行数
-    dataJSON: {
+
+    dataAPI: 'https://easy-mock.com/mock/5c7ce20ccdc04f0e04185d9b/example/echart/basictable', // API拉取地址
+    dataAutoRefresh: false, // 是否自动刷新
+    dataOrigin: 'local', // local 本地 api 远程接口(api/local/csv)
+    dataRefreshTime: 5, // 自动刷新间隔（秒）
+    dataRefresh: false, // 刷新图表, 控制面板中测试dataApi使用
+
+    keyPrimary: 'data',
+    keyTarget: 'rows', // 响应数据对应的字段名
+    keyXAxis: 'x', // 从该字段取x轴数据
+    keyYAxis: 'y', // 从该字段取y轴数据
+
+    csvHash: '', // 选择的 csv 数据hash值 (通过该值获取表头信息)
+    csvSeries: '', // 分组标签
+    csvNum: [], // 取值标签 (堆叠图为数组)
+    csvHeader: [], // 选中的表头关系
+
+    staticData: {
       'status': 0,
       'msg': '',
       'data': {
@@ -221,10 +240,12 @@ export default {
       }
     }
   },
+  mixins: [dataControl],
   props: ['w', 'h', 'val'],
   data () {
     return {
-      color: ''
+      color: '',
+      dynamicData: {}
     }
   },
   mounted () {

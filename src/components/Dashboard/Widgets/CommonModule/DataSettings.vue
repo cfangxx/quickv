@@ -77,24 +77,12 @@
       <div
         class="radioscont">
         <label class="radiolabel">
-          <!--<input-->
-            <!--v-model="activeElement.dataOrigin"-->
-            <!--type="radio"-->
-            <!--class="inpRadio"-->
-            <!--name="task"-->
-            <!--value="api">API拉取-->
           <el-radio label="api" v-model="activeElement.dataOrigin" size="mini">API拉取</el-radio>
         </label>
         <label class="radiolabel">
-          <!--<input-->
-            <!--v-model="activeElement.dataOrigin"-->
-            <!--type="radio"-->
-            <!--class="inpRadio"-->
-            <!--name="task"-->
-            <!--value="local">静态JSON-->
           <el-radio label="local" v-model="activeElement.dataOrigin" size="mini">静态JSON</el-radio>
         </label>
-        <label class="radiolabel">
+        <label class="radiolabel" v-if="activeElement.type !== 'CircularProgressBar'">
           <el-radio label="csv" v-model="activeElement.dataOrigin" size="mini">本地数据</el-radio>
         </label>
       </div>
@@ -142,44 +130,63 @@
             @onCodeChange="changeJsonCode" />
           <!-- <button class="btn-small" @click="refreshMonaco">刷新数据</button> -->
         </div>
-        <div v-if="dataOrigin == 'csv'">
-          <div class="panel-row">
-            <div class="panel-label">数据表</div>
-            <div>
-              <el-select class="panel-csv-sel" v-model="activeElement.csvHash" placeholder="请选择" @change="changeCsvType()">
-                <el-option
-                  v-for="item in materialList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-                  {{ item.name }}
-                </el-option>
-              </el-select>
+        <div class="data-csv-cont" v-if="dataOrigin == 'csv'">
+          <div v-loading="csvLoading">
+            <div class="panel-row">
+              <div class="panel-label">数据表</div>
+              <div>
+                <el-select
+                  class="panel-csv-sel"
+                  v-model="activeElement.csvHash"
+                  placeholder="请选择"
+                  @change="changeCsvType(activeElement.csvHash)">
+                  <el-option
+                    v-for="item in materialList"
+                    :key="item.hash"
+                    :label="item.name"
+                    :value="item.hash">
+                    {{ item.name }}
+                  </el-option>
+                </el-select>
+              </div>
             </div>
-          </div>
-          <div class="panel-csv-table-cont" v-if="header.length">
-            <table class="panel-csv-table" width="100%">
-              <thead>
-              <th> </th>
-              <th>分组标签</th>
-              <th>取值标签</th>
-              </thead>
-              <tbody>
-              <tr
-                v-for="(item, index) in header"
-                :key="index">
-                <td>{{item.value}}</td>
-                <td class="panel-csv-td">
-                  <el-radio v-model="activeElement.series" :label="item.value">{{''}}</el-radio>
-                </td>
-                <td class="panel-csv-td">
-                  <el-radio v-model="activeElement.num" :label="item.value" :disabled="item.prop !== 'number'">{{''}}</el-radio>
-                  <!--<input type="radio" name="num" :disabled="item.prop !== 'number'">-->
-                </td>
-              </tr>
-              </tbody>
-            </table>
-            <el-button type="success" style="padding:10px 20px;width:100%;">提 交</el-button>
+            <div
+              v-loading="csvTableLoading"
+              class="panel-csv-table-cont">
+              <table v-if="activeElement.csvHeader.length" class="panel-csv-table" width="100%">
+                <thead>
+                <th class="panel-csv-table-th1"> </th>
+                <th>分组标签</th>
+                <th>取值标签</th>
+                </thead>
+                <tbody>
+                <tr
+                  v-for="(item, index) in activeElement.csvHeader"
+                  :key="index">
+                  <td class="panel-csv-table-td1">{{item.title}}</td>
+                  <td class="panel-csv-td">
+                    <el-radio
+                      v-model="activeElement.csvSeries"
+                      :label="item.title">{{''}}</el-radio>
+                  </td>
+                  <td v-if="activeElement.csvNum.constructor === Array" class="panel-csv-td">
+                    <el-checkbox-group v-model="activeElement.csvNum">
+                    <el-checkbox
+                      :label="item.title"
+                      :disabled="item.titleType !== 'number'">{{''}}</el-checkbox>
+                    </el-checkbox-group>
+                  </td>
+                  <td v-if="typeof activeElement.csvNum === 'string'" class="panel-csv-td">
+                    <el-radio
+                      v-model="activeElement.csvNum"
+                      :label="item.title"
+                      :disabled="item.titleType !== 'number'">{{''}}</el-radio>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <!--<el-button type="success" style="padding:10px 20px;width:100%;">提 交</el-button>-->
+            </div>
           </div>
         </div>
       </div>
@@ -202,10 +209,16 @@ export default {
   props: ['activeElement'],
   data () {
     return {
+      hash: this.$route.params.hash,
       materialList: [],
-      header: [],
-      series: '',
-      num: ''
+      csvLoading: true,
+      csvTableLoading: false,
+      seriesCharts: ['LinesAreaChart', 'RadarChart'] // 取值标签为复选框的图表
+    }
+  },
+  watch: {
+    'activeElement.csvHash': function () {
+
     }
   },
   computed: {
@@ -213,7 +226,6 @@ export default {
       return this.activeElement.dataOrigin
     },
     csvHash () {
-      console.log(this.activeElement.csvHash)
       return this.activeElement.csvHash
     },
     localData () {
@@ -227,6 +239,7 @@ export default {
   },
   mounted () {
     this.getMaterialList()
+    this.isExistCsv()
   },
   methods: {
     changeJsonCode (value, event) {
@@ -243,23 +256,53 @@ export default {
     getMaterialList () {
       axios({
         type: 'get',
-        url: 'https://easy-mock.com/mock/5c7ce20ccdc04f0e04185d9b/example/material'
+        url: process.env.BASE_API + '/material/titleList'
       }).then(res => {
-        this.materialList = res.data.data.items
+        this.materialList = res.data.data
+        this.csvLoading = false
       })
     },
     changeCsvType (id) {
-      // console.log(this.activeElement.csvHash)
       let csvId = this.activeElement.csvHash
       this.getCsvHeader(csvId)
     },
     getCsvHeader (csvId) {
-      axios({
-        type: 'get',
-        url: 'https://easy-mock.com/mock/5c7ce20ccdc04f0e04185d9b/example/csv/header'
-      }).then(res => {
-        this.header = res.data.data.header
+      let items = this.materialList.filter(item => {
+        return item.hash === csvId
       })
+      let param = {
+        name: 'csvHeader',
+        value: items[0].title
+      }
+      this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
+    },
+    isExistCsv () {
+      if (this.activeElement.csvHash) {
+        let isExist = this.materialList.find(item => { // 判断组件绑定的表格是否还存在
+          return item.hash === this.activeElement.csvHash
+        })
+        if (!isExist) {
+          const param = [
+            {
+              name: 'csvHash',
+              value: '该表格已删除'
+            },
+            {
+              name: 'csvSeries',
+              value: ''
+            },
+            {
+              name: 'csvNum',
+              value: this.activeElement.csvNum.constructor === Array ? [] : ''
+            },
+            {
+              name: 'csvHeader',
+              value: []
+            }
+          ]
+          this.$vpd.commit('UPDATE_CSV_DATA', param)
+        }
+      }
     }
   }
 }
@@ -274,6 +317,12 @@ export default {
   .el-radio__label{
     font-size:13px;
   }
+  .panel-csv-sel input[readonly][type="text"].el-input__inner{
+    background-color:#fff;
+  }
+  .panel-csv-sel input[readonly][type="text"].el-input__inner:focus{
+    box-shadow: none;
+  }
 </style>
 <style scoped>
   .data-group{
@@ -283,7 +332,7 @@ export default {
     padding: 0 15px;
   }
   .panel-csv-sel{
-    width: 170px
+    width: 170px;
   }
   .el-select-dropdown__item.selected{
     border:none
@@ -305,5 +354,14 @@ export default {
   }
   .form-input:focus, input:focus[type="text"], input:focus[type="date"], textarea:focus{
     box-shadow: none;
+  }
+  .panel-csv-table-th1,.panel-csv-table-td1{
+    max-width:100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .data-csv-cont{
+    margin: 10px 0 20px;
   }
 </style>

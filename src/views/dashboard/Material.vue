@@ -48,7 +48,7 @@
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getMaterialList" />
-    <el-dialog title="新建表格" :visible.sync="dialogTableVisible" width="50%">
+    <el-dialog title="新建表格" :visible.sync="dialogTableVisible" width="50%" :close-on-click-modal="false" @close="quitCreate">
       <el-form :model="excelData" :rules="rules" ref="excelData" label-width="100px" class="demo-ruleForm">
         <el-form-item label="表格名称" prop="fileName">
           <el-input class="dialog-inp-fileName" v-model="excelData.fileName"></el-input>
@@ -78,7 +78,7 @@
         </tbody>
       </table>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogTableVisible = false">取 消</el-button>
+        <el-button @click="quitCreate">取 消</el-button>
         <el-button type="primary" @click="saveCreate('excelData')">保 存</el-button>
       </div>
     </el-dialog>
@@ -109,7 +109,7 @@
 
 <script>
 // import XLSX from 'xlsx'
-import { fetchMaterialList, getView, uploadCsv, createType, deleteMaterial, updateCsv } from '@/api/material'
+import { fetchMaterialList, getView, uploadCsv, createType, deleteMaterial, updateCsv, cancelType } from '@/api/material'
 import Pagination from '@/components/Pagination'
 export default {
   components: { Pagination },
@@ -197,12 +197,15 @@ export default {
       let fileFormData = new FormData()
       fileFormData.append('file', rawFile)
       updateCsv(fileFormData, this.curUpdateHash).then(res => {
-        this.$notify({
-          title: '成功',
-          message: '更新成功',
-          type: 'success',
-          duration: 2000
-        })
+        this.$refs['update'].value = ''
+        if (res && res.code === 0) {
+          this.$notify({
+            title: '成功',
+            message: '更新成功',
+            type: 'success',
+            duration: 2000
+          })
+        }
       })
     },
     handleDelete: function (row) { // 删除数据表
@@ -345,6 +348,12 @@ export default {
         return i.value === type
       })
       return str[0].label
+    },
+    quitCreate () {
+      cancelType(this.excelData.hash).then(res => {
+        // console.log('已取消创建表格')
+        this.dialogTableVisible = false
+      })
     },
     handleSearch () {
       this.listQuery.page = 1

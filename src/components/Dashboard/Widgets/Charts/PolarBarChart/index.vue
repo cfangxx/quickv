@@ -86,8 +86,13 @@ export default {
 
     keyPrimary: 'data',
     keyTarget: 'statistics', // 响应数据对应的字段名
-    keyXAxis: 'vendor', // 从该字段取x轴数据
-    keyYAxis: 'sales', // 从该字段取y轴数据
+    keyXAxis: 'x', // 从该字段取x轴数据
+    keyYAxis: 'y', // 从该字段取y轴数据
+
+    csvHash: '', // 选择的 csv 数据hash值 (通过该值获取表头信息)
+    csvSeries: '', // 分组标签
+    csvNum: '', // 取值标签 (堆叠图为数组)
+    csvHeader: [], // 选中的表头关系
 
     staticData: {
       'code': 0,
@@ -95,36 +100,36 @@ export default {
         'year': 2019,
         'statistics': [
           {
-            'vendor': 'Samsung',
-            'sales': 33801
+            'x': 'Samsung',
+            'y': 33801
           },
           {
-            'vendor': 'iPhone',
-            'sales': 63395
+            'x': 'iPhone',
+            'y': 63395
           },
           {
-            'vendor': 'HUAWEI',
-            'sales': 89297
+            'x': 'HUAWEI',
+            'y': 89297
           },
           {
-            'vendor': 'VIVO',
-            'sales': 76689
+            'x': 'VIVO',
+            'y': 76689
           },
           {
-            'vendor': 'OPPO',
-            'sales': 32219
+            'x': 'OPPO',
+            'y': 32219
           },
           {
-            'vendor': 'MI',
-            'sales': 98748
+            'x': 'MI',
+            'y': 98748
           },
           {
-            'vendor': 'Meizu',
-            'sales': 18290
+            'x': 'Meizu',
+            'y': 18290
           },
           {
-            'vendor': '8848',
-            'sales': 66282
+            'x': '8848',
+            'y': 66282
           }
         ]
       }

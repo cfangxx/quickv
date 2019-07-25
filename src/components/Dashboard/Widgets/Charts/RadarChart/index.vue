@@ -91,32 +91,30 @@ export default {
     keyXAxis: 'categories', // 从该字段取x轴数据
     keyYAxis: 'statistics', // 从该字段取y轴数据
 
+    csvHash: '', // 选择的 csv 数据hash值 (通过该值获取表头信息)
+    csvSeries: '', // 分组标签
+    csvNum: [], // 取值标签 (堆叠图为数组)
+    csvHeader: [], // 选中的表头关系
+
     dataLength: 3, // 数据共有几项
     staticData: {
       'code': 0,
       'data': {
         'year': 2019,
         'dataseries': {
-          'categories': [
-            { name: 'A', max: 6500 },
-            { name: 'B', max: 4500 },
-            { name: 'C', max: 3000 },
-            { name: 'D', max: 5600 },
-            { name: 'E', max: 2800 },
-            { name: 'F', max: 3200 }
-          ],
+          'categories': ['A', 'B', 'C', 'D', 'E', 'F'],
           'statistics': [
             {
               name: '视频广告',
-              value: [4500, 3400, 2800, 5100, 2200, 3000]
+              data: [4500, 3400, 2800, 5100, 2200, 3000]
             },
             {
               name: '手机访问',
-              value: [3780, 3012, 2060, 4054, 2090, 2205]
+              data: [3780, 3012, 2060, 4054, 2090, 2205]
             },
             {
               name: '直接访问',
-              value: [3000, 2300, 1090, 2000, 1000, 1500]
+              data: [3000, 2300, 1090, 2000, 1000, 1500]
             }
           ]
         }
@@ -198,7 +196,7 @@ export default {
                 }
               },
               name: item.name,
-              value: item.value
+              value: item.data
             }]
           }
           return serieItem

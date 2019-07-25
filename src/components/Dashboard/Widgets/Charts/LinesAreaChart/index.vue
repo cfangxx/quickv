@@ -38,8 +38,8 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    width: 440,
-    height: 250,
+    width: 430,
+    height: 200,
     left: 200,
     top: 50,
     z: 0,
@@ -139,6 +139,11 @@ export default {
     linkEnable: false, // 开启联动
     linkIsMain: false, // 是否是数据源
     linkMainUUID: '', // 上级的UUID, 通过此标志获取联动的数据
+
+    csvHash: '', // 选择的 csv 数据hash值 (通过该值获取表头信息)
+    csvSeries: '', // 分组标签
+    csvNum: [], // 取值标签 (堆叠图为数组)
+    csvHeader: [],
 
     keyPrimary: 'data',
     keyTarget: 'dataseries', // 响应数据对应的字段名

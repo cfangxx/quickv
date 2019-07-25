@@ -231,6 +231,7 @@
       </div>
     </div>
     <div v-show="tab === 2">
+      <data-settings :activeElement="activeElement"/>
       <div class="panel-item-new">
         <div class="data-group">
           <div
@@ -325,11 +326,12 @@
 import MyEditor from '../../CommonModule/MonacoEditor'
 import BasicSettings from '../../CommonModule/BasicSettings'
 import axios from 'axios'
+import DataSettings from '../../CommonModule/DataSettings'
 
 export default {
   name: 'BasicTableStyle',
   components: {
-    MyEditor, BasicSettings
+    MyEditor, BasicSettings, DataSettings
   },
   props: ['activeElement', 'tab'],
   data () {

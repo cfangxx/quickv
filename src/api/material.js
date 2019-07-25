@@ -41,6 +41,13 @@ export function createType (param) { // 保存csv类型
   })
 }
 
+export function cancelType (hash) {
+  return request({
+    url: '/material/' + hash + '/cancel',
+    method: 'get'
+  })
+}
+
 export function createTemplate (data) {
   return request({
     url: '/templates',

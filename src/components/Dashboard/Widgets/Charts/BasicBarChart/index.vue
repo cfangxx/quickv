@@ -114,8 +114,9 @@ export default {
     keyYAxis: 'y', // 从该字段取y轴数据
 
     csvHash: '', // 选择的 csv 数据hash值 (通过该值获取表头信息)
-    series: '', // 分组标签
-    num: '', // 取值标签 (堆叠图为数组)
+    csvSeries: '', // 分组标签
+    csvNum: '', // 取值标签 (堆叠图为数组)
+    csvHeader: [], // 选中的表头关系
 
     staticData: {
       'code': 0,
