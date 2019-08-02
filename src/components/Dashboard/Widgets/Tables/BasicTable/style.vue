@@ -172,10 +172,17 @@
         <div v-show="isShowTable" class="panel-item-new-set">
           <div class="panel-row">
             <div class="panel-label">每列占比</div>
-            <div class="panel-value">
+            <div class="panel-value panel-basicTable-tbPercent-cont">
+              <span
+                class="panel-basicTable-inp-span"
+                v-for="(item, index) in activeElement.tbPercent"
+                :key="index">
               <input
-                v-model="activeElement.tbPercent"
-                type="text" >
+                class="panel-basicTable-inp"
+                v-model.number="activeElement.tbPercent[index]"
+                type="number"
+                max="9" >{{index === activeElement.tbPercent.length - 1 ? '' : ' ： '}}
+                </span>
             </div>
           </div>
           <div class="panel-row">
@@ -232,81 +239,6 @@
     </div>
     <div v-show="tab === 2">
       <data-settings :activeElement="activeElement"/>
-      <div class="panel-item-new">
-        <div class="data-group">
-          <div
-            class="radioscont"
-            @click="handleBind">
-            <label class="radiolabel">
-              <input
-                v-model="selectStatus"
-                type="radio"
-                class="inpRadio"
-                name="task"
-                value="1">API拉取
-            </label>
-            <label class="radiolabel">
-              <input
-                v-model="selectStatus"
-                type="radio"
-                class="inpRadio"
-                name="task"
-                value="2">静态JSON
-            </label>
-          </div>
-          <div class="radiowrap">
-            <div v-if="selectStatus =='1'">
-            <textarea
-              v-model="activeElement.dataAPI"
-              cols="30"
-              rows="3"
-              placeholder="$CUR_HOST/openapi/demo/chart?type=sellGoods"/>
-              <p>可使用示例API：XXXXXXXXXXXXXXXXXXXXXXXXX</p>
-              <button class="btn-small">调试</button>
-              <button
-                class="btn-small"
-                @click="refreshAPIurl">刷新图表</button>
-              <div
-                class="panel-row"
-                flex>
-                <div class="panel-label">自动刷新</div>
-                <div class="panel-value">
-                  <label class="form-switch">
-                    <input
-                      v-model="activeElement.dataAPIAuto"
-                      type="checkbox" >
-                    <i class="form-icon"/>
-                  </label>
-                </div>
-              </div>
-              <div
-                v-if="activeElement.dataAPIAuto"
-                class="panel-row">
-                <div class="panel-label">时间间隔</div>
-                <div>
-                  <input
-                    :value="activeElement.dataAPITime"
-                    type="number"
-                    @input="inpTime($event)">
-                </div>
-              </div>
-              <p>数据的自动刷新在非编辑模式下有效，最小刷新间隔为10秒<span style="color:red">未完成</span></p>
-            </div>
-            <div v-if="selectStatus =='2'">
-              <div>
-                <MyEditor
-                  :language="'json'"
-                  :codes="JSON.stringify(activeElement.dataJSON, null, 2)"
-                  @onMounted="jsonOnMounted"
-                  @onCodeChange="jsonOnCodeChange" />
-                <!--<button
-                class="btn-small"
-                @click="refreshMonaco">刷新数据</button>-->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     <div v-show="tab === 3">
       <div class="panel-row">
@@ -323,7 +255,6 @@
 </template>
 
 <script>
-import MyEditor from '../../CommonModule/MonacoEditor'
 import BasicSettings from '../../CommonModule/BasicSettings'
 import axios from 'axios'
 import DataSettings from '../../CommonModule/DataSettings'
@@ -331,7 +262,7 @@ import DataSettings from '../../CommonModule/DataSettings'
 export default {
   name: 'BasicTableStyle',
   components: {
-    MyEditor, BasicSettings, DataSettings
+    BasicSettings, DataSettings
   },
   props: ['activeElement', 'tab'],
   data () {
@@ -404,3 +335,16 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .panel-basicTable-tbPercent-cont{
+    width: 200px;
+    display: inline-block;
+  }
+  .panel-basicTable-inp-span{
+    display: inline-block;
+    width:46px;
+  }
+  .panel-basicTable-inp{
+    width:30px;
+  }
+</style>

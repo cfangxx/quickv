@@ -144,6 +144,7 @@ export default {
     csvSeries: '', // 分组标签
     csvNum: [], // 取值标签 (堆叠图为数组)
     csvHeader: [],
+    csvGroup: 'multiple', // 组件分组(csv数据请求接口类型single/multiple/table/map)
 
     keyPrimary: 'data',
     keyTarget: 'dataseries', // 响应数据对应的字段名

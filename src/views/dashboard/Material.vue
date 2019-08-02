@@ -48,7 +48,7 @@
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getMaterialList" />
-    <el-dialog title="新建表格" :visible.sync="dialogTableVisible" width="50%" :close-on-click-modal="false" @close="quitCreate">
+    <el-dialog title="新建表格" :visible.sync="dialogTableVisible" width="620" :close-on-click-modal="false" @close="quitCreate"  class="material-dialog">
       <el-form :model="excelData" :rules="rules" ref="excelData" label-width="100px" class="demo-ruleForm">
         <el-form-item label="表格名称" prop="fileName">
           <el-input class="dialog-inp-fileName" v-model="excelData.fileName"></el-input>
@@ -82,7 +82,7 @@
         <el-button type="primary" @click="saveCreate('excelData')">保 存</el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="dialogViewVisible">
+    <el-dialog :visible.sync="dialogViewVisible" width="600px" class="material-dialog">
       <table class="material-table">
         <thead>
         <th
@@ -111,6 +111,7 @@
 // import XLSX from 'xlsx'
 import { fetchMaterialList, getView, uploadCsv, createType, deleteMaterial, updateCsv, cancelType } from '@/api/material'
 import Pagination from '@/components/Pagination'
+let Base64 = require('js-base64').Base64
 export default {
   components: { Pagination },
   data () {
@@ -366,9 +367,10 @@ export default {
       const files = e.target.files
       const rawFile = files[0] // only use files[0]
       if (!rawFile) return
-
+      let name = Base64.encode(rawFile.name)
+      let newfile = new File([rawFile], name)
       let fileFormData = new FormData()
-      fileFormData.append('file', rawFile)
+      fileFormData.append('file', newfile)
       uploadCsv(fileFormData).then(res => {
         let data = res.data
         this.excelData.fileName = data.fileName
@@ -420,8 +422,9 @@ export default {
   }
 
   .material-table{
-    width: 100%;
     table-layout:fixed;
+    /*padding-right: 20px;*/
+    margin: 0 auto;
   }
   .material-table th,.material-table td{
     border-bottom:1px solid #EBEEF5;
@@ -430,6 +433,7 @@ export default {
     text-align: left;
   }
   .material-table td{
+    min-width:120px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -446,5 +450,8 @@ export default {
   .mt-head-span{
     font-size:14px;
     color:#aaa;
+  }
+  .material-dialog .el-dialog__body{
+    overflow-x:auto;
   }
 </style>

@@ -45,7 +45,7 @@
           fontSize: val.thFontSize + 'px',
           background: val.thBgColor,
           display: val.showTh ? 'flex' : 'none',
-          flex: val.tbPercent.split(',')[index],
+          flex: val.tbPercent[index],
           borderRight: index === dynamicData.data.columns.length-1 ? '' : val.tbBorderRgiht
         }"><span>{{item.name}}</span></div>
     </div>
@@ -81,7 +81,7 @@
           :style="{
           color: val.tbColor,
           fontSize: val.tbFontSize + 'px',
-          flex: val.tbPercent.split(',')[index],
+          flex: val.tbPercent[index],
           textAlign: val.tbAlign,
           borderRight: value === dynamicData.data.columns.length-1 ? '' : val.tbBorderRgiht
           }"
@@ -152,7 +152,8 @@ export default {
     tbFontSize: 12, // 表格文本字体大小
     tbAlign: 'left', // 表格对齐方式
     tbBorderRgiht: '',
-    tbPercent: '1, 1, 1, 1', // 个列比例
+    // tbPercent: '1, 1, 1, 1', // 个列比例
+    tbPercent: [1, 1, 1, 1], // 个列比例
     dataLength: 4, // 表格行数
 
     dataAPI: 'https://easy-mock.com/mock/5c7ce20ccdc04f0e04185d9b/example/echart/basictable', // API拉取地址
@@ -161,19 +162,24 @@ export default {
     dataRefreshTime: 5, // 自动刷新间隔（秒）
     dataRefresh: false, // 刷新图表, 控制面板中测试dataApi使用
 
+    // 数据联动配置
+    linkEnable: false, // 开启联动
+    linkIsMain: false, // 是否是数据源
+    linkMainUUID: '', // 上级的UUID, 通过此标志获取联动的数据
+
     keyPrimary: 'data',
     keyTarget: 'rows', // 响应数据对应的字段名
     keyXAxis: 'x', // 从该字段取x轴数据
     keyYAxis: 'y', // 从该字段取y轴数据
 
     csvHash: '', // 选择的 csv 数据hash值 (通过该值获取表头信息)
-    csvSeries: '', // 分组标签
-    csvNum: [], // 取值标签 (堆叠图为数组)
+    csvSeries: [], // 分组标签
+    // csvNum: [], // 取值标签 (堆叠图为数组)
     csvHeader: [], // 选中的表头关系
+    csvGroup: 'table', // 组件分组(csv数据请求接口类型single/multiple/table/map)
 
     staticData: {
-      'status': 0,
-      'msg': '',
+      'code': 0,
       'data': {
         'columns': [
           {
@@ -245,7 +251,29 @@ export default {
   data () {
     return {
       color: '',
+      timer: null,
       dynamicData: {}
+    }
+  },
+  watch: {
+    dynamicData () {
+      let dataLength = this.dynamicData.data.rows.length
+      let tbPercent = this.dynamicData.data.columns.length
+      let newarr = new Array(tbPercent)
+      for (let i = 0; i < tbPercent; i++) {
+        newarr[i] = 1
+      }
+      let params = [
+        {
+          name: 'dataLength',
+          value: dataLength
+        },
+        {
+          name: 'tbPercent',
+          value: newarr
+        }
+      ]
+      this.$vpd.commit('UPDATE_DATAS', params)
     }
   },
   mounted () {

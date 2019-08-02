@@ -93,6 +93,7 @@ export default {
     csvSeries: '', // 分组标签
     csvNum: '', // 取值标签 (堆叠图为数组)
     csvHeader: [], // 选中的表头关系
+    csvGroup: 'single', // 组件分组(csv数据请求接口类型single/multiple/table/map)
 
     staticData: {
       'code': 0,

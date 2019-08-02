@@ -48,7 +48,7 @@
             <div class="panel-label">配置颜色</div>
             <div>
               <div
-                v-for="(value, index) in activeElement.colorArr"
+                v-for="(value, index) in activeElement.seriesColors"
                 :key="index"
                 :data-val="value"
                 :data-ind="index"
@@ -56,7 +56,7 @@
                 <div class="panel-value panel-value-color-1">{{ value }}</div>
                 <div class="panel-value panel-value-color-2">
                   <el-color-picker
-                    v-model="activeElement.colorArr[index]"
+                    v-model="activeElement.seriesColors[index]"
                     show-alpha
                     size="mini"/>
                 </div>

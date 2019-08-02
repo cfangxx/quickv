@@ -4,7 +4,13 @@ export default {
   data () {
     return {
       timer: null,
-      materialList: null
+      materialList: null,
+      type: { // 对应api地址中的type值
+        single: 'uuid1',
+        multiple: 'uuid6',
+        table: 'uuid9',
+        map: 'uuid5'
+      }
     }
   },
   computed: {
@@ -106,39 +112,64 @@ export default {
       }
     },
     checkChose () {
-      if (!this.val.csvSeries) {
-        return false
-      }
-      if (this.val.csvNum.constructor === Array && !this.val.csvNum.length) {
-        return false
+      // if (Object.prototype.toString.call(this.val.csvSeries) === '[object Array]') { // 表格组件
+      if (this.val.csvGroup === 'table') { // 表格组件
+        if (!this.val.csvSeries) {
+          return false
+        }
       } else {
+        if (!this.val.csvSeries) {
+          return false
+        }
+        // if (Object.prototype.toString.call(this.val.csvNum) === '[object Array]' && !this.val.csvNum.length) { // 多系列组件
+        if (this.val.csvGroup === 'multiple' && !this.val.csvNum.length) { // 多系列组件
+          return false
+        } else {
+          if (!this.val.csvNum) {
+            return false
+          }
+        }
+      }
+
+      return true
+    },
+    getCsvOptionData () {
+      // if (Object.prototype.toString.call(this.val.csvSeries) === '[object Array]') {
+      if (this.val.csvGroup === 'table') {
+        if (this.val.csvSeries.length <= 0) {
+          return false
+        }
+      } else {
+        if (!this.val.csvSeries) {
+          return false
+        }
         if (!this.val.csvNum) {
           return false
         }
       }
-      return true
-    },
-    getCsvOptionData () {
       let params = {
-        groups: Base64.encode(this.val.csvSeries),
-        // type: this.val.type,
-        // type: 'uuid1',
         source: this.val.csvHash,
         hash: this.$route.params.hash
       }
-      if (this.val.csvNum.constructor === Array) {
-        params.values = Base64.encode(this.val.csvNum.join('-'))
-        params.type = this.val.type === 'BasicTable' ? 'uuid9' : 'uuid6'
+      // if (Object.prototype.toString.call(this.val.csvSeries) === '[object Array]') { // 表格组件
+      if (this.val.csvGroup === 'table') { // 表格组件
+        params.groups = Base64.encode(this.val.csvSeries.join('-'))
+        params.values = ''
+        // params.type = 'uuid9'
+        params.type = this.type.table
       } else {
-        params.values = Base64.encode(this.val.csvNum)
-        params.type = 'uuid1'
+        params.groups = Base64.encode(this.val.csvSeries)
+        // if (Object.prototype.toString.call(this.val.csvNum) === '[object Array]') { // 多列图表组件
+        if (this.val.csvGroup === 'multiple') { // 多列图表组件
+          params.values = Base64.encode(this.val.csvNum.join('-'))
+          // params.type = 'uuid6'
+          params.type = this.type.multiple
+        } else { // 单列图表组件
+          params.values = Base64.encode(this.val.csvNum)
+          params.type = this.val.csvGroup === 'map' ? this.type.map : this.type.single
+        }
       }
-      if (!this.val.csvSeries) {
-        return false
-      }
-      if (!this.val.csvNum) {
-        return false
-      }
+
       let url = `${process.env.BASE_API}/material/jsonapi?groups=${params.groups}&values=${params.values}&type=${params.type}&source=${params.source}&hash=${params.hash}`
 
       axios({
@@ -146,7 +177,8 @@ export default {
         url: url,
         data: params
       }).then(res => {
-        if (res.data.code === 0) {
+        // console.log(res)
+        if (res.data.statusCode === 0) {
           this.dynamicData = res.data
         } else {
           console.log('数据请求错误')

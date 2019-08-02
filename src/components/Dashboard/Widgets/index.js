@@ -1,8 +1,9 @@
 // charts
 import BasicBarChart from './Charts/BasicBarChart'
+import BarsChart from './Charts/BarsChart'
+import PolarBarChart from './Charts/PolarBarChart'
 import AreaLineChart from './Charts/AreaLineChart'
 import LinesAreaChart from './Charts/LinesAreaChart'
-import PolarBarChart from './Charts/PolarBarChart'
 import BasicPieChart from './Charts/BasicPieChart'
 import RadarChart from './Charts/RadarChart'
 
@@ -15,6 +16,7 @@ import CircularProgressBar from './Indicator/CircularProgressBar'
 // maps
 import ChinaMap from './Maps/ChinaMap'
 import ChinaScatterMap from './Maps/ChinaScatterMap'
+// import ProMap from './Maps/ProMap'
 
 // materials
 import Picture from './Materials/Picture'
@@ -32,9 +34,10 @@ import BasicRTClock from './Texts/BasicClock'
 export default {
   // chatrs
   [BasicBarChart.name]: BasicBarChart,
+  [BarsChart.name]: BarsChart,
+  [PolarBarChart.name]: PolarBarChart,
   [AreaLineChart.name]: AreaLineChart,
   [LinesAreaChart.name]: LinesAreaChart,
-  [PolarBarChart.name]: PolarBarChart,
   [BasicPieChart.name]: BasicPieChart,
   [RadarChart.name]: RadarChart,
 
@@ -47,6 +50,7 @@ export default {
   // map
   [ChinaMap.name]: ChinaMap,
   [ChinaScatterMap.name]: ChinaScatterMap,
+  // [ProMap.name]: ProMap,
 
   // materials
   [Picture.name]: Picture,

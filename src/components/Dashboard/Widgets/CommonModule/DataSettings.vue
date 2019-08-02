@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="panel-item-new">
+  <div class="panel-item-new" v-show="activeElement.dataOrigin !== 'csv'">
     <div class="panel-item-title">数据结构</div>
     <div class="panel-row">
       <div class="panel-label">数据对象</div>
@@ -150,7 +150,33 @@
                 </el-select>
               </div>
             </div>
+            <!--当前组件为表格-->
             <div
+              v-if="activeElement.csvGroup === 'table'"
+              v-loading="csvTableLoading"
+              class="panel-csv-table-cont">
+              <table v-if="activeElement.csvHeader.length" class="panel-csv-table" width="100%">
+                <thead>
+                <th class="panel-csv-table-th1"> </th>
+                <th>取值标签</th>
+                </thead>
+                <tbody>
+                <tr
+                  v-for="(item, index) in activeElement.csvHeader"
+                  :key="index">
+                  <td class="panel-csv-table-td1">{{item.title}}</td>
+                  <td class="panel-csv-td">
+                    <el-checkbox-group v-model="activeElement.csvSeries">
+                      <el-checkbox :label="item.title">{{''}}</el-checkbox>
+                    </el-checkbox-group>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div
+              v-else
               v-loading="csvTableLoading"
               class="panel-csv-table-cont">
               <table v-if="activeElement.csvHeader.length" class="panel-csv-table" width="100%">
@@ -165,18 +191,24 @@
                   :key="index">
                   <td class="panel-csv-table-td1">{{item.title}}</td>
                   <td class="panel-csv-td">
+                    <!--<el-radio-->
+                      <!--v-model="activeElement.csvSeries"-->
+                      <!--:label="item.title"-->
+                      <!--:disabled="activeElement.csvGroup === 'map' && item.titleType !== 'position'">{{''}}</el-radio>-->
                     <el-radio
                       v-model="activeElement.csvSeries"
                       :label="item.title">{{''}}</el-radio>
                   </td>
-                  <td v-if="activeElement.csvNum.constructor === Array" class="panel-csv-td">
+                  <!--多系列图表组件-->
+                  <td v-if="activeElement.csvGroup === 'multiple'" class="panel-csv-td">
                     <el-checkbox-group v-model="activeElement.csvNum">
                     <el-checkbox
                       :label="item.title"
                       :disabled="item.titleType !== 'number'">{{''}}</el-checkbox>
                     </el-checkbox-group>
                   </td>
-                  <td v-if="typeof activeElement.csvNum === 'string'" class="panel-csv-td">
+                  <!--单系列图表组件-->
+                  <td v-if="activeElement.csvGroup === 'single' || activeElement.csvGroup === 'map'" class="panel-csv-td">
                     <el-radio
                       v-model="activeElement.csvNum"
                       :label="item.title"
@@ -185,7 +217,6 @@
                 </tr>
                 </tbody>
               </table>
-              <!--<el-button type="success" style="padding:10px 20px;width:100%;">提 交</el-button>-->
             </div>
           </div>
         </div>
@@ -239,7 +270,6 @@ export default {
   },
   mounted () {
     this.getMaterialList()
-    this.isExistCsv()
   },
   methods: {
     changeJsonCode (value, event) {
@@ -260,6 +290,7 @@ export default {
       }).then(res => {
         this.materialList = res.data.data
         this.csvLoading = false
+        this.isExistCsv()
       })
     },
     changeCsvType (id) {
@@ -293,14 +324,14 @@ export default {
             },
             {
               name: 'csvNum',
-              value: this.activeElement.csvNum.constructor === Array ? [] : ''
+              value: Object.prototype.toString.call(this.activeElement.csvNum) === '[object Array]' ? [] : ''
             },
             {
               name: 'csvHeader',
               value: []
             }
           ]
-          this.$vpd.commit('UPDATE_CSV_DATA', param)
+          this.$vpd.commit('UPDATE_DATAS', param)
         }
       }
     }

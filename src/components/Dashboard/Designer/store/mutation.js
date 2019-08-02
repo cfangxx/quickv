@@ -360,8 +360,8 @@ export default {
     state.steps.push(payload)
   },
 
-  // 清除csv数据
-  UPDATE_CSV_DATA (state, payload) {
+  // 批量更新数据
+  UPDATE_DATAS (state, payload) {
     for (let i in payload) {
       let name = payload[i].name
       state.activeElement[name] = payload[i].value

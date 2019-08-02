@@ -22,6 +22,8 @@
 <script>
 import stylec from './style.vue'
 import dataControl from '../../CommonModule/mixins/dataControl'
+import globalMap_ from '../../CommonModule/static/map'
+// import axios from 'axios'
 
 import 'echarts/map/js/china.js'
 import echarts from 'echarts'
@@ -82,7 +84,13 @@ export default {
     keyXAxis: '', // 从该字段取x轴数据
     keyYAxis: '', // 从该字段取y轴数据
 
-    staticData: {
+    csvHash: '',
+    csvSeries: '',
+    csvNum: '',
+    csvHeader: [],
+    csvGroup: 'map',
+
+    staticTestData: {
       'code': 0,
       'data': {
         'year': 2019,
@@ -111,6 +119,36 @@ export default {
           { 'name': '上海', 'value': [121.48, 31.22, 5] }
         ]
       }
+    },
+    staticData: {
+      'code': 0,
+      'data': {
+        'year': 2019,
+        'china': [
+          { 'name': '西宁', 'value': 119 },
+          { 'name': '黑河', 'value': 148 },
+          { 'name': '海门', 'value': 89 },
+          { 'name': '鄂尔多斯', 'value': 12 },
+          { 'name': '招远', 'value': 56 },
+          { 'name': '舟山', 'value': 89 },
+          { 'name': '齐齐哈尔', 'value': 45 },
+          { 'name': '盐城', 'value': 23 },
+          { 'name': '赤峰', 'value': 96 },
+          { 'name': '青岛', 'value': 86 },
+          { 'name': '乳山', 'value': 23 },
+          { 'name': '金昌', 'value': 65 },
+          { 'name': '泉州', 'value': 87 },
+          { 'name': '莱西', 'value': 32 },
+          { 'name': '日照', 'value': 78 },
+          { 'name': '胶南', 'value': 158 },
+          { 'name': '南通', 'value': 69 },
+          { 'name': '拉萨', 'value': 20 },
+          { 'name': '云浮', 'value': 28 },
+          { 'name': '梅州', 'value': 64 },
+          { 'name': '文登', 'value': 65 },
+          { 'name': '上海', 'value': 150 }
+        ]
+      }
     }
   },
   mixins: [dataControl],
@@ -125,7 +163,8 @@ export default {
   computed: {
     dataSeries () {
       if (this.dynamicData[this.val.keyPrimary] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget]) {
-        return this.dynamicData[this.val.keyPrimary][this.val.keyTarget]
+        let data = (this.dynamicData[this.val.keyPrimary][this.val.keyTarget])
+        return this.convertData(data)
       } else {
         return []
       }
@@ -319,9 +358,9 @@ export default {
           encode: {
             value: 2
           },
-          symbolSize: function (val) {
-            return val[2] / 10
-          },
+          // symbolSize: function (val) {
+          //   return val[2] / 10
+          // },
           showEffectOn: 'render',
           rippleEffect: {
             brushType: 'stroke'
@@ -371,12 +410,25 @@ export default {
   methods: {
     drawBar (time) {
       // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById(this.chartId))
+      let myChart = echarts.init(document.getElementById(this.chartId))
       // 使用刚指定的配置项和数据显示图表
       myChart.setOption(this.options)
       // 使用轮播插件
       clearInterval(this.timer)
       this.timer = autoToolTip.autoHover(myChart, this.options, this.dataSeries.length, time)
+    },
+    convertData (data) {
+      let res = []
+      for (let i = 0; i < data.length; i++) {
+        let geoCoord = globalMap_.geoCoordMap[data[i].name]
+        if (geoCoord) {
+          res.push({
+            name: data[i].name,
+            value: geoCoord.concat(data[i].value)
+          })
+        }
+      }
+      return res
     }
   }
 }

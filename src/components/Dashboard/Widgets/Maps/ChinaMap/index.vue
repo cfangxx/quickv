@@ -81,6 +81,12 @@ export default {
     keyXAxis: '', // 从该字段取x轴数据
     keyYAxis: '', // 从该字段取y轴数据
 
+    csvHash: '',
+    csvSeries: '',
+    csvNum: '',
+    csvHeader: '',
+    csvGroup: 'map',
+
     staticData: {
       'code': 0,
       'data': {

@@ -15,11 +15,12 @@
           </div>
           <div class="panel-row">
             <div class="panel-label">文本颜色</div>
-            <div class="panel-value">{{ activeElement.xTextColor }}</div>
-            <div>
-              <input
+            <div class="panel-colormsg">{{ activeElement.xTextColor }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
                 v-model="activeElement.xTextColor"
-                type="color">
+                show-alpha
+                size="small"/>
             </div>
           </div>
           <div class="panel-row">
@@ -31,11 +32,12 @@
           </div>
           <div class="panel-row">
             <div class="panel-label">轴线颜色</div>
-            <div class="panel-value">{{ activeElement.xLineColor }}</div>
-            <div>
-              <input
+            <div class="panel-colormsg">{{ activeElement.xLineColor }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
                 v-model="activeElement.xLineColor"
-                type="color">
+                show-alpha
+                size="small"/>
             </div>
           </div>
           <div
@@ -104,11 +106,12 @@
           </div>
           <div class="panel-row">
             <div class="panel-label">文本颜色</div>
-            <div class="panel-value">{{ activeElement.yTextColor }}</div>
-            <div>
-              <input
+            <div class="panel-colormsg">{{ activeElement.yTextColor }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
                 v-model="activeElement.yTextColor"
-                type="color">
+                show-alpha
+                size="small"/>
             </div>
           </div>
           <div
@@ -137,6 +140,16 @@
               </label>
             </div>
           </div>
+          <div class="panel-row" v-show="activeElement.showYSplitLine">
+            <div class="panel-label">网格颜色</div>
+            <div class="panel-colormsg">{{ activeElement.splitLineColor }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
+                v-model="activeElement.splitLineColor"
+                show-alpha
+                size="small"/>
+            </div>
+          </div>
           <div
             class="panel-row"
             flex>
@@ -163,26 +176,16 @@
               </label>
             </div>
           </div>
-          <div
-            v-show="activeElement.showYLine"
-            class="panel-row">
+          <div class="panel-row" v-show="activeElement.showYLine">
             <div class="panel-label">轴线颜色</div>
-            <div class="panel-value">{{ activeElement.yLineColor }}</div>
-            <div>
-              <input
+            <div class="panel-colormsg">{{ activeElement.yLineColor }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
                 v-model="activeElement.yLineColor"
-                type="color">
+                show-alpha
+                size="small"/>
             </div>
           </div>
-          <div class="panel-row">
-          <div class="panel-label">标线颜色</div>
-          <div class="panel-value">{{ activeElement.splitLineColor }}</div>
-          <div>
-            <input
-              v-model="activeElement.splitLineColor"
-              type="color">
-          </div>
-        </div>
           <div
             class="panel-row"
             flex>

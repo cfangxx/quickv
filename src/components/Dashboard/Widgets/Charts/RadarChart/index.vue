@@ -95,6 +95,7 @@ export default {
     csvSeries: '', // 分组标签
     csvNum: [], // 取值标签 (堆叠图为数组)
     csvHeader: [], // 选中的表头关系
+    csvGroup: 'multiple', // 组件分组(csv数据请求接口类型single/multiple/table/map)
 
     dataLength: 3, // 数据共有几项
     staticData: {
@@ -141,7 +142,10 @@ export default {
   computed: {
     categories () {
       if (this.dynamicData[this.val.keyPrimary] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget][this.val.keyXAxis]) {
-        return this.dynamicData[this.val.keyPrimary][this.val.keyTarget][this.val.keyXAxis]
+        let arr = this.dynamicData[this.val.keyPrimary][this.val.keyTarget][this.val.keyXAxis]
+        return arr.map(item => {
+          return { text: item }
+        })
       } else {
         return []
       }
