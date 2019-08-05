@@ -5,13 +5,17 @@
 ## 环境需求
 安装nodejs
 web服务器，对于linux系统需要安装apache2
+
 ``` bash
     - apt install apache2
 ```
+
 ## 编译production模式注意先安装phantomjs
 sudo apt-get install phantomjs
 
 phantomjs --version
+
+## 不要使用taobao的cnpm进行安装和打包
 
 ## 以备某些环境下由于网速和墙的问题导致npm安装出问题
 
