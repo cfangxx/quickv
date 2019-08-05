@@ -109,17 +109,17 @@ export default {
       'code': 0,
       'data': {
         'mapData': [
-          { name: '石家庄市', value: Math.round(Math.random() * 100), tooltipValue: [46, 15, 29], url: 'xxx.com' },
-          { name: '沧州市', value: Math.round(Math.random() * 100), tooltipValue: [46, 15, 29], url: 'xxx.com' },
-          { name: '邢台市', value: Math.round(Math.random() * 100), tooltipValue: [46, 15, 29], url: 'xxx.com' },
-          { name: '承德市', value: Math.round(Math.random() * 100), tooltipValue: [46, 15, 29], url: 'xxx.com' },
-          { name: '张家口市', value: Math.round(Math.random() * 100), tooltipValue: [46, 15, 29], url: 'xxx.com' },
-          { name: '保定市', value: Math.round(Math.random() * 100), tooltipValue: [46, 15, 29], url: 'xxx.com' },
-          { name: '衡水市', value: Math.round(Math.random() * 100), tooltipValue: [46, 15, 29], url: 'xxx.com' },
-          { name: '唐山市', value: Math.round(Math.random() * 100), tooltipValue: [46, 15, 29], url: 'xxx.com' }
+          { name: '石家庄市', value: Math.round(Math.random() * 100), tooltipValue: [46, 26, 33] },
+          { name: '沧州市', value: Math.round(Math.random() * 100), tooltipValue: [46, 50, 14] },
+          { name: '邢台市', value: Math.round(Math.random() * 100), tooltipValue: [46, 56, 3] },
+          { name: '承德市', value: Math.round(Math.random() * 100), tooltipValue: [46, 62, 65] },
+          { name: '张家口市', value: Math.round(Math.random() * 100), tooltipValue: [46, 35, 29] },
+          { name: '保定市', value: Math.round(Math.random() * 100), tooltipValue: [46, 25, 12] },
+          { name: '衡水市', value: Math.round(Math.random() * 100), tooltipValue: [46, 15, 4] },
+          { name: '唐山市', value: Math.round(Math.random() * 100), tooltipValue: [46, 33, 9] }
         ],
-        tooltipName: ['提示1项', '提示2项', '提示3项'],
-        tooltipUnits: ['提示1单位', '提示2单位', '提示3单位'],
+        tooltipName: ['收入', '支出', '增长'],
+        tooltipUnits: ['亿元', '亿元', '%'],
         valueName: '人口(万)'
       }
     }
@@ -136,14 +136,15 @@ export default {
   computed: {
     dataSeries () {
       if (this.dynamicData[this.val.keyPrimary] && this.dynamicData[this.val.keyPrimary][this.val.keyTarget]) {
-        // let data = this.dynamicData[this.val.keyPrimary][this.val.keyTarget].map(item => {
-        //   return {
-        //     name: item.name,
-        //     value: item.value
-        //   }
-        // })
-        let data = this.dynamicData[this.val.keyPrimary][this.val.keyTarget]
-        console.log(data)
+        let data = this.dynamicData[this.val.keyPrimary][this.val.keyTarget].map(item => {
+          return {
+            name: item.name,
+            value: item.value,
+            tooltipValue: this.tooltipStr(item),
+            valueName: this.dynamicData[this.val.keyPrimary].valueName
+          }
+        })
+        // console.log(data)
         this.registerMap()
         return data
       } else {
@@ -169,15 +170,13 @@ export default {
         tooltip: {
           trigger: 'item',
           // formatter: '{b}：{c}'
+          padding: 10,
+          textStyle: {
+            fontSize: 12
+          },
           formatter: function (params) {
-            if (params.data.tooltipValue && params.data.tooltipValue.length > 0) {
-              // let tooltipval = params.data.tooltipValue
-              console.log(this)
-              // let tooltipname = this.tooltipName
-              let str = `${params.name}</br>`
-              // for (let i in tooltipval) {
-              //   str += `${tooltipname[i]}：${tooltipval[i]}`
-              // }
+            if (params.value && params.data.tooltipValue && params.data.tooltipValue.length > 0) {
+              let str = `${params.data.name}：${params.data.value} ${params.data.valueName}</br>${params.data.tooltipValue}`
               return str
             } else {
               return `${params.name}：${params.value}`
@@ -293,6 +292,13 @@ export default {
     },
     registerMap () {
       echarts.registerMap('hebei', hebei)
+    },
+    tooltipStr (item) {
+      let str = ''
+      for (let i in item.tooltipValue) {
+        str += `${this.dynamicData[this.val.keyPrimary].tooltipName[i]}：${item.tooltipValue[i]} ${this.dynamicData[this.val.keyPrimary].tooltipUnits[i]}</br>`
+      }
+      return str
     }
   }
 }

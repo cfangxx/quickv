@@ -25,7 +25,7 @@ import dataControl from '../../CommonModule/mixins/dataControl'
 import globalMap_ from '../../CommonModule/static/map'
 // import axios from 'axios'
 
-import 'echarts/map/js/china.js'
+// import 'echarts/map/js/china.js'
 import echarts from 'echarts'
 import autoToolTip from '../../CommonModule/scripts/echartsAutoToolTip.js'
 
@@ -34,7 +34,7 @@ export default {
   name: WIDGET_NAME,
   group: 'map',
   icon: require('./icon/thumb-chartMap.png'),
-  title: '分布散点图',
+  title: '全国散点图',
   panel: stylec,
   setting: {
     type: WIDGET_NAME,
@@ -50,7 +50,7 @@ export default {
     top: 20,
     z: 0,
     color: '#555555',
-    name: '分布散点图', // 组件名称, 可自定义
+    name: '全国散点图', // 组件名称, 可自定义
     desc: '中国地图', // 描述, 可自定义
     belong: 'page',
     animationName: '',
@@ -90,36 +90,6 @@ export default {
     csvHeader: [],
     csvGroup: 'map',
 
-    staticTestData: {
-      'code': 0,
-      'data': {
-        'year': 2019,
-        'china': [
-          { 'name': '西宁', 'value': [101.78, 36.62, 219] },
-          { 'name': '黑河', 'value': [127.5, 50.25, 149] },
-          { 'name': '海门', 'value': [121.15, 31.89, 89] },
-          { 'name': '鄂尔多斯', 'value': [109.781327, 39.608266, 12] },
-          { 'name': '招远', 'value': [120.38, 37.35, 12] },
-          { 'name': '舟山', 'value': [122.207216, 29.985295, 92] },
-          { 'name': '齐齐哈尔', 'value': [123.97, 47.33, 14] },
-          { 'name': '盐城', 'value': [120.13, 33.38, 15] },
-          { 'name': '赤峰', 'value': [118.87, 42.28, 86] },
-          { 'name': '青岛', 'value': [120.33, 36.07, 88] },
-          { 'name': '乳山', 'value': [121.52, 36.89, 18] },
-          { 'name': '金昌', 'value': [102.188043, 38.520089, 19] },
-          { 'name': '泉州', 'value': [118.58, 24.93, 21] },
-          { 'name': '莱西', 'value': [120.53, 36.86, 61] },
-          { 'name': '日照', 'value': [119.46, 35.42, 121] },
-          { 'name': '胶南', 'value': [119.97, 35.88, 22] },
-          { 'name': '南通', 'value': [121.05, 32.08, 53] },
-          { 'name': '拉萨', 'value': [91.11, 29.97, 24] },
-          { 'name': '云浮', 'value': [112.02, 22.93, 134] },
-          { 'name': '梅州', 'value': [116.1, 24.55, 25] },
-          { 'name': '文登', 'value': [122.05, 37.2, 75] },
-          { 'name': '上海', 'value': [121.48, 31.22, 5] }
-        ]
-      }
-    },
     staticData: {
       'code': 0,
       'data': {

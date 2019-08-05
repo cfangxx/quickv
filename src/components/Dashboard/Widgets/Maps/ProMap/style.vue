@@ -5,7 +5,7 @@
       <basic-settings :activeElement="activeElement"/>
 
       <div class="panel-item-new">
-        <div @click="isShowMap = !isShowMap" class="panel-item-title">图表设置<i :class="isShowMap ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div @click="isShowMap = !isShowMap" class="panel-item-title">样式设置<i :class="isShowMap ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
         <div v-show="isShowMap" class="panel-item-new-set">
           <div class="panel-row">
             <div class="panel-label">标题</div>

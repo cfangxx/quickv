@@ -31,7 +31,7 @@ export default {
   name: WIDGET_NAME,
   group: 'map',
   icon: require('./icon/thumb-chartMap.png'),
-  title: '省份分布图',
+  title: '全国分布图',
   panel: stylec,
   setting: {
     type: WIDGET_NAME,
@@ -47,7 +47,7 @@ export default {
     top: 20,
     z: 0,
     color: '#555555',
-    name: '省份分布图', // 组件名称, 可自定义
+    name: '全国分布图', // 组件名称, 可自定义
     desc: '中国地图', // 描述, 可自定义
     belong: 'page',
     animationName: '',
