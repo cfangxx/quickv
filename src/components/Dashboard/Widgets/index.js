@@ -16,7 +16,7 @@ import CircularProgressBar from './Indicator/CircularProgressBar'
 // maps
 import ChinaMap from './Maps/ChinaMap'
 import ChinaScatterMap from './Maps/ChinaScatterMap'
-// import ProMap from './Maps/ProMap'
+import ProMap from './Maps/ProMap'
 
 // materials
 import Picture from './Materials/Picture'
@@ -50,7 +50,7 @@ export default {
   // map
   [ChinaMap.name]: ChinaMap,
   [ChinaScatterMap.name]: ChinaScatterMap,
-  // [ProMap.name]: ProMap,
+  [ProMap.name]: ProMap,
 
   // materials
   [Picture.name]: Picture,

@@ -136,7 +136,7 @@
               <div class="panel-label">数据表</div>
               <div>
                 <el-select
-                  class="panel-csv-sel"
+                  class="panel-ele-sel"
                   v-model="activeElement.csvHash"
                   placeholder="请选择"
                   @change="changeCsvType(activeElement.csvHash)">
@@ -348,12 +348,6 @@ export default {
   .el-radio__label{
     font-size:13px;
   }
-  .panel-csv-sel input[readonly][type="text"].el-input__inner{
-    background-color:#fff;
-  }
-  .panel-csv-sel input[readonly][type="text"].el-input__inner:focus{
-    box-shadow: none;
-  }
 </style>
 <style scoped>
   .data-group{
@@ -361,9 +355,6 @@ export default {
   }
   .data-radio-cont,.data-group .radioscont{
     padding: 0 15px;
-  }
-  .panel-csv-sel{
-    width: 170px;
   }
   .el-select-dropdown__item.selected{
     border:none

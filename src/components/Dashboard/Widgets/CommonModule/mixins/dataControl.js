@@ -153,23 +153,22 @@ export default {
       }
       // if (Object.prototype.toString.call(this.val.csvSeries) === '[object Array]') { // 表格组件
       if (this.val.csvGroup === 'table') { // 表格组件
-        params.groups = Base64.encode(this.val.csvSeries.join('-'))
+        params.groups = encodeURIComponent(Base64.encode(this.val.csvSeries.join('-')))
         params.values = ''
         // params.type = 'uuid9'
         params.type = this.type.table
       } else {
-        params.groups = Base64.encode(this.val.csvSeries)
+        params.groups = encodeURIComponent(Base64.encode(this.val.csvSeries))
         // if (Object.prototype.toString.call(this.val.csvNum) === '[object Array]') { // 多列图表组件
         if (this.val.csvGroup === 'multiple') { // 多列图表组件
-          params.values = Base64.encode(this.val.csvNum.join('-'))
+          params.values = Base64.encode(this.val.csvNum.join('-')).replace('%2B', '+')
           // params.type = 'uuid6'
           params.type = this.type.multiple
         } else { // 单列图表组件
-          params.values = Base64.encode(this.val.csvNum)
+          params.values = encodeURIComponent(Base64.encode(this.val.csvNum))
           params.type = this.val.csvGroup === 'map' ? this.type.map : this.type.single
         }
       }
-
       let url = `${process.env.BASE_API}/material/jsonapi?groups=${params.groups}&values=${params.values}&type=${params.type}&source=${params.source}&hash=${params.hash}`
 
       axios({

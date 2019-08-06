@@ -5,8 +5,8 @@
       <basic-settings :activeElement="activeElement"/>
 
       <div class="panel-item-new">
-        <div @click="isShowMap = !isShowMap" class="panel-item-title">样式设置<i :class="isShowMap ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
-        <div v-show="isShowMap" class="panel-item-new-set">
+        <div @click="isShowStyle = !isShowStyle" class="panel-item-title">样式设置<i :class="isShowStyle ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowStyle" class="panel-item-new-set">
           <div class="panel-row">
             <div class="panel-label">标题</div>
             <div>
@@ -108,6 +108,23 @@
         </div>
         </div>
       </div>
+      <div class="panel-item-new">
+        <div @click="isShowMap = !isShowMap" class="panel-item-title">地图设置<i :class="isShowMap ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowMap" class="panel-item-new-set">
+          <div class="panel-row">
+            <div class="panel-label">标题</div>
+            <div>
+              <el-select class="panel-ele-sel" v-model="activeElement.mapPro">
+                <el-option
+                  v-for="(item, index) in mapArr"
+                  :key="index"
+                  :label="item.label"
+                  :value="item.value"></el-option>
+              </el-select>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div v-if="tab === 2">
@@ -154,7 +171,14 @@ export default {
   props: ['activeElement', 'tab'],
   data () {
     return {
-      isShowMap: true
+      isShowStyle: false,
+      isShowMap: true,
+      mapArr: [
+        { label: '北京', value: 'beijing' },
+        { label: '天津', value: 'tianjin' },
+        { label: '河北', value: 'hebei' },
+        { label: '山西', value: 'shanxi' }
+      ]
     }
   },
   methods: {

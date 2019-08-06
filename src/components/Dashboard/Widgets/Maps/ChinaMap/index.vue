@@ -257,6 +257,7 @@ export default {
       }
       this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
     }
+    this.getProJSON()
   },
   methods: {
     drawBar (time) {

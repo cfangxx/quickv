@@ -214,3 +214,12 @@ input[type='radio']{
   line-height: 33px;
   cursor: pointer;
 }
+.panel-ele-sel{
+  width: 170px;
+}
+.panel-ele-sel input[readonly][type="text"].el-input__inner{
+  background-color:#fff;
+}
+.panel-ele-sel input[readonly][type="text"].el-input__inner:focus{
+  box-shadow: none;
+}

@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import globalMap_ from '../../CommonModule/static/map'
 import stylec from './style.vue'
 import dataControl from '../../CommonModule/mixins/dataControl'
@@ -84,6 +85,8 @@ export default {
     keyTooltipUnits: 'tooltipUnits',
     keyValueName: 'valueName',
 
+    mapPro: 'hebei',
+
     csvHash: '',
     csvSeries: '',
     csvNum: '',
@@ -116,7 +119,28 @@ export default {
           { name: '张家口市', value: Math.round(Math.random() * 100), tooltipValue: [46, 35, 29] },
           { name: '保定市', value: Math.round(Math.random() * 100), tooltipValue: [46, 25, 12] },
           { name: '衡水市', value: Math.round(Math.random() * 100), tooltipValue: [46, 15, 4] },
-          { name: '唐山市', value: Math.round(Math.random() * 100), tooltipValue: [46, 33, 9] }
+          { name: '唐山市', value: Math.round(Math.random() * 100), tooltipValue: [46, 33, 9] },
+
+          { name: '吕梁市', value: Math.round(Math.random() * 100), tooltipValue: [32, 33, 9] },
+          { name: '朔州市', value: Math.round(Math.random() * 100), tooltipValue: [46, 88, 54] },
+          { name: '晋中市', value: Math.round(Math.random() * 100), tooltipValue: [65, 33, 79] },
+          { name: '运城市', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+
+          { name: '昌平区', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+          { name: '朝阳区', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+          { name: '海淀区', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+          { name: '西城区', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+          { name: '东城区', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+          { name: '密云县', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+          { name: '怀柔区', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+
+          { name: '蓟县', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+          { name: '武清区', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+          { name: '静海县', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+          { name: '宁河县', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+          { name: '河西区', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+          { name: '河东区', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] },
+          { name: '南开区', value: Math.round(Math.random() * 100), tooltipValue: [46, 47, 9] }
         ],
         tooltipName: ['收入', '支出', '增长'],
         tooltipUnits: ['亿元', '亿元', '%'],
@@ -145,7 +169,7 @@ export default {
           }
         })
         // console.log(data)
-        this.registerMap()
+        // this.registerMap(this.selMap)
         return data
       } else {
         return []
@@ -225,7 +249,7 @@ export default {
         series: [{
           name: '',
           type: 'map',
-          map: 'hebei',
+          map: this.val.mapPro,
           roam: false,
           itemStyle: {
             normal: { // 普通状态下样式
@@ -251,10 +275,13 @@ export default {
     },
     'val.autoToolTipTime': function (val) {
       this.drawBar(val)
+    },
+    'val.mapPro': function (val) {
+      this.getProJSON(this.val.mapPro)
     }
   },
   mounted () {
-    this.registerMap()
+    this.registerMap('hebei', hebei)
     if (this.val.autoToolTip) {
       this.drawBar(this.val.autoToolTipTime)
     }
@@ -290,8 +317,8 @@ export default {
       }
       return res
     },
-    registerMap () {
-      echarts.registerMap('hebei', hebei)
+    registerMap (str, data) {
+      echarts.registerMap(str, data)
     },
     tooltipStr (item) {
       let str = ''
@@ -299,6 +326,15 @@ export default {
         str += `${this.dynamicData[this.val.keyPrimary].tooltipName[i]}：${item.tooltipValue[i]} ${this.dynamicData[this.val.keyPrimary].tooltipUnits[i]}</br>`
       }
       return str
+    },
+    getProJSON (str) {
+      axios({
+        url: '/api/' + str,
+        type: 'get'
+      }).then(data => {
+        console.log(data.data)
+        this.registerMap(str, data.data)
+      })
     }
   }
 }

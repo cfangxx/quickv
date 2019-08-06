@@ -14,6 +14,11 @@ const portfinder = require('portfinder')
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
+var hebei = require('../src/components/Dashboard/Widgets/CommonModule/static/geometryProvince/hebei')
+var beijing = require('../src/components/Dashboard/Widgets/CommonModule/static/geometryProvince/11')
+var tianjin = require('../src/components/Dashboard/Widgets/CommonModule/static/geometryProvince/12')
+var shanxi = require('../src/components/Dashboard/Widgets/CommonModule/static/geometryProvince/14')
+
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
@@ -43,7 +48,23 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
+    },
+
+    before (app) {
+      app.get('/api/hebei', function (req, res) {
+        res.json(hebei)
+      })
+      app.get('/api/beijing', function (req, res) {
+        res.json(beijing)
+      })
+      app.get('/api/tianjin', function (req, res) {
+        res.json(tianjin)
+      })
+      app.get('/api/shanxi', function (req, res) {
+        res.json(shanxi)
+      })
     }
+
   },
   mode: 'development',
   plugins: [
