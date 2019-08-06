@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input :placeholder="'数据表名称'" v-model="listQuery.fileName" clearable style="width: 200px;" class="filter-item" @keyup.enter.native="handleSearch"/>
+      <el-input :placeholder="'数据表名称、表头名称'" v-model="listQuery.fileName" clearable style="width: 200px;" class="filter-item" @keyup.enter.native="handleSearch"/>
 
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{ '搜索' }}</el-button>
       <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".csv" @change="handleClick">

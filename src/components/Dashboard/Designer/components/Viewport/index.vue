@@ -293,13 +293,13 @@ export default {
   height: 10px;
 }
 .viewport-scroll::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
-  border-radius: 10px;
+  border-radius: 2px;
   /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);*/
   background: #999999;
 }
 .viewport-scroll::-webkit-scrollbar-track {/*滚动条里面轨道*/
   /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);*/
-  border-radius: 10px;
+  border-radius: 2px;
   background: #e8e8e8;
 }
 </style>

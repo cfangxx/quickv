@@ -308,10 +308,7 @@ export default {
       }
     }
   },
-  beforeMount () {
-    if (this.val.autoToolTip) {
-      this.drawBar(this.val.autoToolTipTime)
-    }
+  created () {
     if (this.$vpd.state.uuid === this.val.uuid) {
       let colors = this.$vpd.state.page.colors.value.slice(0, 1)
       let param = {
@@ -319,6 +316,11 @@ export default {
         value: colors
       }
       this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
+    }
+  },
+  beforeMount () {
+    if (this.val.autoToolTip) {
+      this.drawBar(this.val.autoToolTipTime)
     }
   },
   methods: {
@@ -330,19 +332,6 @@ export default {
       // 使用轮播插件
       clearInterval(this.timer)
       this.timer = autoToolTip.autoHover(myChart, this.options, this.dataSeries.length, time)
-    },
-    getSeriesColors (len) { // 获取组件默认颜色
-      if (this.$vpd.state.uuid === this.val.uuid) {
-        let colors = this.$vpd.state.page.colors.value.slice(0, len)
-        let param = {
-          name: 'seriesColors',
-          value: colors
-        }
-        this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
-        return colors
-      } else {
-        return []
-      }
     }
   }
 }
