@@ -55,3 +55,17 @@ export function fetchPublication (hash) {
     method: 'get'
   })
 }
+
+export function downloadDashboard (hash) {
+  return request({
+    url: '/download/dashboards/' + hash,
+    method: 'get'
+  })
+}
+
+export function moveDashboard (hash, key) {
+  return request({
+    url: '/projects/' + key + '/dashboards/' + hash,
+    method: 'put'
+  })
+}

@@ -139,6 +139,7 @@ export default class Store {
     this.vm.$data.$$state.page.zoom = 100
 
     this.vm.$data.$$state.widgets = []
+    this.vm.$data.$$state.steps = []
 
     return this
   }

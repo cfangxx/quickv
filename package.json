@@ -1,7 +1,6 @@
 {
-  "name": "Cryia",
+  "name": "QuickV",
   "version": "0.0.1",
-  "description": "A Powerful and Accessible Data Visualization Tool",
   "author": "K.T.Cooperation rom@kunteng.org.cn",
   "private": true,
   "scripts": {
@@ -16,9 +15,11 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "clipboard": "1.7.1",
     "dom-to-image": "^2.6.0",
     "echarts": "^4.2.1",
     "element-ui": "^2.8.2",
+    "js-base64": "^2.5.1",
     "monaco-editor": "^0.16.2",
     "nanoid": "^2.0.1",
     "normalize.css": "^8.0.1",
@@ -28,7 +29,9 @@
     "svgo": "^1.2.2",
     "vue": "^2.6.10",
     "vue-echarts": "^4.0.2",
+    "vue-resource": "^1.5.1",
     "vue-router": "^3.0.6",
+    "vue-wechat-title": "^2.0.5",
     "vuex": "^3.1.0"
   },
   "devDependencies": {

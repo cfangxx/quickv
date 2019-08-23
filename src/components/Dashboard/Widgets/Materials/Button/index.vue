@@ -10,7 +10,9 @@
       color: val.color,
       backgroundColor: val.bgColor,
       fontSize: val.fontSize + 'px',
-      borderRadius: val.borderRadius + 'px'
+      borderRadius: val.borderRadius + 'px',
+      fontFamily: val.fontFamily,
+      fontWeight: val.fontWeight ? 'bold': 'normal'
     }"
     @mouseover="mouseOver($event)"
     @mouseleave="mouseLeave($event)"
@@ -54,6 +56,9 @@ export default {
     desc: '普通按钮', // 描述, 可自定义
     belong: 'page',
     animationName: '',
+
+    fontFamily: 'Microsoft YaHei',
+    fontWeight: false,
 
     text: '提交'
   },

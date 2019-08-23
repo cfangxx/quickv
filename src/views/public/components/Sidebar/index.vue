@@ -6,8 +6,8 @@
       :background-color="variables.menuBg"
       :text-color="variables.menuText"
       :active-text-color="variables.menuActiveText"
-      mode="vertical"
-    >
+      mode="vertical">
+      <project-item/>
       <sidebar-item v-for="route in sidebarRouters" :key="route.path" :item="route" :base-path="route.path"/>
     </el-menu>
   </el-scrollbar>
@@ -16,12 +16,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
+import ProjectItem from './ProjectItem'
 import variables from '@/styles/variables.scss'
 
 export default {
-  components: { SidebarItem },
+  components: { SidebarItem, ProjectItem },
   computed: {
     ...mapGetters([
+      'projects',
       'sidebarRouters',
       'sidebar'
     ]),

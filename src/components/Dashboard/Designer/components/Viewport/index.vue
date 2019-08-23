@@ -1,7 +1,7 @@
 <template>
   <div
     id="viewport"
-    class="holder"
+    class="holder viewport-scroll"
     :style="preview ? screenSize : {}">
     <ruler-tool
       :ruler-toggle=!preview
@@ -10,6 +10,7 @@
       :zoom=zoom
       :content-layout="{left: 0, top: 0}"
       :is-scale-revise="true">
+
       <div
         :style="{
           backgroundColor: backgroundColor,
@@ -24,7 +25,7 @@
         id="viewport-screen"
         @dblclick="replaceImage">
 
-        <drag-select :minHeight="height" v-model="selectedList" ref="dragSelect">
+        <drag-select :zoom="zoom" :minHeight="height" v-model="selectedList" ref="dragSelect">
           <!-- 组件 -->
           <component
             v-for="val in widgetStore"
@@ -58,12 +59,10 @@
 
         <!-- 尺寸控制器 -->
         <component v-bind:is="preview ? '' : 'size-control'"/>
-
-        <!-- <component v-bind:is="preview ? '' : 'drag-select'"/> -->
       </div>
 
-        <!-- 右键菜单 -->
-        <component v-bind:is="preview ? '' : 'context-menu'"/>
+      <!-- 右键菜单 -->
+      <component v-bind:is="preview ? '' : 'context-menu'"/>
     </ruler-tool>
   </div>
 </template>
@@ -191,7 +190,7 @@ export default {
   methods: {
     isSelected (uuid) {
       if (this.$vpd.state.multiSelect) {
-        return this.$vpd.state.uuidList.indexOf(uuid) > -1
+        return this.$vpd.state.multiSelectCols.indexOf(uuid) > -1
       } else {
         return this.$vpd.state.uuid === uuid
       }
@@ -199,7 +198,6 @@ export default {
 
     handleSelection (e) {
       var target = e.target
-      // console.log(e)
       var type, uuid, curDiv
       if (target.tagName === 'CANVAS') {
         curDiv = target.parentNode.parentNode.parentNode
@@ -215,7 +213,7 @@ export default {
         uuid = target.getAttribute('data-uuid') || curDiv.getAttribute('data-uuid')
 
         // 设置选中元素
-        if (this.$vpd.state.multiSelect && (this.$vpd.state.uuidList.indexOf(uuid) > -1)) {
+        if (this.$vpd.state.multiSelect && (this.$vpd.state.multiSelectCols.indexOf(uuid) > -1)) {
           this.initmovement(e)
         } else {
           this.$vpd.commit('SELECT_WIDGET', {
@@ -289,5 +287,19 @@ export default {
 .screen {
   /*margin: 25px auto;*/
   transform-origin: left top;
+}
+.viewport-scroll::-webkit-scrollbar {/*滚动条整体样式*/
+  width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+  height: 10px;
+}
+.viewport-scroll::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+  border-radius: 2px;
+  /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);*/
+  background: #999999;
+}
+.viewport-scroll::-webkit-scrollbar-track {/*滚动条里面轨道*/
+  /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);*/
+  border-radius: 2px;
+  background: #e8e8e8;
 }
 </style>

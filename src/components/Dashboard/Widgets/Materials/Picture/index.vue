@@ -6,14 +6,16 @@
       height: val.height / h * 100 + '%',
       left: val.belong === 'page' ? val.left / w * 100 + '%' : '0',
       top: val.belong === 'page' ? val.top / h * 100 + '%' : '0',
-      zIndex: val.z
+      zIndex: val.z,
+      background: 'url(' + val.url + ') 0px 0px / 100% 100%'
     }">
-    <img
-      :src="val.url">
+    <!--<img-->
+      <!--:src="val.url">-->
   </div>
 </template>
 
 <script>
+import stylec from './style.vue'
 const WIDGET_NAME = 'PictureUploader'
 
 export default {
@@ -21,7 +23,7 @@ export default {
   group: 'material',
   icon: require('./icon/thumb-pic.png'),
   title: '图片',
-  panel: null,
+  panel: stylec,
   setting: {
     type: WIDGET_NAME,
     isContainer: false,
@@ -35,9 +37,11 @@ export default {
     z: 0,
     href: '', // 超链接
     name: '图片', // 组件名称, 可自定义
-    desc: '', // 描述, 可自定义
+    desc: '普通图片', // 描述, 可自定义
     belong: 'page', // 属于哪个容器
-    animationName: ''
+    animationName: '',
+
+    url: ''
   },
   props: [
     'val', // 图片对象

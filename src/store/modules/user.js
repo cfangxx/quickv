@@ -1,38 +1,24 @@
+import router from '@/router'
 import { loginByUsername, logout } from '@/api/login'
-import { getUserInfo } from '@/api/user'
-import { fetchList } from '@/api/dashboard'
+import { getUserInfo, updateAccount } from '@/api/user'
 import { setToken, removeToken, setUserId, removeUserId } from '@/scripts/auth'
-import { constantRouterMap } from '@/router'
-import store from '@/store/index'
+const generate = require('nanoid/generate')
 
 const user = {
   state: {
     id: '',
-    status: '',
-    code: '',
     token: '',
     name: '',
     avatar: '',
     introduction: '',
     roles: [],
-    setting: {
-      articlePlatform: []
-    },
-    routers: []
+    routers: [],
+    projects: {}
   },
 
   mutations: {
-    SET_CODE: (state, code) => {
-      state.code = code
-    },
     SET_TOKEN: (state, token) => {
       state.token = token
-    },
-    SET_SETTING: (state, setting) => {
-      state.setting = setting
-    },
-    SET_STATUS: (state, status) => {
-      state.status = status
     },
     SET_NAME: (state, name) => {
       state.name = name
@@ -46,9 +32,11 @@ const user = {
     SET_USER_ID: (state, id) => {
       state.id = id
     },
-    SET_USER_ROUTER: (state, routers) => {
-      const permissionRouters = store.getters.permissionRouters
-      state.routers = constantRouterMap.concat(permissionRouters).concat(routers)
+    SET_USER_PROJECTS: (state, projects) => {
+      state.projects = projects
+    },
+    SET_USER_ROUTERS: (state, routers) => {
+      state.routers = routers
     }
   },
 
@@ -71,6 +59,32 @@ const user = {
     // 获取用户信息
     GetUserInfo ({ commit, state }) {
       return new Promise((resolve, reject) => {
+        const projectRouters = [
+          {
+            path: '/project',
+            component: () => import('@/views/public/Layout'),
+            name: 'project',
+            meta: {
+              title: '我的大屏',
+              icon: 'list'
+            },
+            children: [
+              {
+                path: 'all',
+                component: () => import('@/views/dashboard/Manage'),
+                name: 'all',
+                meta: { title: '全部大屏' }
+              },
+              {
+                path: 'ungrouped',
+                component: () => import('@/views/dashboard/Manage'),
+                name: 'ungrouped',
+                meta: { title: '未分组' }
+              }
+            ]
+          }
+        ]
+
         getUserInfo().then(response => {
           if (!response) {
             reject(new Error('Verification failed, please login again.'))
@@ -83,7 +97,19 @@ const user = {
             reject(new Error('getInfo: roles must be a non-null array!'))
           }
 
-          commit('SET_NAME', user.name)
+          const projects = user.projects || {}
+          for (let key in projects) {
+            projectRouters[0].children.push({
+              path: key,
+              component: () => import('@/views/dashboard/Manage'),
+              name: key,
+              meta: { title: projects[key] }
+            })
+          }
+
+          commit('SET_USER_ROUTERS', projectRouters)
+          commit('SET_USER_PROJECTS', projects)
+          commit('SET_NAME', user.username)
           commit('SET_AVATAR', user.avatar)
           resolve(response)
         }).catch(error => {
@@ -92,42 +118,47 @@ const user = {
       })
     },
 
-    // 获取用户大屏列表, 添加路由
-    GetUserDashboardList ({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        const routers = [
-          {
-            path: '/preview',
-            name: 'Dashboard',
-            meta: {
-              title: '我的大屏',
-              icon: 'chart'
-            },
-            children: [
-            ]
-          }
-        ]
-        fetchList().then(response => {
-          const list = response.data
-          if (list && list.total > 0) {
-            list.items.forEach(item => {
-              routers[0].children.push({
-                path: item.hash,
-                component: () => import('@/views/dashboard/Preview'),
-                name: item.hash,
-                meta: { title: item.config.title }
-              })
-            })
-          }
+    addProject ({ commit, state }, projectName) {
+      let projects = Object.assign(state.projects)
+      let key = generate('1234567890abcdef', 6)
+      projects[key] = projectName
 
-          commit('SET_USER_ROUTER', routers)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
+      commit('SET_USER_PROJECTS', projects)
+
+      const newProjectRouters = [
+        {
+          path: '/project',
+          component: () => import('@/views/public/Layout'),
+          name: 'project',
+          meta: {
+            title: '我的大屏',
+            icon: 'list'
+          },
+          children: [
+            {
+              path: key,
+              component: () => import('@/views/dashboard/Manage'),
+              name: key,
+              meta: { title: projectName }
+            }
+          ]
+        }
+      ]
+      router.addRoutes(newProjectRouters)
     },
 
+    renameProject ({ commit, state }, payload) {
+      const projects = Object.assign(state.projects, payload)
+
+      commit('SET_USER_PROJECTS', projects)
+    },
+
+    deleteProject ({ commit, state }, projectKey) {
+      let projects = Object.assign(state.projects)
+      delete projects[projectKey]
+
+      commit('SET_USER_PROJECTS', projects)
+    },
     // 第三方验证登录
     // LoginByThirdparty({ commit, state }, code) {
     //   return new Promise((resolve, reject) => {
@@ -153,6 +184,14 @@ const user = {
           resolve()
         }).catch(error => {
           reject(error)
+        })
+      })
+    },
+
+    UpdateAccount ({ commit }, account) {
+      return new Promise(resolve => {
+        updateAccount(account).then(response => {
+          resolve(response)
         })
       })
     },

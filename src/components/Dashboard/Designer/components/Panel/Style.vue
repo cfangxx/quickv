@@ -45,12 +45,14 @@ export default {
       if (this.activeElement.type) {
         const styles = widget.getWidgetStyle()
         Object.keys(styles).filter(key => {
+          if (styles[key].type !== this.activeElement.type && styles[key].hasOwnProperty('typeStyles') && styles[key]['typeStyles'].indexOf(this.activeElement.type) > -1) {
+            panel = key
+          }
           if (styles[key].type === this.activeElement.type) {
             panel = key
           }
         })
       }
-
       return panel
     }
   }

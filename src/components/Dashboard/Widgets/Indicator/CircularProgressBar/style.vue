@@ -9,14 +9,15 @@
         <div v-show="isShowProgress" class="panel-item-new-set">
           <div class="panel-row">
             <div class="panel-label">环形颜色</div>
-            <div class="panel-value">{{ activeElement.colorArr[1] }}</div>
+            <div class="panel-value">{{ activeElement.seriesBgColor }}</div>
             <div>
               <input
-                v-model="activeElement.colorArr[1]"
+                v-model="activeElement.seriesBgColor"
                 type="color">
             </div>
           </div>
           <div
+            style="display: none;"
             class="panel-row"
             flex>
             <div class="panel-label">进度条渐变</div>
@@ -67,10 +68,10 @@
             v-show="!activeElement.isLinear"
             class="panel-row">
             <div class="panel-label">进度条颜色</div>
-            <div class="panel-value">{{ activeElement.colorArr[0] }}</div>
+            <div class="panel-value">{{ activeElement.seriesColors[0] }}</div>
             <div>
               <input
-                v-model="activeElement.colorArr[0]"
+                v-model="activeElement.seriesColors[0]"
                 type="color">
             </div>
           </div>

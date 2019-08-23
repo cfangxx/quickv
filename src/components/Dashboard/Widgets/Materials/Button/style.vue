@@ -13,6 +13,24 @@
               v-model="activeElement.text">
           </div>
         </div>
+        <div class="panel-row" flex>
+          <div class="panel-label">字体</div>
+          <div class="panel-value">
+            <select v-model="activeElement.fontFamily">
+              <option value="Arial">Arial</option>
+              <option value="sans-serif">sans-serif</option>
+              <option value="Microsoft YaHei">微软雅黑</option>
+              <option value="Microsoft JhengHei">微软正黑体</option>
+              <option value="SimHei">黑体</option>
+              <option value="Hiragino Sans GB">Hiragino Sans GB</option>
+              <option value="SimSun">宋体</option>
+              <option value="FangSong">仿宋</option>
+              <option value="PMingLiU">新细明体</option>
+              <option value="KaiTi">楷体</option>
+              <option value="DFKai-SB">标楷体</option>
+            </select>
+          </div>
+        </div>
         <div class="panel-row">
           <div class="panel-label">文本大小</div>
           <div>
@@ -29,6 +47,15 @@
             <input
               v-model="activeElement.color"
               type="color">
+          </div>
+        </div>
+        <div class="panel-row" flex>
+          <div class="panel-label">加粗</div>
+          <div class="panel-value">
+            <label class="form-switch">
+              <input type="checkbox" v-model="activeElement.fontWeight">
+              <i class="form-icon"></i>
+            </label>
           </div>
         </div>
         <div class="panel-row">

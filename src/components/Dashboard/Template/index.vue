@@ -23,7 +23,7 @@
           :class="classThumbnail(tplSelected.hash, template.hash)"
           @click="onSelectImage(template)">
           <div :class="rootClass + '__imgcont'">
-            <img :src="template.imgUrl | fullImgUrl"
+            <img v-if="template.imgUrl" :src="template.imgUrl | fullImgUrl"
                  :height="h"
                  :width="w"
                  :class="rootClass + '__img'">
@@ -137,6 +137,7 @@ export default {
 .template-list__imgcont{
   width: 100%;
   height: 90px;
+  background-color:#000;
 }
 .template-list__imgcont img,.template-list__imgcont span{
   display: inline-block;
@@ -149,6 +150,8 @@ export default {
   line-height: 20px;
   border: 1px solid #ddd;
   width: 160px;
+  height:142px;
+  cursor: pointer;
 
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -177,7 +180,12 @@ export default {
 }
 
 .template-list__lbl{
+  display: block;
   line-height: 3;
+  width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 @media only screen and (max-width: 200px) {

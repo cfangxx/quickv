@@ -27,6 +27,7 @@
 
 <script>
 import Vue from 'vue'
+import './style/font/font.css'
 
 import Navbar from './components/Navbar'
 import Toolbar from './components/Toolbar'
@@ -192,7 +193,7 @@ export default {
 
 .control-panel {
   background: #fff;
-  user-select: none;
+  /*user-select: none;*/
   &.column {
     flex: none;
     width: 400px;

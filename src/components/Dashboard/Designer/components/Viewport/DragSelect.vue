@@ -26,6 +26,12 @@ export default {
     minHeight: {
       type: Number,
       required: true
+    },
+    zoom: {
+      type: Number,
+      default: function () {
+        return 100
+      }
     }
   },
   data () {
@@ -109,10 +115,10 @@ export default {
         y: this.endPoint.y - clientRect.top + this.$el.scrollTop
       }
       // Calculate position and dimensions of the selection box
-      const left = Math.min(this.startPoint.x, this.lastEndPoint.x)
-      const top = Math.min(this.startPoint.y, this.lastEndPoint.y)
-      const width = Math.abs(this.startPoint.x - this.lastEndPoint.x)
-      const height = Math.abs(this.startPoint.y - this.lastEndPoint.y)
+      const left = Math.min(this.startPoint.x, this.lastEndPoint.x) / (this.zoom / 100)
+      const top = Math.min(this.startPoint.y, this.lastEndPoint.y) / (this.zoom / 100)
+      const width = Math.abs(this.startPoint.x - this.lastEndPoint.x) / (this.zoom / 100)
+      const height = Math.abs(this.startPoint.y - this.lastEndPoint.y) / (this.zoom / 100)
       this.selectionBox = {
         left,
         top,
@@ -149,18 +155,18 @@ export default {
       const elBottom = clientRect.top + clientRect.height
 
       // this.endPoint.y = event.pageY
-      if (event.pageY > (elBottom - 50)) {
+      if (event.pageY > elBottom) {
         // 向下滚动
         this.scrollDirection = true
       }
 
-      if (event.pageY < (clientRect.top + 50)) {
+      if (event.pageY < clientRect.top) {
         // 向上滚动
         this.scrollDirection = false
       }
 
       // 判断是否开启滚动
-      if ((event.pageY > (clientRect.top + 50)) && (event.pageY < (elBottom - 50))) {
+      if ((event.pageY > clientRect.top) && (event.pageY < elBottom)) {
         clearInterval(this.autoScrollTimer)
         this.scrollIng = false
       } else {
@@ -204,6 +210,10 @@ export default {
       }
     },
     computeSelectedItems () {
+      if (!this.endPoint) {
+        return
+      }
+
       const self = this
       this.currentValue = []
       this.$nextTick(() => {
@@ -254,7 +264,6 @@ export default {
   .vue-drag-select {
     position: relative;
     user-select: none;
-    overflow:hidden;
     width:100%;
     height:100%;
     overflow-y: visible;

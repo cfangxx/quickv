@@ -16,11 +16,12 @@
           </div>
           <div class="panel-row">
             <div class="panel-label">标题颜色</div>
-            <div class="panel-value">{{ activeElement.titleColor }}</div>
-            <div>
-              <input
+            <div class="panel-value panel-value-color-1">{{ activeElement.titleColor }}</div>
+            <div class="panel-value panel-value-color-2">
+              <el-color-picker
                 v-model="activeElement.titleColor"
-                type="color">
+                show-alpha
+                size="mini"/>
             </div>
           </div>
           <div class="panel-row">
@@ -47,7 +48,7 @@
             <div class="panel-label">配置颜色</div>
             <div>
               <div
-                v-for="(value, index) in activeElement.colorArr"
+                v-for="(value, index) in activeElement.seriesColors"
                 :key="index"
                 :data-val="value"
                 :data-ind="index"
@@ -55,7 +56,7 @@
                 <div class="panel-value panel-value-color-1">{{ value }}</div>
                 <div class="panel-value panel-value-color-2">
                   <el-color-picker
-                    v-model="activeElement.colorArr[index]"
+                    v-model="activeElement.seriesColors[index]"
                     show-alpha
                     size="mini"/>
                 </div>
@@ -133,7 +134,7 @@
         <div class="panel-label">轮播时间</div>
         <div>
           <input
-            v-model="activeElement.autoToolTipTime">
+            v-model="activeElement.autoToolTipTime"> ms
         </div>
       </div>
     </div>

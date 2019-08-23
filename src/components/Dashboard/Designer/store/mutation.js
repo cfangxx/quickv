@@ -3,7 +3,8 @@ const generate = require('nanoid/generate')
 export default {
   // 添加组件
   ADD_WIDGET (state, { data: data = null, item }) {
-    let def = { top: state.top, uuid: generate('1234567890abcdef', 10) }
+    // let def = { top: state.top, uuid: generate('1234567890abcdef', 10) }
+    let def = { uuid: generate('1234567890abcdef', 10) }
     let setting = JSON.parse(JSON.stringify(item.setting))
 
     if (setting.isContainer) {
@@ -21,41 +22,33 @@ export default {
 
   // 复制组件
   COPY_WIDGET (state, payload) {
+    function newWidget (origin) {
+      return Object.assign({}, JSON.parse(JSON.stringify(origin)), { top: origin.top + 50, left: origin.left + 50, uuid: generate('1234567890abcdef', 10) })
+    }
+
     if (state.type !== 'page') {
-      var copy = Object.assign({}, JSON.parse(JSON.stringify(state.activeElement)), { top: state.top, uuid: generate('1234567890abcdef', 10) })
-
-      // 由于容器的名称必须是唯一的，故复制容器需作处理
-      if (state.activeElement.isContainer) {
-        var name = state.activeElement.name
-        if (name) {
-          // 设置容器副本的名称
-          var copyName = name.split('-')[0] + '-' + state.counter
-          copy.name = copyName
-
-          // 复制容器内的图片和文本
-          for (var i = 0, len = state.widgets.length; i < len; i++) {
-            if (state.widgets[i].belong === name) {
-              state.widgets.push(
-                Object.assign({}, state.widgets[i], { belong: copyName })
-              )
-            }
+      state.widgets.push(newWidget(state.activeElement))
+    } else if (state.multiSelect) {
+      state.multiSelectCols.forEach(uuid => {
+        for (let i = 0; i < state.widgets.length; i++) {
+          if (state.widgets[i].uuid === uuid) {
+            state.widgets.push(newWidget(state.widgets[i]))
           }
-
-          state.counter += 1
         }
-      }
-
-      state.widgets.push(copy)
+      })
     }
   },
 
   // 删除选中组件
   DELETE_WIDGET (state) {
     if (state.multiSelect) {
-      const widgets = state.widgets.filter(widget => {
-        return state.uuidList.indexOf(widget.uuid) < 0
+      state.multiSelectCols.forEach(uuid => {
+        for (let i = 0; i < state.widgets.length; i++) {
+          if (state.widgets[i].uuid === uuid) {
+            state.widgets.splice(i, 1)
+          }
+        }
       })
-      state.widgets = widgets
     } else {
       if (state.type === 'page') return
 
@@ -102,7 +95,7 @@ export default {
   // 组件多选
   MULTISELECT_WIDGET (state, payload) {
     state.multiSelect = true
-    state.uuidList = payload
+    state.multiSelectCols = payload
   },
 
   // 调整组件尺寸
@@ -204,7 +197,7 @@ export default {
       state.startX = payload.x
       state.startY = payload.y
 
-      state.uuidList.forEach(uuid => {
+      state.multiSelectCols.forEach(uuid => {
         let widget = state.widgets.find(w => w.uuid === uuid)
         const left = widget.left + Math.floor(dx * 100 / state.page.zoom)
         const top = widget.top + Math.floor(dy * 100 / state.page.zoom)
@@ -269,6 +262,11 @@ export default {
     state.activeElement.bgColor = payload[0].val
   },
 
+  // 修改页面主题颜色
+  UPDATE_PAGE_COLOR_THEME (state, payload) {
+    state.page.colors = payload
+  },
+
   // 添加动画
   ADD_ANIMATION (state) {
     state.animation.push({
@@ -325,9 +323,26 @@ export default {
     state.activeElement[payload.name] = payload.value
   },
 
+  // 更新多条数据图表(添加数据)
+  UPDATE_DATAS_ADD (state, payload) {
+    for (let i in payload) {
+      let name = payload[i].name
+      state.activeElement[name].push(payload[i].value)
+    }
+  },
+  // 更新多条数据图表(删除数据)
+  UPDATE_DATAS_DEL (state, payload) {
+    let names = payload.name
+    for (let i = 0; i < names.length; i++) {
+      let prop = names[i]
+      state.activeElement[prop] = state.activeElement[prop].slice(0, payload.value)
+    }
+  },
+
   // 图表删除颜色
   DELETE_COLOR (state, payload) {
     state.activeElement[payload.property].splice(payload.data.index, 1)
+    console.log(state.activeElement.seriesColors)
   },
 
   UPDATE_LINKAGE (state, { uuid, value }) {
@@ -343,5 +358,14 @@ export default {
       state.steps.shift()
     }
     state.steps.push(payload)
+  },
+
+  // 批量更新数据
+  UPDATE_DATAS (state, payload) {
+    for (let i in payload) {
+      let name = payload[i].name
+      state.activeElement[name] = payload[i].value
+    }
   }
+
 }

@@ -65,7 +65,7 @@ export default {
             result[item] = widgets[item]
           }
         }
-
+        // console.log(result)
         return result
       }
     },
@@ -91,6 +91,7 @@ export default {
     },
     // 添加组件
     addWidget (e, item) {
+      // console.log(item)
       this.$vpd.dispatch('addWidget', item)
     },
 
@@ -119,37 +120,40 @@ export default {
       padding: 4px 12px;
       cursor: pointer;
       position: relative;
+      color: #a1aeb3;
 
       .btn-container {
         font-size: 12px;
         text-align: center;
         .icon {
           display: block;
-          margin: 5px auto 2px;
-          font-size: 20px;
-          color: #fff;
+          margin: 5px auto 4px;
+          font-size: 18px;
         }
         .btn-text {
           line-height: 16px;
-          color: #ccc;
+          /*color: #f1f1f1;*/
         }
       }
       .btn-item__list {
         position: absolute;
         top: 52px;
-        width: 375px;
-        left: -125px;
+        /*width: 375px;*/
+        width: 400px;
+        /*left: -125px;*/
+        left: -170px;
         height: auto;
         padding-top: 6px;
 
         .list-container {
           z-index: 22;
-          border: 1px solid #ccc;
+          border: 1px solid #2e343c;
           border-radius: 4px;
           box-shadow: 0 2px 6px rgba(0,0,0,.1);
           padding: 4px;
-          background-color: #fff;
-          color: #58666e;
+          /*background-color: #27343e;*/
+          background-color: #24292e;
+          color: #bcc9d4;
           max-height: 380px;
           min-height: 100px;
           overflow-y: auto;
@@ -159,9 +163,10 @@ export default {
             li {
               float: left;
               margin: 0 5px 4px;
+              padding-bottom: 8px;
               .tool-item {
                 display: inline-block;
-                width: 79px;
+                width: 85px;
                 white-space: nowrap;
                 overflow: hidden;
                 cursor: pointer;
@@ -176,16 +181,19 @@ export default {
                 }
               }
               &:hover {
-                background-color:rgb(240, 240, 240);
                 border-radius:2px;
+                background-color: #1A1D21;
+                color: #00baff;
               }
             }
           }
         }
       }
       &:hover {
-        background-color:rgb(88, 88, 88);
+        /*background-color:#0939a5;*/
+        background-color: #1A1D21;
         border-radius:2px;
+        color: #00baff;
       }
     }
   }

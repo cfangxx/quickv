@@ -74,12 +74,13 @@
         </div>
       </div>
     </div>
-    <div v-show="tab === 2">
+    <div v-show="tab === 3">
       <div class="panel-row" flex>
         <div class="panel-label">时间格式</div>
         <div class="panel-value">
           <select v-model="activeElement.timeType">
             <option value="y-m-d">日期</option>
+            <option value="y-m-d-h-m">日期 + 时分</option>
             <option value="y-m-d-h-m-s">日期 + 时分秒</option>
           </select>
         </div>

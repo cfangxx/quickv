@@ -52,7 +52,7 @@ export default {
     fontSize: 20,
     fontFamily: 'Microsoft YaHei',
     fontWeight: false,
-    color: '#000000',
+    color: '#a1aeb3',
     textAlign: 'center',
     href: '',
 
@@ -91,6 +91,9 @@ export default {
       switch (this.val.timeType) {
         case 'y-m-d':
           str = year + '-' + month + '-' + day
+          break
+        case 'y-m-d-h-m':
+          str = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes
           break
         case 'y-m-d-h-m-s':
           str = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds

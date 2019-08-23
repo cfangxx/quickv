@@ -8,12 +8,25 @@
         <div @click="isShowX = !isShowX" class="panel-item-title">{{activeElement.axisReverse ? 'Y 轴' : 'X 轴'}}<i :class="isShowX ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
         <div v-show="isShowX" class="panel-item-new-set">
           <div class="panel-row">
+            <div class="panel-label">名称</div>
+            <div>
+              <input v-model="activeElement.xName" type="text">
+            </div>
+          </div>
+          <div class="panel-row">
             <div class="panel-label">文本颜色</div>
             <div class="panel-value">{{ activeElement.xTextColor }}</div>
             <div>
               <input
                 v-model="activeElement.xTextColor"
                 type="color">
+            </div>
+          </div>
+          <div class="panel-row">
+            <div class="panel-label">文本旋转</div>
+            <div>
+              <input
+                v-model.number="activeElement.xRotate" type="number">
             </div>
           </div>
           <div class="panel-row">
@@ -69,6 +82,12 @@
       <div class="panel-item-new">
         <div @click="isShowY = !isShowY" class="panel-item-title">{{activeElement.axisReverse ? 'X 轴' : 'Y 轴'}}<i :class="isShowY ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
         <div v-show="isShowY" class="panel-item-new-set">
+          <div class="panel-row">
+            <div class="panel-label">名称</div>
+            <div>
+              <input v-model="activeElement.yName" type="text">
+            </div>
+          </div>
           <div class="panel-row">
             <div class="panel-label">文本颜色</div>
             <div class="panel-value">{{ activeElement.yTextColor }}</div>
@@ -206,7 +225,7 @@
       <div class="panel-item-new">
         <div @click="isShowSet = !isShowSet" class="panel-item-title">相关配置<i :class="isShowSet ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
         <div v-show="isShowSet" class="panel-item-new-set">
-          <div class="panel-row">
+          <div style="display:none;" class="panel-row">
             <div class="panel-label">配置颜色</div>
             <div class="panel-setcolor">
               <div
@@ -286,6 +305,21 @@
         </div>
         </div>
       </div>
+      <div class="panel-item-new">
+        <div @click="isShowColor = !isShowColor" class="panel-item-title">配置颜色<i :class="isShowColor ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" class="panel-title-arrow"></i></div>
+        <div v-show="isShowColor" class="panel-item-new-set">
+          <div class="panel-row">
+            <div class="panel-label">配置颜色</div>
+            <div class="panel-colormsg">{{ activeElement.seriesColors[0] }}</div>
+            <div class="panel-colorpick">
+              <el-color-picker
+                v-model="activeElement.seriesColors[0]"
+                show-alpha
+                size="small"/>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 数据源设置 -->
@@ -340,6 +374,7 @@ export default {
       isShowX: true,
       isShowY: true,
       isShowLine: true,
+      isShowColor: true,
       isShowSet: true,
       icon: [
         {

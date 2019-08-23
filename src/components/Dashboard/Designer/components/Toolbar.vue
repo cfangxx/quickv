@@ -5,14 +5,14 @@
     @mouseenter="enter()"
     @mouseleave="leave()">
     <div class="min-banner">组件管理</div>
-    <div>
+    <div class="left-panel-cont">
       <p class="toolbar-title">已加组件</p>
       <ul class="layer-list-new">
         <li
           v-for="layer in layers"
-          :class="{'layer-active': layer === activeElement}"
+          :class="{'layer-active': isSelected(layer.uuid)}"
           :key="layer.uuid"
-          @click="(e) => {activeLayer(e, layer)}">{{ getWidgetTitle(layer.type) }}</li>
+          @click="(e) => {activeLayer(e, layer)}">{{ layer.name }}</li>
       </ul>
     </div>
 
@@ -65,6 +65,13 @@ export default {
     },
     leave () {
       this.isCollapse = false
+    },
+    isSelected (uuid) {
+      if (this.$vpd.state.multiSelect) {
+        return this.$vpd.state.multiSelectCols.indexOf(uuid) > -1
+      } else {
+        return this.$vpd.state.uuid === uuid
+      }
     }
   }
 }
@@ -80,6 +87,8 @@ export default {
     padding:60px 0 0 30px;
     box-sizing: border-box;
     border-right:1px solid #ddd;
+    background-color: #27343e;
+    color: #bcc9d4;
   }
   .toolbar-ctrl-panel {
     position: absolute;
@@ -101,8 +110,9 @@ export default {
     padding: 20px 10px 0;
     font-size: 20px;
     text-align: center;
-    color:#aab2bd;
-    background-color: #232d3c;
+    color:#a1aeb3;
+    background-color: #27343e;
+    /*background-color: #0543b0;*/
     margin-left: -3px;
     box-sizing: border-box;
   }
@@ -113,7 +123,9 @@ export default {
     width: 120px;
   }
   .toolbar-title{
-    background-color: #ddd;
+    /*background-color: #eee;*/
+    color:#a1aeb3;
+    background-color:rgba(64, 76, 86, 1);
     height:50px;
     line-height: 50px;
     margin:0;
@@ -124,17 +136,47 @@ export default {
     list-style-type:none;
     padding:0;
     margin:0;
+    font-size: 12px;
     text-align: center;
   }
   .layer-list-new li{
     height:40px;
     line-height: 40px;
     box-sizing: border-box;
-    border:1px solid #e8e8e8;
+    /*border-bottom:1px solid rgba(64, 76, 86, 1);*/
+    /*border-bottom:1px solid #e8e8e8;*/
     cursor: pointer;
+    text-align: left;
+    padding-left: 6px;
   }
   .layer-list-new li:hover{
-    /*background-color: #eee;*/
-    border:1px solid #2c3e50;
+    /*background-color: #47aff3;*/
+    /*color:#fff;*/
+    background-color: #1d262e;
+    color: #00baff;
+  }
+  .layer-active{
+    /*background-color: #47aff3;*/
+    /*color:#fff;*/
+    background-color: #1d262e;
+    color: #00baff;
+  }
+  .left-panel-cont{
+    overflow-y: auto;
+    height: 100%;
+  }
+  .left-panel-cont::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+  }
+  .left-panel-cont::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 10px;
+    /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);*/
+    background: #999999;
+  }
+  .left-panel-cont::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);*/
+    border-radius: 10px;
+    background: #e8e8e8;
   }
 </style>

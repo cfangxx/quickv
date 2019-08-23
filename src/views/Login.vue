@@ -3,7 +3,8 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
         <h3 class="title">
-          {{ '系统登陆' }}
+          <span class="login-logo-cont"><img src="../assets/login-logo.png" alt=""></span>
+          <p>{{ '可视化数据展示' }}</p>
         </h3>
       </div>
 
@@ -37,8 +38,8 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
-        {{ '登陆' }}
+      <el-button :loading="loading" type="primary" class="login-btn" style="" @click.native.prevent="handleLogin">
+        {{ '登录' }}
       </el-button>
 
     </el-form>
@@ -124,7 +125,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-  $bg:#283443;
+  $bg:#1369db;
   $light_gray:#eee;
   $cursor: #fff;
 
@@ -160,7 +161,7 @@ export default {
     }
     .el-form-item {
       border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.1);
+      background: rgba(250, 250, 250, 0.1);
       border-radius: 5px;
       color: #454545;
     }
@@ -168,14 +169,15 @@ export default {
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  $bg:#2d3a4b;
+  $bg:#1369db;
   $dark_gray:#889aa4;
   $light_gray:#eee;
 
   .login-container {
     min-height: 100%;
     width: 100%;
-    background-color: $bg;
+    /*background-color: $bg;*/
+    background: linear-gradient(45deg, #0543b0 30%, #237eef 100%);
     overflow: hidden;
     .login-form {
       position: relative;
@@ -197,7 +199,7 @@ export default {
     }
     .svg-container {
       padding: 6px 5px 6px 15px;
-      color: $dark_gray;
+      color: #eaeaea;
       vertical-align: middle;
       width: 30px;
       display: inline-block;
@@ -225,7 +227,7 @@ export default {
       right: 10px;
       top: 7px;
       font-size: 16px;
-      color: $dark_gray;
+      color: #eaeaea;
       cursor: pointer;
       user-select: none;
     }
@@ -234,5 +236,29 @@ export default {
       right: 0;
       bottom: 6px;
     }
+  }
+</style>
+<style rel="stylesheet/scss" lang="scss">
+  $bcolor: #132a45;
+  .login-logo-cont, .login-logo-cont img{
+    display: inline-block;
+    width:150px;
+  }
+  .title p{
+    font-size: 16px;
+    margin:0;
+    font-weight: normal;
+    color:#f1f1f1;
+  }
+  .login-btn{
+    width:100%;
+    line-height: 30px;
+    margin-bottom:30px;
+    background: $bcolor;
+    border:1px solid $bcolor
+  }
+  .login-btn:hover{
+    background: #1e3551;
+    border:1px solid #1e3551
   }
 </style>

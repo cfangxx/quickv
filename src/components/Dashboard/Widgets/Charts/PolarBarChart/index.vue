@@ -11,6 +11,7 @@
     }"
     contenteditable="true">
     <v-echart
+      :id="chartId"
       :options="options"
       autoresize
       class="ffff"/>
@@ -36,12 +37,12 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    width: 500,
-    height: 550,
-    left: 400,
-    top: 400,
+    width: 300,
+    height: 350,
+    left: 100,
+    top: 50,
     z: 0,
-    color: '#555555',
+    color: '#f7f7f7',
     name: '堆叠柱状图', // 组件名称, 可自定义
     desc: '极坐标系下的堆叠柱状图', // 描述, 可自定义
     belong: 'page',
@@ -49,29 +50,34 @@ export default {
 
     showX: false, // 是否显示 X 轴
     xLineWidth: 1, // X 轴轴线宽度
-    xTextColor: '#666666', // X 轴文字颜色
+    xTextColor: '#f7f7f7', // X 轴文字颜色
     xTextFontSize: 14, // X 轴文字大小
     xLabelRotate: 0, // X轴文字旋转角度
     showYSplitLine: true, // 是否显示Y 轴网格线
-    splitLineColor: '#dddddd', // y轴标线颜色
+    splitLineColor: '#2c213d', // y轴标线颜色
     colorArr: ['#fc8700', '#ff00c0', '#f33a00', '#2cbdff', '#0000ff', '#25da29', '#f1f10e', '#07ecf8', '#af28d7', '#20f807'], // 颜色数组
     polarSize: '70%', // 图表大小调整 如 70% / 300
     splitNumber: 10, // 分割段数
     polarType: 'bar', // 图表标线样式 如 line, bar
 
+    seriesColors: [],
+
     legendShow: true, // 显示图例
-    legendWidth: '60%', // 图例宽度
+    legendWidth: '80%', // 图例宽度
     legendHeight: '100', // 图例高度
     legendPositionX: 'center', // 图例位置（X 轴）
     legendPositionY: 'bottom', // 图例位置（Y 轴）
     legendFontSize: 12, // 图例文字大小
-    legendTextColor: '#000000', // 图例文字颜色
+    legendTextColor: '#f7f7f7', // 图例文字颜色
     legendIcon: 'roundRect', // 图例 Icon 如 circle, rect, line, roundRect, triangle, diamond, pin, none
     legendIconWidth: 20, // 图例 Icon 宽度
     legendIconHeight: 10, // 图例 Icon 高度
     legendIconGap: 10, // 图例 Icon 间距
 
-    dataAPI: 'https://easy-mock.com/mock/5cc6c0a89edd7844f38df463/cryia/api/salevolume', // API拉取地址
+    autoToolTip: false, // 是否开启自动轮播
+    autoToolTipTime: 5000, // 自动轮播时间
+
+    dataAPI: 'https://mock.kunteng.org.cn/mock/5ca2cba34918866472494a14/quickv/api/demo', // API拉取地址
     dataAutoRefresh: false, // 是否自动刷新
     dataOrigin: 'local', // local 本地 api 远程接口
     dataRefreshTime: 5, // 自动刷新间隔（秒）
@@ -84,8 +90,14 @@ export default {
 
     keyPrimary: 'data',
     keyTarget: 'statistics', // 响应数据对应的字段名
-    keyXAxis: 'vendor', // 从该字段取x轴数据
-    keyYAxis: 'sales', // 从该字段取y轴数据
+    keyXAxis: 'x', // 从该字段取x轴数据
+    keyYAxis: 'y', // 从该字段取y轴数据
+
+    csvHash: '', // 选择的 csv 数据hash值 (通过该值获取表头信息)
+    csvSeries: '', // 分组标签
+    csvNum: '', // 取值标签 (堆叠图为数组)
+    csvHeader: [], // 选中的表头关系
+    csvGroup: 'single', // 组件分组(csv数据请求接口类型single/multiple/table/map)
 
     staticData: {
       'code': 0,
@@ -93,36 +105,36 @@ export default {
         'year': 2019,
         'statistics': [
           {
-            'vendor': 'Samsung',
-            'sales': 33801
+            'x': 'Samsung',
+            'y': 33801
           },
           {
-            'vendor': 'iPhone',
-            'sales': 63395
+            'x': 'iPhone',
+            'y': 63395
           },
           {
-            'vendor': 'HUAWEI',
-            'sales': 89297
+            'x': 'HUAWEI',
+            'y': 89297
           },
           {
-            'vendor': 'VIVO',
-            'sales': 76689
+            'x': 'VIVO',
+            'y': 76689
           },
           {
-            'vendor': 'OPPO',
-            'sales': 32219
+            'x': 'OPPO',
+            'y': 32219
           },
           {
-            'vendor': 'MI',
-            'sales': 98748
+            'x': 'MI',
+            'y': 98748
           },
           {
-            'vendor': 'Meizu',
-            'sales': 18290
+            'x': 'Meizu',
+            'y': 18290
           },
           {
-            'vendor': '8848',
-            'sales': 66282
+            'x': '8848',
+            'y': 66282
           }
         ]
       }
@@ -132,6 +144,7 @@ export default {
   props: ['w', 'h', 'val'],
   data () {
     return {
+      chartId: 'echart' + this.val.uuid,
       dynamicData: {}
     }
   },
@@ -181,7 +194,8 @@ export default {
             show: false
           }
         },
-        color: this.val.colorArr,
+        // color: this.val.colorArr,
+        color: this.val.seriesColors,
         radiusAxis: {
           axisLine: { // 坐标 轴线
             show: this.val.showX, // 是否显示坐标轴轴线
@@ -245,9 +259,20 @@ export default {
           data: this.legends
         },
         tooltip: {
-          trigger: 'axis'
+          trigger: 'axis',
+          axisPointer: 'cross'
         }
       }
+    }
+  },
+  mounted () {
+    if (this.$vpd.state.uuid === this.val.uuid) {
+      let colors = this.$vpd.state.page.colors.value.slice(0, this.legends.length)
+      let param = {
+        name: 'seriesColors',
+        value: colors
+      }
+      this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
     }
   }
 }

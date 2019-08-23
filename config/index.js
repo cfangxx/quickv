@@ -10,7 +10,20 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api': {
+        // 生产环境地址
+        // target: 'http://open.douyucdn.cn',
+        // 测试环境地址   程序测试没有问题后换成成产环境地址
+        // target: 'http://localhost:8080/api',
+        target: 'http://192.168.19.3:8080/api',
+        // 如果程序需要跨域，那么设置为true
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: '0.0.0.0', // can be overwritten by process.env.HOST

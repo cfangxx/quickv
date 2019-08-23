@@ -19,6 +19,7 @@ export const constantRouterMap = [
   {
     path: '/login',
     component: () => import('@/views/Login'),
+    meta: { title: 'QuickV - 大屏可视化开发工具' },
     hidden: true
   },
   {
@@ -38,16 +39,26 @@ export const constantRouterMap = [
   },
   {
     path: '',
+    redirect: '/project/all',
+    hidden: true
+  },
+  {
+    path: '/profile',
     component: Layout,
-    redirect: 'manage',
     children: [
       {
-        path: 'manage',
-        component: () => import('@/views/dashboard/Manage'),
-        name: 'manage',
-        meta: { title: '大屏管理', icon: 'dashboard', noCache: true, affix: true }
+        path: '',
+        name: 'profile',
+        component: () => import('@/views/account/UserProfile'),
+        meta: { title: '编辑资料', noCache: true, affix: true }
       }
-    ]
+    ],
+    hidden: true
+  },
+  {
+    path: '/preview/:hash',
+    component: () => import('@/views/dashboard/Preview'),
+    hidden: true
   },
   {
     path: '/dashboard/:hash',
@@ -61,13 +72,7 @@ export const constantRouterMap = [
   }
 ]
 
-export default new Router({
-  mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
-export const asyncRouterMap = [
+export const permissionRouterMap = [
   {
     path: '/template',
     component: Layout,
@@ -92,22 +97,80 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/material',
+    component: Layout,
+    meta: {
+      title: 'material',
+      icon: 'excel',
+      roles: ['admin'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'index',
+        force: true,
+        component: () => import('@/views/dashboard/Material.vue'),
+        name: 'MaterialCsv',
+        meta: {
+          title: '数据管理',
+          roles: ['admin'], // or you can only set roles in sub nav
+          noCache: true,
+          affix: true
+        }
+      }
+    ]
+  },
+  {
+    path: '/bi',
+    component: Layout,
+    meta: {
+      title: 'BI',
+      icon: 'example',
+      roles: ['admin'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'index',
+        force: true,
+        component: () => import('@/views/dashboard/Todo.vue'),
+        name: 'BI',
+        meta: {
+          title: 'BI分析',
+          roles: ['admin'], // or you can only set roles in sub nav
+          noCache: true,
+          affix: false
+        }
+      }
+    ]
+  },
+  {
+    path: '/subpolicy',
+    component: Layout,
+    meta: {
+      title: 'subpolicy',
+      icon: 'star',
+      roles: ['admin'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'index',
+        force: true,
+        component: () => import('@/views/dashboard/Todo2.vue'),
+        name: 'SubPolicy',
+        meta: {
+          title: '辅助决策',
+          roles: ['admin'], // or you can only set roles in sub nav
+          noCache: true,
+          affix: false
+        }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-export var DashboardRouterMap = [
-  {
-    path: '/preview',
-    component: Layout,
-    name: 'Dashboard',
-    meta: {
-      title: '我的大屏',
-      icon: 'chart'
-    },
-    children: [{
-      path: ':hash',
-      component: () => import('@/views/dashboard/Preview')
-    }
-    ]
-  }
-]
+export default new Router({
+  mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})

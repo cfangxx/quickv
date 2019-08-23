@@ -1,6 +1,6 @@
 import request from '@/scripts/request'
 
-export function fetchList () {
+export function fetchTemplateList () {
   return request({
     url: '/templates',
     method: 'get'

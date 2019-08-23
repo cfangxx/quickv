@@ -27,3 +27,8 @@ export default {
   }
 }
 </script>
+<style>
+  .el-submenu__title i{
+    color: rgb(239,239,240)
+  }
+</style>

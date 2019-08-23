@@ -12,7 +12,7 @@
     }"
     contenteditable="true">
     <v-echart
-      id="bar"
+      :id="chartId"
       :options="options"
       autoresize
       class="ffff"/>
@@ -26,13 +26,12 @@ import dataControl from '../../CommonModule/mixins/dataControl'
 import 'echarts/map/js/china.js'
 import echarts from 'echarts'
 import autoToolTip from '../../CommonModule/scripts/echartsAutoToolTip.js'
-
 const WIDGET_NAME = 'BraidChinaMap'
 export default {
   name: WIDGET_NAME,
   group: 'map',
   icon: require('./icon/thumb-chartMap.png'),
-  title: '省份分布图',
+  title: '全国分布图',
   panel: stylec,
   setting: {
     type: WIDGET_NAME,
@@ -42,13 +41,13 @@ export default {
     isChild: true,
     dragable: true,
     resizable: true,
-    width: 500,
-    height: 400,
-    left: 400,
-    top: 400,
+    width: 400,
+    height: 260,
+    left: 100,
+    top: 20,
     z: 0,
     color: '#555555',
-    name: '省份分布图', // 组件名称, 可自定义
+    name: '全国分布图', // 组件名称, 可自定义
     desc: '中国地图', // 描述, 可自定义
     belong: 'page',
     animationName: '',
@@ -56,6 +55,7 @@ export default {
     chartTitle: '', // 图表标题
     titleColor: '#666666', // 标题颜色
 
+    seriesColors: ['#1ccada', '#d2f4f8'],
     colorArr: ['#1ccada', '#d2f4f8'],
     bgMapColor: '', // 地图背景颜色
     mapBorderColor: '#ffffff', // 地图地域边框颜色
@@ -80,6 +80,12 @@ export default {
     keyTarget: 'china', // 响应数据对应的字段名
     keyXAxis: '', // 从该字段取x轴数据
     keyYAxis: '', // 从该字段取y轴数据
+
+    csvHash: '',
+    csvSeries: '',
+    csvNum: '',
+    csvHeader: '',
+    csvGroup: 'map',
 
     staticData: {
       'code': 0,
@@ -128,6 +134,8 @@ export default {
   props: ['w', 'h', 'val'],
   data () {
     return {
+      timer: null,
+      chartId: 'char' + this.val.uuid,
       dynamicData: {}
     }
   },
@@ -166,7 +174,7 @@ export default {
           max: 100, // 值域最大值，必须参数
           left: 'left',
           top: 'bottom',
-          color: this.val.colorArr,
+          color: this.val.seriesColors,
           textStyle: {
             color: this.val.visualTextColor // 值域条文本颜色
           },
@@ -179,7 +187,7 @@ export default {
           roam: false,
           itemStyle: {
             normal: { // 普通状态下样式
-              areaColor: this.val.colorArr[1],
+              areaColor: this.val.seriesColors[1],
               borderColor: this.val.mapBorderColor, // 地图地域边框颜色
               textStyle: {
                 color: 'red'
@@ -237,14 +245,28 @@ export default {
       this.drawBar(val)
     }
   },
+  mounted () {
+    if (this.val.autoToolTip) {
+      this.drawBar(this.val.autoToolTipTime)
+    }
+    if (this.$vpd.state.uuid === this.val.uuid) {
+      let colors = this.$vpd.state.page.colors.value.slice(0, 2)
+      let param = {
+        name: 'seriesColors',
+        value: colors
+      }
+      this.$vpd.commit('UPDATE_ACTIVE_ELEMENT', param)
+    }
+  },
   methods: {
     drawBar (time) {
       // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById('bar'))
+      var myChart = echarts.init(document.getElementById(this.chartId))
       // 使用刚指定的配置项和数据显示图表
       myChart.setOption(this.options)
       // 使用轮播插件
-      autoToolTip.autoHover(myChart, this.options, this.dataSeries.length, time)
+      clearInterval(this.timer)
+      this.timer = autoToolTip.autoHover(myChart, this.options, this.dataSeries.length, time)
     }
   }
 }

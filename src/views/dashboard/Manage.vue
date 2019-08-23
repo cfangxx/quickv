@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input :placeholder="'大屏名称'" v-model="listQuery.title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input :placeholder="'大屏名称'" v-model="listQuery.title" clearable style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
-      <el-select v-model="listQuery.type" :placeholder="'发布状态'" clearable class="filter-item" style="width: 130px">
+      <el-select v-model="listQuery.status" :placeholder="'发布状态'" clearable class="filter-item" style="width: 130px">
         <el-option v-for="(key, value) in publishTypeOptions" :key="key" :label="key" :value="value"/>
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ '搜索' }}</el-button>
@@ -24,91 +24,146 @@
           <span>{{ scope.row.sequenceNumber }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="'名称'" min-width="150px">
+      <el-table-column :label="'大屏名称'" min-width="150px">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.config.title }}</span>
+
+          <el-popover v-if="scope.row.imgUrl" placement="bottom" width="300" height="168" trigger="hover">
+            <el-image style="height:100%" :src="scope.row.imgUrl ? url + scope.row.imgUrl + '?t=' + scope.row.config.timestamp : ''">
+              <div slot="placeholder" class="image-slot">
+                <span class="dot">加载中...</span>
+              </div>
+            </el-image>
+            <el-button size="mini" type="text" slot="reference" plain  @click="handlePreview(scope.row.hash)">{{ scope.row.config.title }}</el-button>
+          </el-popover>
+          <span v-else>{{ scope.row.config.title }}</span>
         </template>
       </el-table-column>
-      <!--<el-table-column :label="'时间'" width="150px" align="center">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>-->
-        <!--</template>-->
-      <!--</el-table-column>-->
-      <el-table-column :label="'链接'" min-width="250px">
-        <template slot-scope="scope">
-          <a class="link-type" :href="scope.row.publish.hash | pubUrlFilter" target="_blank">{{ scope.row.publish.hash | pubUrlFilter }}</a>
+      <el-table-column :label="'分享链接'" min-width="250px">
+        <template slot-scope="scope" >
+          <div v-show="scope.row.publish.status === 'published'">
+            <el-link type="primary" :href="scope.row.publish.hash | pubUrlFilter" target="_blank">{{ scope.row.publish.hash | pubUrlFilter }}</el-link>
+            <el-tooltip effect="dark" :content="'复制'" placement="bottom">
+              <el-button size="mini" type="primary" plain icon="el-icon-document-copy" @click="handleCopy(scope.row.publish.hash, $event)" circle></el-button>
+            </el-tooltip>
+            <el-tooltip effect="dark" :content="'下载'" placement="bottom">
+              <el-button size="mini" type="primary" plain icon="el-icon-download" @click="handleDownload(scope.row.publish.hash)" circle></el-button>
+            </el-tooltip>
+          </div>
         </template>
       </el-table-column>
-      <el-table-column :label="'状态'" class-name="status-col" width="100">
+      <el-table-column :label="'发布'" class-name="status-col" width="100">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.publish.status">{{ scope.row.publish.status | statusFilter}}</el-tag>
+          <el-tooltip :disabled="scope.row | needRepublish" :content="'内容已更新, 未重新发布'" placement="left">
+            <el-badge is-dot style="margin-top: 3px;" :hidden="scope.row | needRepublish">
+              <el-dropdown trigger="click" placement="bottom" @command="handlePublish">
+                <el-button size="mini" type="primary" plain>{{ scope.row.publish.status | statusFilter }}</el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-tooltip effect="dark" :content="'删除已发布链接'" placement="left">
+                    <el-dropdown-item
+                      icon="el-icon-remove-outline"
+                      v-show="scope.row.publish.status === 'published'"
+                      :command="{hash:scope.row.hash, cmd:'unpublish'}">
+                      {{ '停止发布' }}
+                    </el-dropdown-item>
+                  </el-tooltip>
+                  <el-tooltip effect="dark" :content="'生成一个新的链接'" placement="left">
+                    <el-dropdown-item
+                      icon="el-icon-circle-plus-outline"
+                      v-show="scope.row.publish.status === 'unpublish'"
+                      :command="{hash:scope.row.hash, cmd:'published'}">
+                      {{' 公开发布 '}}
+                    </el-dropdown-item>
+                  </el-tooltip>
+
+                  <el-tooltip effect="dark" :content="'更新已发布链接的内容'" placement="left">
+                    <el-dropdown-item
+                      icon="el-icon-refresh"
+                      v-show="scope.row.publish.status === 'published' && scope.row.config.timestamp > scope.row.publish.timestamp"
+                      :command="{hash:scope.row.hash, cmd:'republish'}">
+                      {{' 重新发布 '}}
+                    </el-dropdown-item>
+                  </el-tooltip>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </el-badge>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column :label="'操作'" align="center" width="400" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handlePreviewDashboard(scope.row.hash)">{{ '预览' }}</el-button>
-          <el-button size="mini" type="success" @click="handleEdit(scope.row.hash)">{{ '编辑' }}</el-button>
-          <el-button size="mini" type="warning" @click="handleModifyStatus(scope.row.hash,'draft')">{{ '克隆' }}</el-button>
-          <el-button size="mini" type="info" @click="handleModifyPublish(scope.row)">{{ '发布' }}</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row,'deleted')">{{ '删除' }}</el-button>
+          <el-button size="mini" type="primary" slot="reference" plain @click="handlePreview(scope.row.hash)">{{ '预览' }}</el-button>
+          <el-button size="mini" type="primary" plain @click="handleDesign(scope.row.hash)">{{ '编辑' }}</el-button>
+          <el-button size="mini" type="primary" plain @click="handleClone(scope.row.hash, scope.row.config.title)">{{ '克隆' }}</el-button>
+          <!-- 移动分组 -->
+          <div style="display:inline-block; padding-left:10px">
+            <el-dropdown trigger="click" placement="bottom" @command="handleMove">
+              <el-button size="mini" type="primary" plain>{{ '移动' }}</el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                  v-for="(project, key) in projects"
+                  :key="key"
+                  :command="{title:scope.row.config.title, hash:scope.row.hash, project: project, key:key}">
+                  {{ project }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+
+          <div style="display:inline-block; padding-left:10px">
+            <el-popover  placement="bottom" width="200" :ref="`popover-${scope.$index}`">
+              <p>{{ '确定要删除大屏' + scope.row.config.title + '吗?' }} </p>
+              <div style="text-align: right; margin: 0">
+                <el-button size="mini" type="text" @click="scope._self.$refs[`popover-${scope.$index}`].doClose()">{{ '取消' }}</el-button>
+                <el-button size="mini" type="primary" @click="scope._self.$refs[`popover-${scope.$index}`].doClose() === handleDelete(scope.row)">{{ '确定' }}</el-button>
+              </div>
+              <el-button size="mini" type="primary" plain slot="reference">{{ '删除' }}</el-button>
+            </el-popover>
+          </div>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <!--新建大屏-->
-    <el-dialog :title="'新建大屏'" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="createTable" label-position="top" label-width="70px">
-        <el-form-item :label="'大屏名称'" placeholder="请输入大屏名称" prop="title">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :rules="rules" :model="createTable" label-position="top" label-width="70px">
+        <el-form-item :label="'大屏名称'" :placeholder="'请输入大屏名称'" prop="name">
           <el-input v-model="createTable.name"/>
         </el-form-item>
 
-        <el-form-item :label="'选择模板'">
-          <template-list :templates="templateList"
-                         @onselect="onSelectTemplate">
+        <el-form-item :label="'选择模板'" v-show="this.templateList" prop="templateList">
+          <template-list
+            :templates="templateList"
+            @onselect="onSelectTemplate">
           </template-list>
         </el-form-item>
 
         <el-form-item :label="'大屏简介'">
-          <el-input type="textarea" :rows="3" placeholder="请填写关于大屏的描述信息" v-model="createTable.about"/>
+          <el-input type="textarea" :rows="3" :placeholder="'请填写关于大屏的描述信息'" v-model="createTable.about"/>
         </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ '取消' }}</el-button>
-        <el-button type="primary" @click="dialogStatus===createSubmit()">{{ '创建' }}</el-button>
+        <el-button type="primary" @click="createSubmit()">{{ '创建' }}</el-button>
       </div>
     </el-dialog>
-
-    <!--发布管理-->
-    <el-dialog :visible.sync="dialogPublish" :title="dialogPublishTitle">
-      <el-radio-group v-model="dialogPublishStatus">
-        <el-radio label="unpublished">{{"停止发布"}}</el-radio>
-        <el-radio label="published">{{"公开发布"}}</el-radio>
-        <el-radio label="republish">{{"重新发布"}}</el-radio>
-      </el-radio-group>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogPublish = false">{{ '取消' }}</el-button>
-        <el-button type="primary" @click="dialogPublish = handlePublish()">{{ '确定' }}</el-button>
-      </span>
-    </el-dialog>
-
   </div>
 </template>
 
 <script>
-import { createDashboard, deleteDashboard, publishDashboard } from '@/api/dashboard'
-import { mapGetters } from 'vuex'
-import { fetchList } from '@/api/template'
+import { fetchList, createDashboard, deleteDashboard, publishDashboard, downloadDashboard, moveDashboard } from '@/api/dashboard'
+import { fetchTemplateList } from '@/api/template'
 
 import waves from '@/directive/waves' // Waves directive
 import TemplateList from '@/components/Dashboard/Template'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import clip from '@/scripts/clipboard'
 
 const publishTypeOptions = {
   published: '已发布',
-  unpublished: '未发布'
+  unpublish: '未发布'
 }
 
 export default {
@@ -121,39 +176,53 @@ export default {
     },
     pubUrlFilter (hash) {
       return hash ? window.location.protocol + '//' + window.location.host + '/dashboard/' + hash : ''
+    },
+    needRepublish (row) {
+      return row.publish.status !== 'published' || row.config.timestamp <= row.publish.timestamp
     }
-  },
-  computed: {
-    ...mapGetters([
-      'userRouters'
-    ])
   },
   data () {
     return {
+      url: process.env.BASE_API,
+      time: new Date(),
+      delPopover: false,
       tableKey: 0,
       list: null,
       total: 0,
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20,
-        importance: undefined,
+        limit: 10,
         title: undefined,
-        type: undefined,
-        sort: '+id'
+        status: undefined,
+        project: this.$route.name || 'all'
       },
       publishTypeOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      createTable: {
+      createTable: {},
+      rules: {
+        name: [
+          { required: true, message: '请输入大屏名称', trigger: 'blur' }
+        ]
       },
+      fullscreenLoading: false,
       templateList: null,
+      dialogTitle: '',
       dialogFormVisible: false,
-      dialogStatus: '',
-      dialogPublish: false,
-      dialogPublishTitle: '',
-      dialogPublishStatus: '',
-      dialogPublishHash: '',
-      downloadLoading: false
+      downloadLoading: false,
+      isRouterAlive: true
+    }
+  },
+  computed: {
+    projects () {
+      return this.$store.state.user.projects
+    },
+    group () {
+      if (this.$route.name === 'all' || this.$route.name === 'ungrouped') {
+        return ''
+      } else {
+        return this.$route.name
+      }
     }
   },
   created () {
@@ -162,7 +231,7 @@ export default {
   methods: {
     getList () {
       this.listLoading = true
-      this.$store.dispatch('GetUserDashboardList', this.listQuery).then(response => {
+      fetchList(this.listQuery).then(response => {
         if (response.data.total > 0) {
           this.serialList(response.data.items)
         }
@@ -179,19 +248,6 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    handleModifyStatus (row, status) {
-      this.$message({
-        message: '操作成功',
-        type: 'success'
-      })
-      row.publish.status = status
-    },
-    handleModifyPublish (row) {
-      this.dialogPublishTitle = '发布管理 - ' + row.config.title
-      this.dialogPublishStatus = row.publish.status
-      this.dialogPublishHash = row.hash
-      this.dialogPublish = true
-    },
     sortChange (data) {
       const { prop, order } = data
       if (prop === 'id') {
@@ -206,32 +262,57 @@ export default {
       }
       this.handleFilter()
     },
+    handleCopy (text, event) {
+      const pubUrlFilter = this.$options.filters['pubUrlFilter']
+
+      clip(pubUrlFilter(text), event)
+    },
     resetTemp () {
       this.createTable = {
         name: '',
         timestamp: Number(new Date()),
         template: 'blank',
-        about: ''
+        about: '',
+        mode: 'create',
+        project: this.group
       }
     },
     handleCreate () {
-      fetchList().then(response => {
+      fetchTemplateList().then(response => {
         this.templateList = response.data.items
       })
 
       this.resetTemp()
-      this.dialogStatus = '新建大屏'
+      this.dialogTitle = '新建大屏'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
+    handleClone (hash, title) {
+      this.resetTemp()
+      this.templateList = null
+      this.dialogTitle = '大屏克隆 - <' + title + '>'
+
+      this.createTable.template = hash
+      this.createTable.mode = 'clone'
+
+      this.dialogFormVisible = true
+    },
     createSubmit () {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          if (!this.createTable.template) {
+            this.$message({
+              message: '请选择大屏模板',
+              type: 'warning'
+            })
+            return false
+          }
+          this.fullscreenLoading = true
           createDashboard(this.createTable).then(response => {
             // 跳转到编辑页面
-            this.$router.push('/edit/dashboard/' + response.hash)
+            this.handleDesign(response.hash)
           })
         }
       })
@@ -258,12 +339,16 @@ export default {
         this.getList()
       })
     },
-    handleDownload () {
+    handleDownload (hash) {
       this.downloadLoading = true
-      alert('下载')
+      downloadDashboard(hash).then(response => {
+        if (response.code === 0) {
+          window.location = process.env.BASE_API + '/' + response.data
+        }
+      })
     },
-    handlePublish () {
-      publishDashboard(this.dialogPublishHash, this.dialogPublishStatus).then(response => {
+    handlePublish (param) {
+      publishDashboard(param.hash, param.cmd).then(response => {
         this.$notify({
           title: '成功',
           message: '更新成功',
@@ -274,11 +359,31 @@ export default {
         this.getList()
       })
     },
-    handleEdit (hash) {
-      this.$router.push('/edit/dashboard/' + hash)
+    handleDesign (hash) {
+      this.$router.push('/edit/dashboard/' + hash + '?from=' + (this.$route.name || 'all'))
     },
-    handlePreviewDashboard (hash) {
-      this.$router.push('/preview/' + hash)
+    handlePreview (hash) {
+      const routeUrl = this.$router.resolve({
+        path: '/preview/' + hash
+      })
+      window.open(routeUrl.href, '_blank')
+    },
+    handleMove (param) {
+      this.$confirm('确定将大屏"' + param.title + '"移动到 ' + param.project + ' 分组吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        moveDashboard(param.hash, param.key).then(response => {
+          this.$notify({
+            title: '成功',
+            message: '操作成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.getList()
+        })
+      }).catch(() => {})
     },
     serialList (list) {
       for (let i = 0; i < list.length; i++) {

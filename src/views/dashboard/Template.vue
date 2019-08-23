@@ -1,8 +1,7 @@
 <template>
   <div class="app-container">
-
     <div class="template-list-cont">
-      <div class="item-box"  @click="handleCreate">
+      <div class="item-box" style="cursor: pointer" @click="handleCreate">
         <div class="item-box-top">
           <div class="item-box-top-img">
             <i class="el-icon-plus plus-icon"/>
@@ -16,7 +15,7 @@
       <div class="item-box" v-for="item in tplList" :key="item.hash">
         <div class="item-box-top">
           <div class="item-box-top-img">
-            <img :src="item.imgUrl | fullImgUrl">
+            <img v-if="item.imgUrl" :src="item.imgUrl | fullImgUrl">
           </div>
           <div class="item-box-top-icon">
             <i class="el-icon-edit" @click="handleEdit(item.hash)"></i>
@@ -24,7 +23,7 @@
           </div>
         </div>
         <div class="item-box-bottom">
-          <h4>{{item.config.title}}</h4>
+          <h4 class="template-item-title">{{item.config.title}}</h4>
           <p>{{ item.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }} <span class="link-type" >{{ item.config.width + 'X' + item.config.height }}</span></p>
         </div>
       </div>
@@ -34,7 +33,7 @@
     <el-dialog :title="'新建模板'" :visible.sync="dialogFormVisible">
       <el-form ref="TplForm" :model="temp" :rules="createTplRules" label-position="top" label-width="70px" style="width: 500px; margin-left:50px;">
 
-        <el-form-item :label="'模板名称'" prop="title">
+        <el-form-item :label="'模板名称'" prop="name">
           <el-input v-model="temp.name"/>
         </el-form-item>
         <el-form-item :label="'模板级别'">
@@ -53,7 +52,7 @@
 </template>
 
 <script>
-import { fetchList, createTemplate, deleteTemplate } from '@/api/template'
+import { fetchTemplateList, createTemplate, deleteTemplate } from '@/api/template'
 import waves from '@/directive/waves' // Waves directive
 // import { parseTime } from '@/scripts'
 
@@ -80,8 +79,6 @@ export default {
     fullImgUrl (url) {
       return process.env.BASE_API + url
     }
-  },
-  computed: {
   },
   data () {
     const validateTplName = (rule, value, callback) => {
@@ -111,7 +108,8 @@ export default {
       dialogStatus: '',
       createTplRules: {
         name: [{ required: true, trigger: 'blur', validator: validateTplName }]
-      }
+      },
+      fullscreenLoading: false
     }
   },
   created () {
@@ -120,7 +118,7 @@ export default {
   methods: {
     getTemplates () {
       this.tplListLoading = true
-      fetchList().then(response => {
+      fetchTemplateList().then(response => {
         this.tplList = response.data.items
         this.total = response.data.total || 0
         this.tplListLoading = false
@@ -156,6 +154,7 @@ export default {
     createSubmit () {
       this.$refs['TplForm'].validate((valid) => {
         if (valid) {
+          this.fullscreenLoading = true
           createTemplate(this.temp).then(response => {
             // 跳转到编辑页面
             this.handleEdit(response.hash)
@@ -196,7 +195,7 @@ export default {
   }
   .item-box{
     width: 250px;
-    height:260px;
+    height:220px;
     margin: 0 20px 20px 0;
     box-sizing: border-box;
     border:1px solid #eee;
@@ -207,7 +206,7 @@ export default {
   }
   .item-box-top{
     width:100%;
-    height:180px;
+    height:150px;
     position: relative;
     border-bottom:1px solid #eee;
   }
@@ -217,6 +216,7 @@ export default {
     position: absolute;
     text-align: center;
     z-index: 0;
+    background-color:#000;
   }
   .item-box-top-img img{
     width:100%;
@@ -246,8 +246,7 @@ export default {
     display: block;
   }
   .plus-icon{
-    font-size: 60px;
-    font-weight: bold;
+    font-size: 50px;
     margin-top:20%;
     color:#666;
   }
@@ -255,8 +254,8 @@ export default {
     padding: 0 10px;
   }
   .item-box-bottom h4{
-    font-size: 16px;
-    margin:16px 0 0 0;
+    font-size: 15px;
+    margin:15px 0 0 0;
     font-weight: normal;
   }
   .item-box-bottom p{
@@ -266,6 +265,13 @@ export default {
   }
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
+  .template-item-title{
+    display: block;
+    width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
 .box-card-component {
   width:250px;
   margin-left:8px;

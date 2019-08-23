@@ -2,7 +2,9 @@
   <header class="header">
     <div class="navbar1 container grid-xl">
       <section class="logo navbar-cont">
-        <a>logo</a>
+        <a class="edit-navbar-logo">
+          <img src="../../../../assets/uugai.com_1561087787568.png" alt="">
+        </a>
       </section>
       <section class="navbar-cont nav-middle">
         <widget-box :zoom="zoom"/>
@@ -14,11 +16,11 @@
           @click="undo"><vpd-icon name="undo" /> 撤销
         </a>
         <a
-          class="btn btn-link tooltip tooltip-bottom"
+          class="btn btn-link"
           @click="save"><vpd-icon name="save" /> 保存
         </a>
         <a
-          class="btn btn-link tooltip tooltip-bottom"
+          class="btn btn-link"
           @click="quit"><vpd-icon name="quit" /> 退出
         </a>
       </section>
@@ -96,6 +98,8 @@ export default {
   @import '../style/_variables.scss';
   .header {
     background-color: #24292e;
+    /*background-color: #0543b0;*/
+    /*background: linear-gradient(0deg, #0543b0 30%, #237eef 100%);;*/
     padding: 12px 0;
   }
   .navbar1 {
@@ -105,11 +109,13 @@ export default {
       }
     }
     .btn.btn-link {
-      color: $gray-color;
+      /*color: $gray-color;*/
+      color: #a1aeb3;
       margin-right: 15px;
     }
     .btn.btn-link:hover {
-      color: $light-color;
+      /*color: $light-color;*/
+      color: #ccc;
     }
     .logo {
       font-size: 20px;
@@ -172,13 +178,14 @@ export default {
     text-align: right;
   }
   .nav-middle{
+    color: #a1aeb3;
     text-align: center;
   }
   .navbar-right,.logo{
     line-height: 60px;
   }
   .logo a{
-    color:#bcc3ce;
+    color:#f1f1f1;
   }
   .icon-item {
     font-size: 25px;
@@ -189,4 +196,9 @@ export default {
     display: block;
     font-size: 12px;
   }
+  .edit-navbar-logo img{
+    height:50px;
+    padding-top:16px;
+  }
+
 </style>

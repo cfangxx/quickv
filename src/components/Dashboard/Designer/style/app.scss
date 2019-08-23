@@ -2,7 +2,7 @@
 @import "variables";
 
 @import "../../../../../node_modules/spectre.css/src/mixins";
-@import "../../../../../node_modules/spectre.css/src/base";
+//@import "../../../../../node_modules/spectre.css/src/base";
 @import "../../../../../node_modules/spectre.css/src/utilities";
 
 // Layout
@@ -25,7 +25,7 @@ html {
   font-size: 18px;
 }
 body {
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  //font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
   padding: 0;
   margin: 0;
 }
@@ -63,11 +63,12 @@ select {
 }
 .panel-setcolor-item{
   display: flex;
+  height:36px;
 }
 .pannel-setcolor-item-btn{
   width: 46px;
   height: 24px;
-  margin: 6px 8px;
+  margin: 4px 3px;
   border: none;
   background: #42b983;
   color: #fff;
@@ -80,7 +81,8 @@ select {
   background: #42b955;
 }
 .radiusInp{
-  width:38px;
+  //width:38px;
+  width:50px;
 }
 .panel-setcolor{
   width:200px;
@@ -92,6 +94,7 @@ select {
 }
 .radioscont label{
   font-weight: normal;
+  font-size:15px;
 }
 
 .btn-small {
@@ -128,12 +131,24 @@ select {
   height:100%;
 }
 
-button,input, input[type='number'],input[type='text'], optgroup, select {
+input, input[type='number'],input[type='text'], optgroup, select {
   height: 28px;
   line-height: 28px;
   border: 1px solid #ccc;
   font-size:13px;
   padding: 0 0 0 5px;
+}
+//.panel-wrap button{
+.panel-wrap .api-btn{
+  height: 28px;
+  line-height: 28px;
+  border: none;
+  font-size:13px;
+  padding: 0;
+  outline: none;
+}
+.panel-wrap .panel-row .el-button{
+  padding:0 8px;
 }
 textarea{
   font-size:13px;
@@ -148,3 +163,66 @@ input[type='color']{
 input[type='radio']{
   vertical-align: middle;
 }
+.el-radio__label{
+  padding-left:5px;
+}
+.el-radio{
+  margin-right:10px;
+}
+.panel-colormsg{
+  display: flex;
+  align-items: center;
+  min-width: 143px;
+}
+.panel-colorpick{
+  display:flex;
+  align-items: center;
+}
+.list-container .tool-item .tool-item__name{
+  font-size:12px;
+}
+.panel-wrap .tab .tab-item a{
+  font-size:14px;
+}
+
+.panel-tab-mini .el-tabs__item{
+  height:34px;
+  line-height: 34px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+.panel-tab-mini .el-tabs__nav-wrap{
+  margin-left:15px;
+}
+.panel-tab-mini .el-tabs__new-tab{
+  display: none;
+  width:20px;
+  height:20px;
+  margin:10px 0 0 6px;
+}
+.radiowrap{
+  font-size:14px;
+}
+.panel-radio-cont .el-radio__label{
+  font-size:12px;
+}
+.panel-color-cont{
+  width:140px;
+}
+.panel-color-icon{
+  font-size:16px;
+  line-height: 33px;
+  cursor: pointer;
+}
+.panel-ele-sel{
+  width: 170px;
+}
+.panel-ele-sel input[readonly][type="text"].el-input__inner{
+  background-color:#fff;
+}
+.panel-ele-sel input[readonly][type="text"].el-input__inner:focus{
+  box-shadow: none;
+}
+//.el-color-picker__panel .el-color-dropdown__link-btn{ /* 隐藏 elementui 中 ColorPicker 颜色选择器清空按钮 点击会使数据为 null*/
+//  display:none;
+//}

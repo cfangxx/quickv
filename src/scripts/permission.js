@@ -19,7 +19,16 @@ const whiteList = ['/login', '/auth-redirect']
 router.beforeEach((to, from, next) => {
   NProgress.start()
 
+  if (to.meta.title) {
+    document.title = to.meta.title + ' - QuickV'
+    next()
+  }
+
   if (to.path.match(/^\/dashboard\/\w{32}$/)) {
+    next()
+    return
+  }
+  if (to.path.match(/^\/preview\/\w{32}$/)) {
     next()
     return
   }
@@ -32,12 +41,12 @@ router.beforeEach((to, from, next) => {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetUserInfo').then(response => {
           const roles = response.data.roles
+          // console.log(store.getters.groupRouters)
+          router.addRoutes(store.getters.groupRouters)
           store.dispatch('GenerateRoutes', { roles }).then(() => {
-            router.addRoutes(store.getters.asyncRouters)
+            router.addRoutes(store.getters.permissionRouters)
             next({ ...to, replace: true })
           })
-        }).then(() => {
-          store.dispatch('GetUserDashboardList') // 整理左侧菜单栏内容
         }).catch((err) => {
           store.dispatch('LogOut').then(() => {
             Message.error(err)

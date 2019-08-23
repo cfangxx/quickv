@@ -5,8 +5,8 @@ export default {
 
   uuid: null, // 选中组件uuid
   counter: 0, // 容器副本命名时避免重名所用的计数器
-  uuidList: [], // 多选组件的uuid
   multiSelect: false, // 是否多选
+  multiSelectCols: [], // 多选组件的uuid
 
   originX: 0, // 选中组件的横向初始值
   originY: 0, // 选中组件的纵向初始值
@@ -27,11 +27,13 @@ export default {
     about: '', // 简介
     width: 1920, // 画布宽度
     height: 1080, // 画布高度
-    endTime: new Date().getTime(), // 修改日期
-    backgroundColor: '#ffffff', // 背景色
+    zoom: 100, // 画布缩放百分比
+    backgroundColor: '#000000', // 背景色
     backPic: '', // 背景图片
-    zoom: 100 // 画布缩放百分比
+    timestamp: new Date().getTime(), // 修改日期
+    colors: { name: '配色1', value: ['#8378ea', '#96bfff', '#37a2da', '#32c5e9', '#67e0e3', '#9fe6b8', '#ffdb5c', '#ff9f7f', '#fb7293', '#e062ae', '#e690d1', '#e7bcf3', '#9d96f4'] }
+
   },
   widgets: [], // 组件
-  steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  steps: []
 }

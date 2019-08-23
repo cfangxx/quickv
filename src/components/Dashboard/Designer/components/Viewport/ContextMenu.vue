@@ -89,8 +89,11 @@ export default {
       this.x = e.pageX
       this.y = e.pageY
 
-      this.show = true
-      this.layout()
+      // 选中组件时显示右键菜单
+      if (this.$vpd.state.type !== 'page' || this.$vpd.state.multiSelect) {
+        this.show = true
+        this.layout()
+      }
       e.preventDefault()
     },
     // 布局
@@ -107,11 +110,11 @@ export default {
 <style scoped>
 .right-menu {
   position: fixed;
-  background: #fff;
-  border: solid 1px rgba(0, 0, 0, .2);
   border-radius: 3px;
   z-index: 999;
   display: block;
+  background: #27343e;
+  color: #bcc9d4;
 }
 .right-menu a {
   width: 75px;
@@ -120,7 +123,7 @@ export default {
   font-size: 14px;
   text-align: center;
   display: block;
-  color: #1a1a1a;
+  /*color: #1a1a1a;*/
 }
 .right-menu a:hover {
   background: #eee;
@@ -128,14 +131,14 @@ export default {
 }
 
 .right-menu {
-    border: 1px solid #eee;
-    box-shadow: 0 0.5em 1em 0 rgba(0,0,0,.1);
-    border-radius: 1px;
+  box-shadow: 0 0.5em 1em 0 rgba(0,0,0,.1);
+  border-radius: 1px;
 }
 .right-menu a {
-    padding: 2px;
+  padding: 2px;
 }
 .right-menu a:hover {
-    background: #2196f3;
+  background-color: #1d262e;
+  color: #00baff;
 }
 </style>
